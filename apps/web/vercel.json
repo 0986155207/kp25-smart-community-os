@@ -1,0 +1,5 @@
+{
+  "installCommand": "echo 'install handled by buildCommand'",
+  "buildCommand": "cd ../.. && npm install --legacy-peer-deps && cd apps/web && npx next build",
+  "framework": "nextjs"
+}
