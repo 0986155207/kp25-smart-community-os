@@ -189,7 +189,7 @@ export async function GET(req: NextRequest) {
   // Ví dụ: gõ "Thu Ha" nhưng data lưu "Thu Hà"
   const rawNoDau   = boVietDau(rawQ)
   const wordsDau   = tachTu(rawQ).map(w => boVietDau(w))
-  const needFallback = wordsDau.some((w, i) => w !== tachTu(rawQ)[i].toLowerCase())
+  const needFallback = wordsDau.some((w, i) => w !== (tachTu(rawQ)[i]?.toLowerCase() ?? w))
 
   if (needFallback && results.length < 5) {
     const existingIds = new Set(results.map(r => r.id))

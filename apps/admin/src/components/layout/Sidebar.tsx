@@ -51,7 +51,7 @@ const MENU: MenuGroup[] = [
       {
         href: '/dashboard/workflow',
         icon: Layers, label: 'Workflow AI',
-        roles: ['BI_THU', 'TRUONG_KHU_PHO', 'CONG_AN', 'AN_NINH', 'CAN_BO'],
+        roles: ['BI_THU', 'TRUONG_KHU_PHO', 'CONG_AN', 'AN_NINH', 'PHU_TRACH_NCT'],
       },
       {
         href: '/dashboard/phan-anh',

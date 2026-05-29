@@ -61,8 +61,8 @@ function signRow(left: string, right: string): Table {
       bottom:       { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
       left:         { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
       right:        { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
-      insideH:      { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
-      insideV:      { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+      insideHorizontal: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+      insideVertical:   { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
     },
     rows: [new TableRow({ children: [cell(left), cell(right)] })],
   })
@@ -432,7 +432,7 @@ export async function GET() {
   const buf  = await Packer.toBuffer(doc)
   const date = new Date().toISOString().split('T')[0]
 
-  return new NextResponse(buf, {
+  return new NextResponse(new Uint8Array(buf), {
     status: 200,
     headers: {
       'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',

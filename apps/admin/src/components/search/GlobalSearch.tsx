@@ -139,7 +139,7 @@ export default function GlobalSearch() {
       setActive(v => Math.max(v - 1, 0))
     } else if (e.key === 'Enter' && active >= 0) {
       e.preventDefault()
-      navigate(results[active].href)
+      navigate(results[active]?.href ?? '')
     }
   }
 

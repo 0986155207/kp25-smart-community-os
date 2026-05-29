@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom'
-import { vi } from 'vitest'
+import { vi, beforeAll, afterAll } from 'vitest'
 
 vi.mock('next/navigation', () => ({
   useRouter:       () => ({ push: vi.fn(), replace: vi.fn(), refresh: vi.fn() }),
