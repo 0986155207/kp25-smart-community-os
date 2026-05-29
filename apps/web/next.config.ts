@@ -27,9 +27,7 @@ const nextConfig: NextConfig = {
       allowedOrigins: [
         // Local
         'localhost:3000',
-        // Production
-        'kp25-longtruong.net',
-        'www.kp25-longtruong.net',
+        // Production (Vercel)
         'smart-kp25-web.vercel.app',
         // Preview deployments (Vercel)
         '*.vercel.app',

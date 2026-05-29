@@ -7,7 +7,6 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '10mb',
       allowedOrigins: [
         'localhost:3001',
-        'admin.kp25-longtruong.net',
         'smart-kp25-admin.vercel.app',
         '*.vercel.app',
       ],
