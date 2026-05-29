@@ -94,7 +94,6 @@ export async function GET(req: NextRequest) {
     const now = new Date().toISOString().slice(0, 10)
     ghiAuditLog({
       hanh_dong: 'XUAT_KHAU',
-      bang: 'audit_logs',
       mo_ta: `Xuất CSV nhật ký hoạt động — ${(data ?? []).length} bản ghi (${now})`,
     }).catch(() => {})
 
