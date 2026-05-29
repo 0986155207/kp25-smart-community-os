@@ -1,5 +1,5 @@
 {
-  "installCommand": "echo 'install handled by buildCommand'",
-  "buildCommand": "cd ../.. && rm -rf node_modules && npm install --legacy-peer-deps && cd apps/web && npx next build",
+  "installCommand": "npm install",
+  "buildCommand": "npm run build",
   "framework": "nextjs"
 }
