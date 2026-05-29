@@ -246,7 +246,7 @@ export default function TaoPhanAnhForm() {
             </div>
 
             {aiResult.tomTat && (
-              <p className="text-sm text-slate-700 italic">"{aiResult.tomTat}"</p>
+              <p className="text-sm text-slate-700 italic">&quot;{aiResult.tomTat}&quot;</p>
             )}
           </div>
         )}

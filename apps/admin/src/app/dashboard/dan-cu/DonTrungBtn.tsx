@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { Trash2, AlertTriangle, Loader2, CheckCircle, X, RefreshCw } from 'lucide-react'
 import { xoaDuLieuTrung, xoaToanBoHoDan } from './actions'
 
@@ -161,13 +162,13 @@ export default function DonTrungBtn() {
                 <p className="text-xs text-slate-400 mt-1">Không có bản ghi nào để xoá.</p>
               )}
               {/* Shortcut tới trang import */}
-              <a
+              <Link
                 href="/dashboard/dan-cu/nhap-excel"
                 className="inline-flex items-center gap-1 mt-3 text-xs text-[#1E3A5F] font-semibold hover:underline"
               >
                 <RefreshCw size={11} />
                 Nhập dữ liệu lại ngay →
-              </a>
+              </Link>
             </div>
             <button onClick={() => setKetQua(null)} className="text-slate-300 hover:text-slate-500 shrink-0">
               <X size={16} />

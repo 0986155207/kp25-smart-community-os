@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import Link from 'next/link'
 import {
   CheckCircle2, XCircle, RefreshCw, Copy, Check,
   ExternalLink, AlertTriangle, Database, Shield, Users
@@ -497,18 +498,18 @@ export default function SetupClient() {
             </div>
           </div>
           <div className="mt-4 flex flex-wrap gap-3">
-            <a
+            <Link
               href="/dashboard/an-sinh/nguoi-cao-tuoi"
               className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-lg transition-colors"
             >
               Xem danh sách NCT ({status.counts.nguoi_cao_tuoi})
-            </a>
-            <a
+            </Link>
+            <Link
               href="/dashboard/an-sinh"
               className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg transition-colors"
             >
               Tổng quan An sinh
-            </a>
+            </Link>
           </div>
         </div>
       )}

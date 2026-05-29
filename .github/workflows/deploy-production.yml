@@ -2,13 +2,8 @@ name: Deploy Production — Triển khai chính thức
 
 # ── Trigger ──────────────────────────────────────────────────
 on:
-  push:
-    branches: [main]
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
-      - '.env.example'
-  # Cho phép trigger thủ công
+  # Vercel tự động deploy khi push lên main qua GitHub integration.
+  # Workflow này chỉ dùng để deploy thủ công (VPS, hotfix khẩn cấp, v.v.)
   workflow_dispatch:
     inputs:
       skip-tests:

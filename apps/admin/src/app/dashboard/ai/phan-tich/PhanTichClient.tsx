@@ -147,7 +147,7 @@ export default function PhanTichClient() {
           </div>
           <h3 className="font-bold text-slate-800 mb-2">Chưa có phân tích nào</h3>
           <p className="text-slate-500 text-sm max-w-sm mx-auto">
-            Nhấn "Tạo phân tích" để AI tự động đọc dữ liệu khu phố và tạo báo cáo tổng hợp toàn diện.
+            Nhấn &quot;Tạo phân tích&quot; để AI tự động đọc dữ liệu khu phố và tạo báo cáo tổng hợp toàn diện.
           </p>
         </div>
       )}

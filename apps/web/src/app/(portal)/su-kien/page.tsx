@@ -236,7 +236,7 @@ export default async function SuKienPage({
           const active = (!loaiFilter || loaiFilter === 'TAT_CA') ? key === 'TAT_CA' : loaiFilter === key
           const cfg = LOAI_SK[key]
           return (
-            <a
+            <Link
               key={key}
               href={key === 'TAT_CA' ? '/su-kien' : `/su-kien?loai=${key}`}
               className={`shrink-0 px-4 py-2 rounded-full text-sm font-semibold
@@ -247,7 +247,7 @@ export default async function SuKienPage({
               }`}
             >
               {label}
-            </a>
+            </Link>
           )
         })}
       </div>
@@ -322,11 +322,11 @@ export default async function SuKienPage({
             {hasFilter ? 'Không có sự kiện trong danh mục này' : 'Hãy quay lại sau để xem lịch sự kiện mới nhất'}
           </p>
           {hasFilter && (
-            <a href="/su-kien"
+            <Link href="/su-kien"
                className="inline-block mt-4 px-5 py-2 rounded-full bg-[#1E3A5F] text-white
                           text-sm font-semibold hover:bg-[#152d4a] transition-colors">
               Xem tất cả sự kiện
-            </a>
+            </Link>
           )}
         </div>
       )}
