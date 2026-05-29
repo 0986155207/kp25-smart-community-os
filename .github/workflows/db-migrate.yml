@@ -33,7 +33,7 @@ jobs:
 
     environment:
       name: database
-      url: https://supabase.com/dashboard/project/${{ secrets.SUPABASE_PROJECT_ID }}
+      url: https://supabase.com/dashboard/project/pnyjrneqxqckclxehaqv
 
     steps:
       - uses: actions/checkout@v4
