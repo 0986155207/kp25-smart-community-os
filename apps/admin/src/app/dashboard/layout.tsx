@@ -1,3 +1,6 @@
+// Dashboard cần auth context → không cho phép SSG
+export const dynamic = 'force-dynamic'
+
 import Sidebar from '@/components/layout/Sidebar'
 import TopBar from '@/components/layout/TopBar'
 import PushPermissionBanner from '@/components/push/PushPermissionBanner'
