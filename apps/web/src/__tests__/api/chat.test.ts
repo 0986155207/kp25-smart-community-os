@@ -95,7 +95,7 @@ describe('POST /api/chat', () => {
 
     const supabaseMod = await import('@/lib/supabase/server')
     vi.mocked(supabaseMod.createServiceClient).mockReturnValue(
-      makeSvcMock({}) as ReturnType<typeof supabaseMod.createServiceClient>
+      makeSvcMock({}) as unknown as ReturnType<typeof supabaseMod.createServiceClient>
     )
 
     const mod = await import('@/app/api/chat/route')
@@ -169,7 +169,7 @@ describe('GET /api/chat', () => {
     vi.resetModules()
     const supabaseMod = await import('@/lib/supabase/server')
     vi.mocked(supabaseMod.createServiceClient).mockReturnValue(
-      makeSvcMock({}) as ReturnType<typeof supabaseMod.createServiceClient>
+      makeSvcMock({}) as unknown as ReturnType<typeof supabaseMod.createServiceClient>
     )
     const mod = await import('@/app/api/chat/route')
     GET = mod.GET

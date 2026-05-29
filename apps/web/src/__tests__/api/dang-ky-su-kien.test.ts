@@ -50,7 +50,8 @@ describe('POST /api/su-kien/dang-ky', () => {
     const { client } = createSupabaseMock({ single: mockSingle, limit: mockLimit, insert: mockInsert })
 
     const supabaseMod = await import('@/lib/supabase/server')
-    vi.mocked(supabaseMod.createClient).mockResolvedValue(client as ReturnType<typeof supabaseMod.createClient> extends Promise<infer T> ? T : never)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    vi.mocked(supabaseMod.createClient).mockResolvedValue(client as unknown as any)
 
     const mod = await import('@/app/api/su-kien/dang-ky/route')
     POST = mod.POST
