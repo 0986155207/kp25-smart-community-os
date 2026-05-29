@@ -1,3 +1,6 @@
+// Tất cả portal pages cần auth context → không cho phép SSG
+export const dynamic = 'force-dynamic'
+
 import Navbar from '@/components/layout/Navbar'
 import BottomNav from '@/components/layout/BottomNav'
 import Footer from '@/components/layout/Footer'
