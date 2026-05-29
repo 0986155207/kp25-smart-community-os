@@ -1,0 +1,114 @@
+name: Health Check — Kiểm tra sức khỏe hệ thống
+
+on:
+  # Chạy định kỳ mỗi 30 phút
+  schedule:
+    - cron: '*/30 * * * *'
+
+  # Hoặc trigger thủ công
+  workflow_dispatch:
+
+jobs:
+  check-portal:
+    name: 🏘️ Kiểm tra Portal
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: vars.PRODUCTION_WEB_URL != ''
+
+    steps:
+      - name: HTTP check — Portal homepage
+        run: |
+          URL="${{ vars.PRODUCTION_WEB_URL }}"
+          if [ -z "$URL" ]; then
+            echo "⚠️ PRODUCTION_WEB_URL chưa được cấu hình"
+            exit 0
+          fi
+
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 "$URL")
+          echo "Portal URL: $URL → HTTP $STATUS"
+
+          if [ "$STATUS" != "200" ]; then
+            echo "❌ Portal trả về HTTP $STATUS"
+            exit 1
+          fi
+          echo "✅ Portal OK"
+
+      - name: HTTP check — Chat API
+        run: |
+          URL="${{ vars.PRODUCTION_WEB_URL }}/api/chat"
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 \
+            -X POST "$URL" \
+            -H "Content-Type: application/json" \
+            -d '{"message":"ping","sessionKey":"health-check"}')
+          echo "Chat API: HTTP $STATUS"
+          # 400 = API đang chạy (thiếu message hợp lệ là bình thường)
+          if [ "$STATUS" = "000" ]; then
+            echo "❌ Chat API không phản hồi"
+            exit 1
+          fi
+          echo "✅ Chat API OK"
+
+  check-admin:
+    name: ⚙️ Kiểm tra Admin
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: vars.PRODUCTION_ADMIN_URL != ''
+
+    steps:
+      - name: HTTP check — Admin login page
+        run: |
+          URL="${{ vars.PRODUCTION_ADMIN_URL }}/dang-nhap"
+          if [ -z "$URL" ]; then exit 0; fi
+
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 "$URL")
+          echo "Admin URL: $URL → HTTP $STATUS"
+
+          if [ "$STATUS" != "200" ] && [ "$STATUS" != "302" ]; then
+            echo "❌ Admin trả về HTTP $STATUS"
+            exit 1
+          fi
+          echo "✅ Admin OK"
+
+  # Nếu có lỗi → tạo GitHub Issue tự động
+  create-issue-on-failure:
+    name: 🚨 Tạo Issue khi có lỗi
+    runs-on: ubuntu-latest
+    needs: [check-portal, check-admin]
+    if: failure()
+    permissions:
+      issues: write
+
+    steps:
+      - name: Tạo issue báo lỗi
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const now = new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })
+            const portalStatus = '${{ needs.check-portal.result }}'
+            const adminStatus  = '${{ needs.check-admin.result }}'
+
+            // Kiểm tra issue tương tự đã tồn tại chưa
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo:  context.repo.repo,
+              state: 'open',
+              labels: 'health-check,automated',
+            })
+
+            if (issues.data.length > 0) {
+              // Comment vào issue hiện có thay vì tạo mới
+              await github.rest.issues.createComment({
+                owner:      context.repo.owner,
+                repo:       context.repo.repo,
+                issue_number: issues.data[0].number,
+                body: `⚠️ Health check thất bại lúc **${now}**\n- Portal: ${portalStatus}\n- Admin: ${adminStatus}`,
+              })
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo:  context.repo.repo,
+                title: `🚨 [Auto] Health Check thất bại — ${now}`,
+                body: `## Hệ thống KP25 có vấn đề\n\n**Thời gian phát hiện:** ${now}\n\n| Service | Trạng thái |\n|---------|------------|\n| 🏘️ Portal | ${portalStatus} |\n| ⚙️ Admin  | ${adminStatus} |\n\n**Hành động:** Kiểm tra [logs deploy](https://github.com/${context.repo.owner}/${context.repo.repo}/actions) và khởi động lại dịch vụ nếu cần.\n\n> Issue này được tạo tự động bởi GitHub Actions`,
+                labels: ['health-check', 'automated', 'bug'],
+              })
+            }

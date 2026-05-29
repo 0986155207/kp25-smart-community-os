@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mất kết nối — KP25 Admin</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
+      background: #f8fafc;
+      color: #334155;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .card {
+      background: white;
+      border-radius: 24px;
+      padding: 48px 40px;
+      max-width: 440px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+    .icon-wrap {
+      width: 80px;
+      height: 80px;
+      background: #fef3c7;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+    .icon-wrap svg {
+      width: 40px;
+      height: 40px;
+      color: #d97706;
+    }
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 32px;
+      padding: 8px 16px;
+      background: #1E3A5F;
+      border-radius: 12px;
+    }
+    .logo-kp { color: white; font-weight: 800; font-size: 14px; }
+    .logo-25 { color: #FCD34D; font-weight: 800; font-size: 14px; }
+    h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 12px;
+    }
+    p {
+      font-size: 14px;
+      color: #64748b;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+    .info-box {
+      background: #f1f5f9;
+      border-radius: 12px;
+      padding: 16px;
+      margin: 24px 0;
+      text-align: left;
+    }
+    .info-box p {
+      font-size: 13px;
+      color: #475569;
+      margin-bottom: 6px;
+    }
+    .info-box p:last-child { margin-bottom: 0; }
+    .info-box p::before { content: '✓  '; color: #10b981; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      background: #1E3A5F;
+      color: white;
+      border: none;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-decoration: none;
+      margin-top: 8px;
+    }
+    .btn:hover { background: #162d4a; }
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid #e2e8f0;
+      color: #64748b;
+      margin-left: 8px;
+    }
+    .btn-outline:hover { background: #f8fafc; }
+    .status-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #ef4444;
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+      margin-right: 6px;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    #status {
+      font-size: 12px;
+      color: #94a3b8;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">
+      <span class="logo-kp">KP</span>
+      <span class="logo-25">25</span>
+      <span style="color:rgba(255,255,255,0.5);font-size:12px;margin-left:4px;">Admin</span>
+    </div>
+
+    <div class="icon-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="1" y1="1" x2="23" y2="23"></line>
+        <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path>
+        <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path>
+        <path d="M10.71 5.05A16 16 0 0 1 22.56 9"></path>
+        <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path>
+        <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+        <line x1="12" y1="20" x2="12.01" y2="20"></line>
+      </svg>
+    </div>
+
+    <h1>Không có kết nối mạng</h1>
+    <p>Hệ thống KP25 Admin cần kết nối internet để hoạt động.</p>
+    <p>Vui lòng kiểm tra lại kết nối và thử lại.</p>
+
+    <div class="info-box">
+      <p>Dữ liệu đã xem gần đây vẫn khả dụng</p>
+      <p>Trang dashboard sẽ tự khôi phục khi có mạng</p>
+      <p>Các thao tác chưa lưu sẽ bị mất</p>
+    </div>
+
+    <div>
+      <button class="btn" onclick="window.location.reload()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="23 4 23 10 17 10"></polyline>
+          <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+        </svg>
+        Thử lại
+      </button>
+      <a href="/dashboard" class="btn btn-outline">Về Dashboard</a>
+    </div>
+
+    <p id="status">
+      <span class="status-dot"></span>
+      Đang kiểm tra kết nối...
+    </p>
+  </div>
+
+  <script>
+    // Auto-reload khi có mạng trở lại
+    function updateStatus() {
+      const el = document.getElementById('status');
+      if (navigator.onLine) {
+        el.innerHTML = '🟢 Đã có kết nối — đang tải lại...';
+        setTimeout(() => window.location.reload(), 800);
+      } else {
+        el.innerHTML = '<span class="status-dot"></span> Chưa có kết nối mạng';
+      }
+    }
+
+    window.addEventListener('online',  updateStatus);
+    window.addEventListener('offline', updateStatus);
+    updateStatus();
+  </script>
+</body>
+</html>

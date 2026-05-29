@@ -1,0 +1,302 @@
+/* Font được load qua next/font/google trong layout.tsx */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --primary: 139 26 26;        /* Đỏ đô */
+    --primary-light: 193 18 18;
+    --navy: 30 58 95;
+    --gold: 245 158 11;
+    --background: 255 255 255;
+    --foreground: 15 23 42;
+    --muted: 248 250 252;
+    --muted-foreground: 100 116 139;
+    --border: 226 232 240;
+    --radius: 0.75rem;
+  }
+
+  * {
+    box-sizing: border-box;
+    border-color: rgb(226 232 240);
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-white text-slate-900 antialiased;
+    font-family: var(--font-be-vietnam-pro), 'Be Vietnam Pro', Inter, system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold leading-tight tracking-tight;
+  }
+
+  /* Scrollbar tùy chỉnh */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-slate-100;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-slate-300 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-slate-400;
+  }
+}
+
+@layer components {
+  /* Nút chính */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-5 rounded-xl
+           bg-[#8B1A1A] text-white font-semibold
+           hover:bg-[#7a1616] active:scale-[0.97]
+           transition-all duration-200 shadow-sm
+           disabled:opacity-50 disabled:cursor-not-allowed;
+    /* Mobile: lớn hơn, dễ chạm */
+    @apply py-3.5 text-base min-h-[52px];
+  }
+
+  /* Nút phụ */
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-5 rounded-xl
+           bg-[#1E3A5F] text-white font-semibold
+           hover:bg-[#1a3254] active:scale-[0.97]
+           transition-all duration-200 shadow-sm
+           disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply py-3.5 text-base min-h-[52px];
+  }
+
+  /* Nút outline */
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 px-5 rounded-xl
+           border-2 border-[#8B1A1A] text-[#8B1A1A] font-semibold
+           hover:bg-[#8B1A1A] hover:text-white active:scale-[0.97]
+           transition-all duration-200
+           disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply py-3.5 text-base min-h-[52px];
+  }
+
+  /* Card */
+  .card {
+    @apply bg-white rounded-2xl border border-slate-100 shadow-card p-5;
+  }
+
+  .card-hover {
+    @apply card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 cursor-pointer;
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold;
+  }
+
+  .badge-red {
+    @apply badge bg-red-50 text-red-700;
+  }
+
+  .badge-green {
+    @apply badge bg-green-50 text-green-700;
+  }
+
+  .badge-blue {
+    @apply badge bg-blue-50 text-blue-700;
+  }
+
+  .badge-yellow {
+    @apply badge bg-amber-50 text-amber-700;
+  }
+
+  .badge-gray {
+    @apply badge bg-slate-100 text-slate-600;
+  }
+
+  .badge-orange {
+    @apply badge bg-orange-50 text-orange-700;
+  }
+
+  .badge-purple {
+    @apply badge bg-violet-50 text-violet-700;
+  }
+
+  /* ──────────────────────────────────────────────────────────
+     Mẫu đơn hành chính — Form A4 printable
+     ────────────────────────────────────────────────────────── */
+
+  /* Wrapper A4 — dùng trên screen để preview */
+  .form-a4 {
+    @apply bg-white text-slate-900;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 13px;
+    line-height: 1.55;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 28px 32px;
+  }
+
+  /* Dòng kẻ điền tay */
+  .underline-field {
+    @apply inline-block border-b border-gray-500 mx-1 align-bottom;
+    min-width: 4rem;
+  }
+
+  /* Khung section */
+  .section-box {
+    @apply border border-gray-300 rounded p-3;
+  }
+
+  /* ── Print overrides ── */
+  @media print {
+    .form-a4 {
+      padding: 0;
+      max-width: 100%;
+      font-size: 12px;
+    }
+
+    .section-box {
+      border-color: #000;
+      border-radius: 0;
+    }
+
+    .underline-field {
+      border-bottom-color: #000;
+    }
+  }
+
+  @page {
+    size: A4;
+    margin: 18mm 20mm;
+  }
+
+  /* Prose nội dung thông báo */
+  .prose-content {
+    @apply text-slate-700 leading-relaxed;
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  .prose-content p {
+    @apply mb-4;
+  }
+
+  .prose-content strong, .prose-content b {
+    @apply font-semibold text-slate-900;
+  }
+
+  /* Label form */
+  .label-form {
+    @apply block text-base font-semibold text-slate-700 mb-2;
+  }
+
+  /* Input — mobile-first: to font, cao đủ 52px để chạm dễ */
+  .input {
+    @apply w-full px-4 rounded-xl border border-slate-200
+           bg-white text-slate-900 text-base
+           focus:outline-none focus:ring-2 focus:ring-[#8B1A1A]/30 focus:border-[#8B1A1A]
+           placeholder:text-slate-400
+           transition-colors duration-200;
+    min-height: 52px;
+    padding-top: 0.875rem;
+    padding-bottom: 0.875rem;
+  }
+
+  /* Section title */
+  .section-title {
+    @apply text-2xl font-bold text-slate-900;
+  }
+
+  .section-subtitle {
+    @apply text-slate-500 mt-1;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-[#8B1A1A] to-[#1E3A5F] bg-clip-text text-transparent;
+  }
+
+  .bg-primary-gradient {
+    background: linear-gradient(135deg, #8B1A1A 0%, #C11212 50%, #9B1313 100%);
+  }
+
+  .bg-navy-gradient {
+    background: linear-gradient(135deg, #1E3A5F 0%, #1d4ed8 100%);
+  }
+
+  /* Animate */
+  .animate-fade-in {
+    animation: fadeIn 0.4s ease-in-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.5s ease-out;
+  }
+}
+
+/* ── Mobile UX cho người cao tuổi ───────────────────────────── */
+@media (max-width: 768px) {
+  /* Font lớn hơn trên mobile */
+  body {
+    font-size: 17px;
+  }
+
+  /* Touch target tối thiểu 48px cho mọi link/button */
+  a, button {
+    min-height: 44px;
+  }
+
+  /* Khoảng cách form rộng hơn */
+  .input {
+    font-size: 17px;
+    min-height: 54px;
+  }
+
+  .label-form {
+    font-size: 17px;
+  }
+
+  /* Select và textarea cũng lớn hơn */
+  select {
+    min-height: 54px;
+    font-size: 17px;
+    padding: 0.875rem 1rem;
+  }
+
+  textarea {
+    font-size: 17px;
+    padding: 0.875rem 1rem;
+  }
+
+  /* Tiêu đề section lớn hơn */
+  .section-title {
+    font-size: 1.6rem;
+  }
+
+  /* Card padding rộng hơn */
+  .card {
+    padding: 1.25rem;
+  }
+}
+
+/* Focus ring rõ ràng hơn — hỗ trợ keyboard + cảm giác feedback */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid #8B1A1A;
+  outline-offset: 3px;
+  border-radius: 0.5rem;
+}

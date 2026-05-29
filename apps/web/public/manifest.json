@@ -1,0 +1,37 @@
+{
+  "name": "KP25 Smart Community OS",
+  "short_name": "KP25",
+  "description": "Hệ điều hành số cộng đồng Khu phố 25, Phường Long Trường, TP.HCM",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#8B1A1A",
+  "orientation": "portrait-primary",
+  "lang": "vi",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["government", "social"],
+  "shortcuts": [
+    {
+      "name": "AI Trợ lý",
+      "url": "/chat",
+      "description": "Hỏi AI trợ lý 24/7"
+    },
+    {
+      "name": "Gửi phản ánh",
+      "url": "/phan-anh/tao",
+      "description": "Gửi phản ánh hiện trường"
+    },
+    {
+      "name": "Thông báo",
+      "url": "/thong-bao",
+      "description": "Xem thông báo khu phố"
+    }
+  ]
+}

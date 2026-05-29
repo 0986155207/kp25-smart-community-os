@@ -1,0 +1,62 @@
+/* Font được load qua next/font/google trong layout.tsx — không import ở đây nữa */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+  html { @apply scroll-smooth; }
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased;
+    font-family: var(--font-be-vietnam-pro), Inter, system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg
+           bg-[#8B1A1A] text-white font-semibold text-sm
+           hover:bg-[#7a1616] active:scale-[0.98]
+           transition-all duration-200
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .card {
+    @apply bg-white rounded-xl border border-slate-100 shadow-sm p-5;
+  }
+  .badge {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold;
+  }
+  .badge-red { @apply badge bg-red-50 text-red-700; }
+  .badge-green { @apply badge bg-green-50 text-green-700; }
+  .badge-blue { @apply badge bg-blue-50 text-blue-700; }
+  .badge-yellow { @apply badge bg-amber-50 text-amber-700; }
+  .badge-gray { @apply badge bg-slate-100 text-slate-600; }
+  .badge-orange { @apply badge bg-orange-50 text-orange-700; }
+  .badge-purple { @apply badge bg-violet-50 text-violet-700; }
+  .card-hover {
+    @apply bg-white rounded-xl border border-slate-100 shadow-sm p-5
+           hover:shadow-md hover:border-slate-200 transition-all duration-200 cursor-pointer;
+  }
+  .input {
+    @apply w-full px-3 py-2 rounded-lg border border-slate-200 bg-white text-slate-900 text-sm
+           focus:outline-none focus:ring-2 focus:ring-[#8B1A1A]/20 focus:border-[#8B1A1A]
+           placeholder:text-slate-400 transition-colors;
+  }
+}
+
+/* ─── Print styles: báo cáo ──────────────────────────────────── */
+@media print {
+  body { background: #fff !important; }
+  /* Ẩn sidebar, topbar, nút bấm khi in */
+  aside,
+  header,
+  .print\:hidden { display: none !important; }
+  /* Nội dung chính chiếm toàn trang */
+  main { padding: 0 !important; overflow: visible !important; }
+  .flex.h-screen { display: block !important; height: auto !important; }
+  /* Card không bị ngắt trang */
+  .bg-white.rounded-2xl { break-inside: avoid; }
+  /* Màu sắc giữ nguyên khi in */
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}

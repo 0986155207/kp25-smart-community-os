@@ -1,0 +1,6 @@
+# ─────────────────────────────────────────────────────────────
+# File này đã được gộp vào ci.yml
+# Xem: .github/workflows/ci.yml
+# ─────────────────────────────────────────────────────────────
+# Workflow này không còn chạy — kept for backward compatibility
+# Trigger đã được chuyển hoàn toàn sang ci.yml

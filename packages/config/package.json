@@ -1,0 +1,10 @@
+{
+  "name": "@kp25/config",
+  "version": "1.0.0",
+  "main": "./index.js",
+  "exports": {
+    "./tailwind": "./tailwind.config.js",
+    "./eslint": "./eslint.config.js",
+    "./tsconfig": "./tsconfig.json"
+  }
+}

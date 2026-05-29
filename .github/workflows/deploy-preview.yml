@@ -1,0 +1,132 @@
+name: Deploy Preview — Môi trường xem trước
+
+# Chạy khi mở hoặc cập nhật Pull Request
+on:
+  pull_request:
+    branches: [main, develop]
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  group: preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '20'
+  NEXT_TELEMETRY_DISABLED: '1'
+
+jobs:
+  # ════════════════════════════════════════════════════════════
+  # Deploy Preview lên Vercel
+  # ════════════════════════════════════════════════════════════
+  deploy-preview:
+    name: 🚀 Deploy Preview
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    outputs:
+      web-url:   ${{ steps.deploy-web.outputs.preview-url }}
+      admin-url: ${{ steps.deploy-admin.outputs.preview-url }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Cài dependencies
+        run: npm ci --prefer-offline
+
+      # Cài Vercel CLI
+      - name: Cài Vercel CLI
+        run: npm install --global vercel@latest
+
+      # ── Deploy Portal (web) ──────────────────────────────────
+      - name: Deploy Portal → Vercel Preview
+        id: deploy-web
+        env:
+          VERCEL_TOKEN:      ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID:     ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_WEB_PROJECT_ID }}
+        run: |
+          cd apps/web
+          vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
+          vercel build --token=$VERCEL_TOKEN
+          PREVIEW_URL=$(vercel deploy --prebuilt --token=$VERCEL_TOKEN)
+          echo "preview-url=$PREVIEW_URL" >> $GITHUB_OUTPUT
+          echo "✅ Portal Preview: $PREVIEW_URL"
+
+      # ── Deploy Admin ─────────────────────────────────────────
+      - name: Deploy Admin → Vercel Preview
+        id: deploy-admin
+        env:
+          VERCEL_TOKEN:      ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID:     ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_ADMIN_PROJECT_ID }}
+        run: |
+          cd apps/admin
+          vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
+          vercel build --token=$VERCEL_TOKEN
+          PREVIEW_URL=$(vercel deploy --prebuilt --token=$VERCEL_TOKEN)
+          echo "preview-url=$PREVIEW_URL" >> $GITHUB_OUTPUT
+          echo "✅ Admin Preview: $PREVIEW_URL"
+
+  # ════════════════════════════════════════════════════════════
+  # Comment URL preview lên Pull Request
+  # ════════════════════════════════════════════════════════════
+  comment-pr:
+    name: 💬 Comment Preview URLs
+    runs-on: ubuntu-latest
+    needs: deploy-preview
+    if: always()
+
+    steps:
+      - name: Xóa comment preview cũ (nếu có)
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo:  context.repo.repo,
+              issue_number: context.issue.number,
+            })
+            for (const c of comments.data) {
+              if (c.body.includes('🚀 Preview Deploy — KP25')) {
+                await github.rest.issues.deleteComment({
+                  owner: context.repo.owner,
+                  repo:  context.repo.repo,
+                  comment_id: c.id,
+                })
+              }
+            }
+
+      - name: Comment URL preview lên PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const webUrl   = '${{ needs.deploy-preview.outputs.web-url }}'
+            const adminUrl = '${{ needs.deploy-preview.outputs.admin-url }}'
+            const status   = '${{ needs.deploy-preview.result }}'
+            const icon     = status === 'success' ? '✅' : '❌'
+            const sha      = context.sha.slice(0, 7)
+
+            const body = `## 🚀 Preview Deploy — KP25 Smart Community OS
+
+            ${icon} **Trạng thái:** ${status === 'success' ? 'Deploy thành công' : 'Deploy thất bại'}
+            **Commit:** \`${sha}\`
+
+            | App | URL Preview |
+            |-----|-------------|
+            | 🏘️ Portal (Người dân) | ${webUrl ? \`[\${webUrl}](\${webUrl})\` : '❌ Lỗi'} |
+            | ⚙️ Admin (Cán bộ)     | ${adminUrl ? \`[\${adminUrl}](\${adminUrl})\` : '❌ Lỗi'} |
+
+            > Preview sẽ tự động cập nhật khi có commit mới.
+            > _Được tạo bởi GitHub Actions_`
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo:  context.repo.repo,
+              issue_number: context.issue.number,
+              body,
+            })

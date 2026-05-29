@@ -1,0 +1,149 @@
+name: Release — Tạo phiên bản mới
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Phiên bản (vd: 1.2.0)'
+        required: true
+        type: string
+      release-type:
+        description: 'Loại release'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch    # Bug fix: 1.0.0 → 1.0.1
+          - minor    # Tính năng mới: 1.0.0 → 1.1.0
+          - major    # Breaking change: 1.0.0 → 2.0.0
+
+jobs:
+  release:
+    name: 🎉 Tạo Release
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # Cần full history để tạo changelog
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Cấu hình Git
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Lấy version hiện tại
+        id: current
+        run: |
+          CURRENT=$(node -p "require('./package.json').version")
+          echo "version=$CURRENT" >> $GITHUB_OUTPUT
+          echo "Phiên bản hiện tại: $CURRENT"
+
+      - name: Cập nhật version
+        id: bump
+        run: |
+          NEW_VERSION="${{ github.event.inputs.version }}"
+          if [ -z "$NEW_VERSION" ]; then
+            echo "❌ Cần nhập version"
+            exit 1
+          fi
+
+          # Cập nhật package.json gốc
+          npm version $NEW_VERSION --no-git-tag-version
+
+          # Cập nhật các apps
+          npm version $NEW_VERSION --no-git-tag-version --workspace=@kp25/web
+          npm version $NEW_VERSION --no-git-tag-version --workspace=@kp25/admin
+
+          echo "new-version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "Phiên bản mới: $NEW_VERSION"
+
+      - name: Tạo CHANGELOG
+        id: changelog
+        run: |
+          NEW_VERSION="${{ steps.bump.outputs.new-version }}"
+          DATE=$(date '+%d/%m/%Y')
+
+          # Lấy commits từ tag gần nhất
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ -z "$LAST_TAG" ]; then
+            COMMITS=$(git log --oneline --no-merges -20)
+          else
+            COMMITS=$(git log ${LAST_TAG}..HEAD --oneline --no-merges)
+          fi
+
+          # Tạo nội dung changelog
+          CHANGELOG="## v${NEW_VERSION} — ${DATE}\n\n"
+
+          # Phân loại commits theo conventional commits
+          FEATURES=$(echo "$COMMITS" | grep -i "^[a-f0-9]* feat" || echo "")
+          FIXES=$(echo "$COMMITS" | grep -i "^[a-f0-9]* fix" || echo "")
+          OTHERS=$(echo "$COMMITS" | grep -iv "^[a-f0-9]* \(feat\|fix\)" || echo "")
+
+          if [ -n "$FEATURES" ]; then
+            CHANGELOG="${CHANGELOG}### ✨ Tính năng mới\n"
+            while IFS= read -r line; do
+              MSG=$(echo "$line" | sed 's/^[a-f0-9]* //')
+              CHANGELOG="${CHANGELOG}- ${MSG}\n"
+            done <<< "$FEATURES"
+            CHANGELOG="${CHANGELOG}\n"
+          fi
+
+          if [ -n "$FIXES" ]; then
+            CHANGELOG="${CHANGELOG}### 🐛 Sửa lỗi\n"
+            while IFS= read -r line; do
+              MSG=$(echo "$line" | sed 's/^[a-f0-9]* //')
+              CHANGELOG="${CHANGELOG}- ${MSG}\n"
+            done <<< "$FIXES"
+            CHANGELOG="${CHANGELOG}\n"
+          fi
+
+          if [ -n "$OTHERS" ]; then
+            CHANGELOG="${CHANGELOG}### 🔧 Thay đổi khác\n"
+            while IFS= read -r line; do
+              MSG=$(echo "$line" | sed 's/^[a-f0-9]* //')
+              CHANGELOG="${CHANGELOG}- ${MSG}\n"
+            done <<< "$OTHERS"
+          fi
+
+          # Lưu changelog để dùng ở bước sau
+          printf "%b" "$CHANGELOG" > /tmp/release-notes.md
+          cat /tmp/release-notes.md
+
+      - name: Commit & Tag
+        run: |
+          NEW_VERSION="${{ steps.bump.outputs.new-version }}"
+
+          git add package.json package-lock.json apps/*/package.json
+          git commit -m "chore: bump version to v${NEW_VERSION} [skip ci]"
+          git tag -a "v${NEW_VERSION}" -m "Release v${NEW_VERSION}"
+          git push origin main --tags
+
+      - name: Tạo GitHub Release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs')
+            const notes = fs.readFileSync('/tmp/release-notes.md', 'utf8')
+            const version = '${{ steps.bump.outputs.new-version }}'
+
+            await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo:  context.repo.repo,
+              tag_name:   `v${version}`,
+              name:        `🏘️ KP25 Smart Community OS v${version}`,
+              body:        notes,
+              draft:       false,
+              prerelease:  false,
+              make_latest: 'true',
+            })
+
+            console.log(`✅ Release v${version} đã được tạo`)
