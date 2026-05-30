@@ -12,6 +12,7 @@ import { Suspense } from 'react'
 import ShareButton from '../../thong-bao/[id]/ShareButton'
 import PhanAnhLiveStatus from '@/components/phan-anh/PhanAnhLiveStatus'
 import ThanhCongBanner from './ThanhCongBanner'
+import BanDoMini from './BanDoMini'
 
 // ─── Config ─────────────────────────────────────────────────
 const TRANG_THAI_CFG: Record<string, {
@@ -319,16 +320,8 @@ export default async function ChiTietPhanAnhPage({
                 <div className="space-y-2">
                   {/* Mini map preview via static maps */}
                   <div className="rounded-xl overflow-hidden border border-slate-100 aspect-video max-h-48 bg-slate-100">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={`https://maps.geoapify.com/v1/staticmap?style=osm-carto&width=600&height=300&center=lonlat:${item.toaDoLng},${item.toaDoLat}&zoom=17&marker=lonlat:${item.toaDoLng},${item.toaDoLat};type:awesome;color:%238B1A1A;size:small|apiKey=null`}
-                      alt="Bản đồ địa điểm"
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        // Fallback: ẩn nếu không load được map
-                        ;(e.target as HTMLImageElement).style.display = 'none'
-                      }}
-                    />
+                    {/* BanDoMini là client component để dùng onError handler */}
+                    <BanDoMini lat={item.toaDoLat as number} lng={item.toaDoLng as number} />
                   </div>
                   <div className="flex items-center justify-between">
                     <p className="text-xs text-slate-400 font-mono flex items-center gap-1">
