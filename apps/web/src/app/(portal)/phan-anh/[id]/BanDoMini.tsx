@@ -6,19 +6,20 @@ interface Props {
 }
 
 export default function BanDoMini({ lat, lng }: Props) {
-  const src = `https://maps.geoapify.com/v1/staticmap?style=osm-carto&width=600&height=300` +
-    `&center=lonlat:${lng},${lat}&zoom=17` +
-    `&marker=lonlat:${lng},${lat};type:awesome;color:%238B1A1A;size:small|apiKey=null`
+  // Tính bbox xung quanh điểm (±0.003 độ ≈ 300m)
+  const delta  = 0.003
+  const bbox   = `${lng - delta},${lat - delta},${lng + delta},${lat + delta}`
+  const iframeUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat},${lng}`
 
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={src}
-      alt="Bản đồ địa điểm"
-      className="w-full h-full object-cover"
-      onError={(e) => {
-        (e.target as HTMLImageElement).style.display = 'none'
-      }}
+    <iframe
+      src={iframeUrl}
+      width="100%"
+      height="100%"
+      style={{ border: 0, minHeight: 180 }}
+      loading="lazy"
+      title="Bản đồ địa điểm phản ánh"
+      allowFullScreen
     />
   )
 }
