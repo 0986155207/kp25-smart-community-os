@@ -33,6 +33,8 @@ const nextConfig: NextConfig = {
         '*.vercel.app',
       ],
     },
+    // Gom lucide-react thành ít chunk hơn → giảm preload warnings
+    optimizePackageImports: ['lucide-react', 'date-fns'],
   },
 
   // Tắt build errors từ ESLint (CI xử lý riêng)

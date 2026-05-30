@@ -26,7 +26,6 @@ const EXCLUDE_PATTERNS = [
 
 // ─── Install ─────────────────────────────────────────────────
 self.addEventListener('install', (event) => {
-  console.log('[SW] Installing KP25 Admin SW', SW_VERSION)
   event.waitUntil(
     caches.open(CACHE_STATIC)
       .then(cache => cache.addAll(APP_SHELL))
@@ -36,7 +35,6 @@ self.addEventListener('install', (event) => {
 
 // ─── Activate ────────────────────────────────────────────────
 self.addEventListener('activate', (event) => {
-  console.log('[SW] Activating KP25 Admin SW', SW_VERSION)
   event.waitUntil(
     Promise.all([
       // Xoá cache cũ
@@ -44,10 +42,7 @@ self.addEventListener('activate', (event) => {
         Promise.all(
           keys
             .filter(k => k.startsWith('kp25-admin-') && k !== CACHE_STATIC && k !== CACHE_PAGES && k !== CACHE_API)
-            .map(k => {
-              console.log('[SW] Deleting old cache:', k)
-              return caches.delete(k)
-            })
+            .map(k => caches.delete(k))
         )
       ),
       // Kiểm soát tất cả client ngay
@@ -156,14 +151,12 @@ async function networkFirst(request, cacheName, timeoutMs = 5000) {
 // Đồng bộ dữ liệu khi có mạng trở lại
 self.addEventListener('sync', (event) => {
   if (event.tag === 'kp25-sync') {
-    console.log('[SW] Background sync triggered')
     event.waitUntil(doBackgroundSync())
   }
 })
 
 async function doBackgroundSync() {
   // TODO: Đọc từ IndexedDB và gửi các request bị pending
-  console.log('[SW] Background sync completed')
 }
 
 // ─── Message handler ──────────────────────────────────────────
@@ -180,7 +173,6 @@ self.addEventListener('message', (event) => {
     case 'CLEAR_CACHE':
       // Xoá cache theo tên
       caches.delete(payload?.cacheName ?? CACHE_API)
-        .then(() => console.log('[SW] Cache cleared:', payload?.cacheName))
       break
 
     case 'CACHE_URLS':
@@ -251,4 +243,4 @@ self.addEventListener('notificationclick', (event) => {
   )
 })
 
-console.log('[SW] KP25 Admin Service Worker loaded —', SW_VERSION)
+// SW loaded
