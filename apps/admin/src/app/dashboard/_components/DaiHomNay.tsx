@@ -49,13 +49,14 @@ function Item({ label, value, unit, icon: Icon, color, bg, pulse }: ItemProps) {
 }
 
 export default function DaiHomNay({ data }: { data: ThongKeHomNay }) {
-  // Khởi tạo với giờ VN đúng ngay lần đầu (tránh hydration mismatch)
-  const [gioHienTai, setGioHienTai] = useState<string>(() => gioVN())
+  // null = server / chờ hydration (tránh UTC time hiện ra từ SSR)
+  // string = sau khi client mount xong → giờ VN chính xác
+  const [gioHienTai, setGioHienTai] = useState<string | null>(null)
 
-  // Cập nhật đồng hồ mỗi 30 giây (đủ chính xác, không gây re-render thừa)
+  // useEffect CHỈ chạy trên client → không bao giờ dùng UTC của server
   useEffect(() => {
-    setGioHienTai(gioVN()) // cập nhật ngay sau hydration
-    const id = setInterval(() => setGioHienTai(gioVN()), 30_000)
+    setGioHienTai(gioVN())                                    // set ngay khi mount
+    const id = setInterval(() => setGioHienTai(gioVN()), 30_000) // cập nhật 30s/lần
     return () => clearInterval(id)
   }, [])
 
@@ -64,7 +65,9 @@ export default function DaiHomNay({ data }: { data: ThongKeHomNay }) {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-          <span className="text-white/70 text-xs font-medium">Hôm nay · {gioHienTai}</span>
+          <span className="text-white/70 text-xs font-medium">
+            Hôm nay{gioHienTai ? ` · ${gioHienTai}` : ''}
+          </span>
         </div>
         <span className="text-white/40 text-[11px]">Cập nhật realtime</span>
       </div>
