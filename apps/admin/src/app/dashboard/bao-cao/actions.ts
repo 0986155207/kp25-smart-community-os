@@ -282,6 +282,7 @@ export async function layDuLieuBaoCao(): Promise<BaoCaoData> {
     nctTheoSK,
     ngayTao: new Date().toLocaleDateString('vi-VN', {
       weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+      timeZone: 'Asia/Ho_Chi_Minh',
     }),
   }
 }

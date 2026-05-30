@@ -1,6 +1,20 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import { AlertTriangle, CheckCircle2, Bell, Flame } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { ThongKeHomNay } from '../actions'
+
+// Luôn hiển thị giờ Việt Nam (UTC+7) bất kể server timezone
+const VN_TIMEZONE = 'Asia/Ho_Chi_Minh'
+
+function gioVN(): string {
+  return new Date().toLocaleTimeString('vi-VN', {
+    hour:     '2-digit',
+    minute:   '2-digit',
+    timeZone: VN_TIMEZONE,
+  })
+}
 
 interface ItemProps {
   label:   string
@@ -35,8 +49,15 @@ function Item({ label, value, unit, icon: Icon, color, bg, pulse }: ItemProps) {
 }
 
 export default function DaiHomNay({ data }: { data: ThongKeHomNay }) {
-  const now = new Date()
-  const gioHienTai = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })
+  // Khởi tạo với giờ VN đúng ngay lần đầu (tránh hydration mismatch)
+  const [gioHienTai, setGioHienTai] = useState<string>(() => gioVN())
+
+  // Cập nhật đồng hồ mỗi 30 giây (đủ chính xác, không gây re-render thừa)
+  useEffect(() => {
+    setGioHienTai(gioVN()) // cập nhật ngay sau hydration
+    const id = setInterval(() => setGioHienTai(gioVN()), 30_000)
+    return () => clearInterval(id)
+  }, [])
 
   return (
     <div className="bg-gradient-to-r from-slate-900 to-[#1E3A5F] rounded-2xl px-5 py-4">

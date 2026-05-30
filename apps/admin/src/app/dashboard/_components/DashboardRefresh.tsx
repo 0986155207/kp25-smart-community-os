@@ -65,7 +65,7 @@ export default function DashboardRefresh() {
     if (diff < 5)   return 'vừa xong'
     if (diff < 60)  return `${diff}s trước`
     if (diff < 3600) return `${Math.floor(diff / 60)}p trước`
-    return lastRefresh.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })
+    return lastRefresh.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Ho_Chi_Minh' })
   }
 
   const statusIcon = connected === null

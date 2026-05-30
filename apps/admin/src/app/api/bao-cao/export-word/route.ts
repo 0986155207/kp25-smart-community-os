@@ -129,10 +129,11 @@ export async function GET() {
           phanAnhTheoThang, phanAnhTheoLoai, phanAnhTheoTT,
           bhytTheoTT, hoNgheoTheoLoai, nctTheoSK } = data
 
-  const ngayTao = new Date().toLocaleDateString('vi-VN', {
-    day: '2-digit', month: '2-digit', year: 'numeric',
+  const _now = new Date()
+  const ngayTao = _now.toLocaleDateString('vi-VN', {
+    day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'Asia/Ho_Chi_Minh',
   })
-  const namHienTai = new Date().getFullYear()
+  const namHienTai = parseInt(_now.toLocaleDateString('vi-VN', { year: 'numeric', timeZone: 'Asia/Ho_Chi_Minh' }).replace(/\D/g, ''))
 
   const doc = new Document({
     styles: {

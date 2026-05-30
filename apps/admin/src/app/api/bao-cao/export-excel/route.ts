@@ -23,7 +23,7 @@ export async function GET() {
           bhytTheoTT, hoNgheoTheoLoai, nctTheoSK, ngayTao } = data
 
   const wb = XLSX.utils.book_new()
-  const ngayXuat = new Date().toLocaleDateString('vi-VN')
+  const ngayXuat = new Date().toLocaleDateString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })
 
   // ═══════════════════════════════════════════════════════════════
   //  SHEET 1 — TỔNG QUAN KPI

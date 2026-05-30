@@ -11,10 +11,11 @@ export default async function InBaoCaoPage() {
           phanAnhTheoThang, phanAnhTheoLoai, phanAnhTheoTT,
           bhytTheoTT, hoNgheoTheoLoai, nctTheoSK } = data
 
-  const ngay = new Date().toLocaleDateString('vi-VN', {
-    day: '2-digit', month: '2-digit', year: 'numeric',
+  const now = new Date()
+  const ngay = now.toLocaleDateString('vi-VN', {
+    day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'Asia/Ho_Chi_Minh',
   })
-  const nam = new Date().getFullYear()
+  const nam = parseInt(now.toLocaleDateString('vi-VN', { year: 'numeric', timeZone: 'Asia/Ho_Chi_Minh' }).replace(/\D/g, ''))
 
   return (
     <>

@@ -126,6 +126,7 @@ export default async function DashboardPage() {
   const now = new Date()
   const ngayHienTai = now.toLocaleDateString('vi-VN', {
     weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric',
+    timeZone: 'Asia/Ho_Chi_Minh',
   })
 
   return (

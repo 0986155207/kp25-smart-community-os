@@ -45,6 +45,7 @@ export async function layNguCanhAI(): Promise<string> {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
+      timeZone: 'Asia/Ho_Chi_Minh',
     })
 
     return `Ngày hiện tại: ${ngay}
@@ -56,7 +57,7 @@ Phản ánh mới chưa xử lý: ${phanAnhMoi.count ?? 0} vụ
 Phản ánh đang xử lý: ${phanAnhDangXuLy.count ?? 0} vụ
 Phản ánh đã xử lý: ${phanAnhDaXuLy.count ?? 0} vụ`
   } catch {
-    return `Ngày: ${new Date().toLocaleDateString('vi-VN')}\nKhu phố: Khu phố 25, Phường Long Trường, TP.HCM`
+    return `Ngày: ${new Date().toLocaleDateString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })}\nKhu phố: Khu phố 25, Phường Long Trường, TP.HCM`
   }
 }
 
@@ -106,7 +107,7 @@ export async function taoPhantichCongDong(): Promise<{
       .join('\n')
 
     const duLieu = `
-DU_LIEU_THONG_KE KHU_PHO_25 (${now.toLocaleDateString('vi-VN')}):
+DU_LIEU_THONG_KE KHU_PHO_25 (${now.toLocaleDateString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })}):
 
 DAN_CU:
 - Tổng số hộ: ${tongHo} hộ
