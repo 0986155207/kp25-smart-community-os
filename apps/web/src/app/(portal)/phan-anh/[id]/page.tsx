@@ -10,6 +10,7 @@ import { createClient } from '@/lib/supabase/server'
 import { formatDateTime, formatDate, mapPhanAnh, truncate } from '@/lib/utils'
 import ShareButton from '../../thong-bao/[id]/ShareButton'
 import PhanAnhLiveStatus from '@/components/phan-anh/PhanAnhLiveStatus'
+import ThanhCongBanner from './ThanhCongBanner'
 
 // ─── Config ─────────────────────────────────────────────────
 const TRANG_THAI_CFG: Record<string, {
@@ -87,10 +88,14 @@ export async function generateMetadata({
 // ─── Page ───────────────────────────────────────────────────
 export default async function ChiTietPhanAnhPage({
   params,
+  searchParams,
 }: {
-  params: Promise<{ id: string }>
+  params:       Promise<{ id: string }>
+  searchParams: Promise<{ moi?: string }>
 }) {
-  const { id } = await params
+  const { id }   = await params
+  const sp       = await searchParams
+  const isNew    = sp.moi === '1'
   const supabase = await createClient()
 
   const [mainResult, relatedResult] = await Promise.all([
@@ -134,6 +139,14 @@ export default async function ChiTietPhanAnhPage({
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
+      {/* Banner thành công khi vừa gửi */}
+      {isNew && (
+        <ThanhCongBanner
+          phanAnhId={item.id}
+          shortCode={item.id.slice(0, 8).toUpperCase()}
+        />
+      )}
+
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-sm text-slate-400 mb-6">
         <Link href="/" className="hover:text-slate-600 transition-colors">Trang chủ</Link>

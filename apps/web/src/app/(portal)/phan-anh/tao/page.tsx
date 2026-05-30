@@ -247,7 +247,8 @@ export default function TaoPhanAnhSmartPage() {
       if (error) throw error
       void guiThongBaoPhanAnhMoi(inserted.id)
       toast.success('Gửi phản ánh thành công! Chúng tôi sẽ xử lý sớm nhất.')
-      router.push('/phan-anh')
+      // Redirect về trang chi tiết để người dân có thể theo dõi tiến độ
+      router.push(`/phan-anh/${inserted.id}?moi=1`)
     } catch {
       toast.error('Không thể gửi phản ánh. Vui lòng thử lại.')
     } finally {

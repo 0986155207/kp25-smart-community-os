@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import {
   Search, FileText, UserCheck, UserMinus, ChevronRight,
-  ClipboardList, MessageSquare, ArrowRight,
+  ClipboardList, MessageSquare, ArrowRight, MapPin,
 } from 'lucide-react'
 
 // ─── Danh sách loại tra cứu ──────────────────────────────────
@@ -32,13 +32,13 @@ const DANH_MUC = [
   },
   {
     id:     'phan-anh',
-    icon:   ClipboardList,
+    icon:   MapPin,
     color:  'bg-amber-600',
     light:  'bg-amber-50 border-amber-100',
-    title:  'Phản ánh hiện trường',
-    desc:   'Xem lại phản ánh đã gửi và theo dõi tiến độ xử lý',
-    href:   '/phan-anh',
-    tags:   ['Phản ánh của tôi', 'Tiến độ xử lý'],
+    title:  'Theo dõi phản ánh',
+    desc:   'Tra cứu trạng thái xử lý phản ánh hiện trường đã gửi bằng số điện thoại',
+    href:   '/phan-anh/theo-doi',
+    tags:   ['Số điện thoại', 'Trạng thái realtime', 'Tiến độ xử lý'],
   },
 ]
 
