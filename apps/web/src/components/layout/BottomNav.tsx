@@ -8,11 +8,12 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 // ─── Menu đầy đủ (khi nhấn "Thêm") ──────────────────────────
-import { Map, Users, FileText, Phone, QrCode, X, CalendarDays, ClipboardList, MessageSquareMore } from 'lucide-react'
+import { Map, Users, FileText, Phone, QrCode, X, CalendarDays, ClipboardList, MessageSquareMore, Search } from 'lucide-react'
 
 const EXTRA_MENU = [
   { href: '/su-kien',  icon: CalendarDays,       label: 'Sự kiện'   },
   { href: '/thu-tuc',  icon: ClipboardList,      label: 'Thủ tục'   },
+  { href: '/tra-cuu',  icon: Search,             label: 'Tra cứu'   },
   { href: '/ban-do',   icon: Map,                label: 'Bản đồ'    },
   { href: '/dan-cu',   icon: Users,              label: 'Dân cư'    },
   { href: '/dang-ky',  icon: FileText,           label: 'Đăng ký'   },

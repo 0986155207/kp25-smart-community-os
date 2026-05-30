@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Bell, MessageSquare, Home, AlertCircle, Map, Phone, Users, FileText, CalendarDays, ClipboardList, MessageSquareMore } from 'lucide-react'
+import { Bell, MessageSquare, Home, AlertCircle, Map, Phone, Users, FileText, CalendarDays, ClipboardList, MessageSquareMore, Search } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const menu = [
@@ -11,6 +11,7 @@ const menu = [
   { href: '/su-kien',   label: 'Sự kiện',   icon: CalendarDays      },
   { href: '/phan-anh',  label: 'Phản ánh',  icon: AlertCircle       },
   { href: '/thu-tuc',   label: 'Thủ tục',   icon: ClipboardList     },
+  { href: '/tra-cuu',   label: 'Tra cứu',   icon: Search            },
   { href: '/zalo',      label: 'Zalo KP25', icon: MessageSquareMore },
   { href: '/dang-ky',   label: 'Đăng ký',   icon: FileText          },
   { href: '/dan-cu',    label: 'Dân cư',    icon: Users             },
