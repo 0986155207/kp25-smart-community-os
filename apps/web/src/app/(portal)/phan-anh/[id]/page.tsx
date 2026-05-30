@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { formatDateTime, formatDate, mapPhanAnh, truncate } from '@/lib/utils'
+import { Suspense } from 'react'
 import ShareButton from '../../thong-bao/[id]/ShareButton'
 import PhanAnhLiveStatus from '@/components/phan-anh/PhanAnhLiveStatus'
 import ThanhCongBanner from './ThanhCongBanner'
@@ -88,14 +89,10 @@ export async function generateMetadata({
 // ─── Page ───────────────────────────────────────────────────
 export default async function ChiTietPhanAnhPage({
   params,
-  searchParams,
 }: {
-  params:       Promise<{ id: string }>
-  searchParams: Promise<{ moi?: string }>
+  params: Promise<{ id: string }>
 }) {
   const { id }   = await params
-  const sp       = await searchParams
-  const isNew    = sp.moi === '1'
   const supabase = await createClient()
 
   const [mainResult, relatedResult] = await Promise.all([
@@ -139,13 +136,13 @@ export default async function ChiTietPhanAnhPage({
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
-      {/* Banner thành công khi vừa gửi */}
-      {isNew && (
+      {/* Banner thành công — client-side, tự đọc ?moi=1, cần Suspense vì useSearchParams */}
+      <Suspense fallback={null}>
         <ThanhCongBanner
           phanAnhId={item.id}
           shortCode={item.id.slice(0, 8).toUpperCase()}
         />
-      )}
+      </Suspense>
 
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-sm text-slate-400 mb-6">
