@@ -218,31 +218,40 @@ export default function TaoPhanAnhSmartPage() {
       const anhUrls   = imageItems.filter(m => m.url).map(m => m.url!)
       const videoUrls = videoItems.filter(m => m.url).map(m => m.url!)
 
-      const { error, data: inserted } = await supabase.from('phan_anh').insert({
+      // Xây dựng payload — chỉ gồm các cột đã tồn tại trong DB
+      // Các cột mở rộng (AI, GPS, video) cần migration 038 — thêm có điều kiện
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const payload: Record<string, any> = {
         tieu_de:           data.tieuDe,
         mo_ta:             data.moTa,
-        loai:              data.loai === 'CHIEU_SANG' ? 'HA_TANG' : data.loai,  // map CHIEU_SANG → HA_TANG cho DB enum
+        loai:              data.loai === 'CHIEU_SANG' ? 'HA_TANG' : data.loai,
         muc_do:            data.mucDo,
         dia_chi_phan_anh:  data.diaChiPhanAnh,
         nguoi_gui_ten:     data.nguoiGuiTen,
         nguoi_gui_sdt:     data.nguoiGuiSdt,
-        anh_urls:          anhUrls,
-        video_urls:        videoUrls,
+        anh_urls:          anhUrls.length > 0 ? anhUrls : [],
         trang_thai:        'MOI',
-        // GPS
-        toa_do_lat: gpsData?.lat  ?? null,
-        toa_do_lng: gpsData?.lng  ?? null,
-        // AI fields
-        ai_da_phan_tich: aiResult !== null,
-        ai_danh_gia:     aiResult?.tomTat   ?? null,
-        ai_phan_loai:    aiResult?.loai === 'CHIEU_SANG' ? 'HA_TANG' : (aiResult?.loai ?? null),
-        ai_muc_do:       aiResult?.mucDo    ?? null,
-        ai_tieu_de:      aiResult?.tieuDe   ?? null,
-        ai_tom_tat:      aiResult?.tomTat   ?? null,
-        ai_tinh_nang:    aiResult?.tinhNang ?? [],
-        ai_de_xuat:      aiResult?.deXuat   ?? null,
-        ai_do_tin_cay:   aiResult?.doTinCay ?? null,
-      }).select('id').single()
+      }
+
+      // Cột tùy chọn — thêm vào nếu có giá trị (migration 038)
+      if (videoUrls.length > 0)         payload['video_urls']       = videoUrls
+      if (gpsData?.lat != null)         payload['toa_do_lat']        = gpsData.lat
+      if (gpsData?.lng != null)         payload['toa_do_lng']        = gpsData.lng
+      if (aiResult !== null) {
+        payload['ai_da_phan_tich'] = true
+        payload['ai_muc_do']       = aiResult?.mucDo  ?? null
+        payload['ai_tieu_de']      = aiResult?.tieuDe ?? null
+        payload['ai_tom_tat']      = aiResult?.tomTat ?? null
+        payload['ai_tinh_nang']    = aiResult?.tinhNang ?? []
+        payload['ai_de_xuat']      = aiResult?.deXuat  ?? null
+        payload['ai_do_tin_cay']   = aiResult?.doTinCay ?? null
+      }
+
+      const { error, data: inserted } = await supabase
+        .from('phan_anh')
+        .insert(payload)
+        .select('id')
+        .single()
 
       if (error) throw error
       void guiThongBaoPhanAnhMoi(inserted.id)
