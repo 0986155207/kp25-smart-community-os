@@ -7,12 +7,32 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+// ─── Timezone Việt Nam (UTC+7) ─────────────────────────────
+// Mọi hàm hiển thị ngày/giờ đều convert sang UTC+7 (Asia/Ho_Chi_Minh)
+// để đảm bảo đúng dù server chạy ở UTC (Vercel)
+const VN_TZ = 'Asia/Ho_Chi_Minh'
+
 export function formatDate(date: string | Date, pattern = 'dd/MM/yyyy') {
+  // Nếu pattern mặc định → dùng Intl (hỗ trợ timezone)
+  if (pattern === 'dd/MM/yyyy') {
+    return new Date(date).toLocaleDateString('vi-VN', {
+      day: '2-digit', month: '2-digit', year: 'numeric',
+      timeZone: VN_TZ,
+    })
+  }
+  // Pattern tùy chỉnh → dùng date-fns (không hỗ trợ TZ, nhưng hiếm dùng)
   return format(new Date(date), pattern, { locale: vi })
 }
 
 export function formatDateTime(date: string | Date) {
-  return format(new Date(date), 'HH:mm dd/MM/yyyy', { locale: vi })
+  const d = new Date(date)
+  const time = d.toLocaleTimeString('vi-VN', {
+    hour: '2-digit', minute: '2-digit', timeZone: VN_TZ,
+  })
+  const dateStr = d.toLocaleDateString('vi-VN', {
+    day: '2-digit', month: '2-digit', year: 'numeric', timeZone: VN_TZ,
+  })
+  return `${time} ${dateStr}`
 }
 
 export function formatRelativeTime(date: string | Date) {
