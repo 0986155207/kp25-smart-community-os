@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { CheckCircle2, Loader2, Send, User, Phone, Mail, FileText, AlertCircle, Upload } from 'lucide-react'
+import { CheckCircle2, Loader2, Send, User, Phone, Mail, FileText, AlertCircle } from 'lucide-react'
+import TaiGiayTo from './TaiGiayTo'
 
 interface Props {
   thuTucId: string
@@ -31,10 +32,11 @@ const INIT: FormData = {
 type Step = 'form' | 'loading' | 'success' | 'error'
 
 export default function NopHoSoForm({ thuTucId, tenThuTuc }: Props) {
-  const [step,    setStep]    = useState<Step>('form')
-  const [data,    setData]    = useState<FormData>(INIT)
-  const [maHoSo,  setMaHoSo]  = useState('')
-  const [errors,  setErrors]  = useState<Partial<Record<keyof FormData, string>>>({})
+  const [step,       setStep]       = useState<Step>('form')
+  const [data,       setData]       = useState<FormData>(INIT)
+  const [maHoSo,     setMaHoSo]     = useState('')
+  const [errors,     setErrors]     = useState<Partial<Record<keyof FormData, string>>>({})
+  const [giayToUrls, setGiayToUrls] = useState<string[]>([])
 
   // ── Validate ─────────────────────────────────────────────
   function validate(): boolean {
@@ -59,7 +61,7 @@ export default function NopHoSoForm({ thuTucId, tenThuTuc }: Props) {
       const res = await fetch('/api/thu-tuc/nop-ho-so', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...data, thuTucId }),
+        body: JSON.stringify({ ...data, thuTucId, giayToUrls }),
       })
       const json = await res.json()
 
@@ -263,12 +265,13 @@ export default function NopHoSoForm({ thuTucId, tenThuTuc }: Props) {
           />
         </div>
 
-        {/* Upload giấy tờ (placeholder) */}
-        <div className="border-2 border-dashed border-slate-200 rounded-xl p-4 text-center">
-          <Upload size={20} className="text-slate-300 mx-auto mb-2" />
-          <p className="text-xs text-slate-500 font-medium">Tải ảnh/scan giấy tờ</p>
-          <p className="text-[10px] text-slate-400 mt-0.5">Tính năng đang cập nhật — nộp bản gốc trực tiếp</p>
-        </div>
+        {/* Upload giấy tờ */}
+        <TaiGiayTo
+          onUrlsChange={setGiayToUrls}
+          disabled={step === 'loading'}
+          maxFiles={5}
+          maxSizeMB={5}
+        />
 
         {/* Xác nhận */}
         <label className={`flex items-start gap-3 p-3 rounded-xl cursor-pointer border transition-all

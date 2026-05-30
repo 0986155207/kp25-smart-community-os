@@ -13,7 +13,7 @@ function genMaHoSo(): string {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const { thuTucId, hoTen, cccd, sdt, email, diaChiNopHoSo, ghiChu, chuanBiHoSo } = body
+    const { thuTucId, hoTen, cccd, sdt, email, diaChiNopHoSo, ghiChu, chuanBiHoSo, giayToUrls } = body
 
     // ── Validate bắt buộc ──────────────────────────────────
     if (!thuTucId || !hoTen?.trim() || !cccd?.trim() || !sdt?.trim()) {
@@ -94,6 +94,10 @@ export async function POST(req: NextRequest) {
         email:           email?.trim() || null,
         dia_chi:         diaChiNopHoSo?.trim() || null,
         ghi_chu_nguoi_nop: ghiChu?.trim() || null,
+        // giay_to_urls: cột mới — đã có từ migration 039
+        ...(Array.isArray(giayToUrls) && giayToUrls.length > 0
+          ? { giay_to_urls: giayToUrls }
+          : {}),
         trang_thai:      'TIEP_NHAN',
         ngay_hen_tra:    ngayHenTra,
       })
