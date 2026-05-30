@@ -85,7 +85,7 @@ export default function TaoPhanAnhSmartPage() {
   const [gpsData, setGpsData]   = useState<GPSData | null>(null)
 
   const {
-    register, handleSubmit, watch, setValue, formState: { errors },
+    register, handleSubmit, watch, setValue, getValues, formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: { loai: 'MOI_TRUONG', mucDo: 'TRUNG_BINH' },
@@ -199,9 +199,13 @@ export default function TaoPhanAnhSmartPage() {
   }
 
   // ── GPS location applied to address field ─────────────────
+  // GPS chỉ cung cấp TỌA ĐỘ cho bản đồ, KHÔNG ghi đè địa chỉ người dùng đã nhập
+  // Chỉ tự điền nếu field địa chỉ đang trống
   function handleGPS(data: GPSData | null) {
     setGpsData(data)
-    if (data?.address) setValue('diaChiPhanAnh', data.address)
+    if (data?.address && !getValues('diaChiPhanAnh')?.trim()) {
+      setValue('diaChiPhanAnh', data.address)
+    }
   }
 
   // ── Submit ────────────────────────────────────────────────

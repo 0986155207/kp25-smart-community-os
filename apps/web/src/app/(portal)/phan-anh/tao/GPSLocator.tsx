@@ -3,6 +3,23 @@
 import { useState } from 'react'
 import { MapPin, Loader2, CheckCircle2, AlertCircle, Navigation } from 'lucide-react'
 
+// Chuẩn hoá địa chỉ từ Nominatim:
+// - Bỏ quốc gia "Việt Nam" ở cuối
+// - Bỏ "Thành phố Thủ Đức" (đơn vị đã giải thể theo cải cách hành chính 2025)
+// - Thay "Thành phố Hồ Chí Minh" → "TP.HCM" cho gọn
+// - Bỏ mã bưu chính (5-6 chữ số)
+function chuanHoaDiaChi(raw: string): string {
+  return raw
+    .split(',')
+    .map(p => p.trim())
+    .filter(p => p && !/^Việt Nam$/i.test(p) && !/^Vietnam$/i.test(p))     // bỏ quốc gia
+    .filter(p => !/^[0-9]{5,6}$/.test(p))                                   // bỏ mã bưu chính
+    .filter(p => !/[Tt]hành phố Thủ Đức/.test(p))                           // bỏ Thủ Đức
+    .map(p => p.replace(/[Tt]hành phố Hồ Chí Minh/, 'TP.HCM'))             // rút gọn tên TP
+    .join(', ')
+    .trim()
+}
+
 export interface GPSData {
   lat:     number
   lng:     number
@@ -45,12 +62,7 @@ export default function GPSLocator({ onLocation, value }: Props) {
           if (res.ok) {
             const geo = await res.json() as { display_name?: string; address?: Record<string, string> }
             if (geo.display_name) {
-              // Rút gọn địa chỉ: bỏ quốc gia
-              address = geo.display_name
-                .split(',')
-                .slice(0, -1)   // bỏ "Vietnam" ở cuối
-                .join(',')
-                .trim()
+              address = chuanHoaDiaChi(geo.display_name)
             }
           }
         } catch {
