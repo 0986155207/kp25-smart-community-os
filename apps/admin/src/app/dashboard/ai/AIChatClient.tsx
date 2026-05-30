@@ -98,11 +98,11 @@ export default function AIChatClient() {
 
       if (!res.body) throw new Error('Không có dữ liệu phản hồi')
 
-      // Đọc RAG sources từ header
+      // Đọc RAG sources từ header (đã được encodeURIComponent ở server)
       const ragSourcesHeader = res.headers.get('X-RAG-Sources')
       let nguon: TinNhan['nguon'] = []
       if (ragSourcesHeader) {
-        try { nguon = JSON.parse(ragSourcesHeader) as TinNhan['nguon'] } catch { /* ignore */ }
+        try { nguon = JSON.parse(decodeURIComponent(ragSourcesHeader)) as TinNhan['nguon'] } catch { /* ignore */ }
       }
 
       const reader = res.body.getReader()

@@ -99,6 +99,8 @@ export async function POST(req: NextRequest) {
     })
 
     // Truyền thông tin nguồn RAG qua header
+    // Dùng encodeURIComponent vì tên tài liệu tiếng Việt chứa ký tự Unicode > 255
+    // HTTP headers chỉ chấp nhận ASCII — không encode sẽ gây ByteString error
     const sourcesJson = JSON.stringify(
       ragNguon.slice(0, 3).map(s => ({
         tieu_de:      s.tieuDe,
@@ -113,7 +115,7 @@ export async function POST(req: NextRequest) {
         'Content-Type':      'text/plain; charset=utf-8',
         'Cache-Control':     'no-cache, no-store',
         'X-Accel-Buffering': 'no',
-        [RAG_SOURCE_HEADER]: sourcesJson,
+        [RAG_SOURCE_HEADER]: encodeURIComponent(sourcesJson),
       },
     })
   } catch (err) {
