@@ -117,9 +117,20 @@ export async function POST(req: NextRequest) {
       },
     })
   } catch (err) {
-    console.error('[RAG Chat]', err)
+    const msg = err instanceof Error ? err.message : String(err)
+    console.error('[RAG Chat ERROR]', msg)
+    // Phân loại lỗi để hiển thị thông báo phù hợp
+    if (msg.includes('API_KEY') || msg.includes('401') || msg.includes('403')) {
+      return Response.json({ error: 'GEMINI_API_KEY không hợp lệ hoặc chưa được cấu hình trên Vercel.' }, { status: 503 })
+    }
+    if (msg.includes('quota') || msg.includes('429') || msg.includes('RESOURCE_EXHAUSTED')) {
+      return Response.json({ error: 'Đã vượt quá giới hạn API Gemini. Vui lòng thử lại sau.' }, { status: 429 })
+    }
+    if (msg.includes('model') || msg.includes('404') || msg.includes('not found')) {
+      return Response.json({ error: `Model AI không khả dụng: ${msg}` }, { status: 503 })
+    }
     return Response.json(
-      { error: 'Không thể kết nối AI. Vui lòng thử lại.' },
+      { error: `Không thể kết nối AI: ${msg}` },
       { status: 500 }
     )
   }

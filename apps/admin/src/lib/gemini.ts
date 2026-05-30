@@ -4,8 +4,12 @@ import {
   HarmCategory,
 } from '@google/generative-ai'
 
-// ─── Client ────────────────────────────────────────────────
-export const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? '')
+// ─── Lazy client — đọc API key tại request time, không phải module load time ─
+// Tránh trường hợp Next.js evaluate module trước khi env var được inject
+function getGenAI(): GoogleGenerativeAI {
+  const key = process.env.GEMINI_API_KEY ?? ''
+  return new GoogleGenerativeAI(key)
+}
 
 export const GEMINI_MODEL = 'gemini-2.5-flash'
 
@@ -34,7 +38,7 @@ KHẢ NĂNG:
 // QUAN TRỌNG: systemInstruction phải truyền vào getGenerativeModel,
 // KHÔNG truyền vào startChat — API v1beta yêu cầu Content object nếu dùng startChat
 export function taoModel(systemInstruction?: string) {
-  return genAI.getGenerativeModel({
+  return getGenAI().getGenerativeModel({
     model: GEMINI_MODEL,
     systemInstruction: systemInstruction ?? SYSTEM_PROMPT,
     safetySettings: [
