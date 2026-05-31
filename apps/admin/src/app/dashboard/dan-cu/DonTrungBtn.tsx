@@ -2,11 +2,11 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Trash2, AlertTriangle, Loader2, CheckCircle, X, RefreshCw } from 'lucide-react'
-import { xoaDuLieuTrung, xoaToanBoHoDan } from './actions'
+import { Trash2, AlertTriangle, Loader2, CheckCircle, X, RefreshCw, UserX } from 'lucide-react'
+import { xoaDuLieuTrung, xoaToanBoHoDan, donNhanKhauTrungCCCD } from './actions'
 
 type KetQua = { soHoXoa: number; soNkXoa: number; message: string }
-type ModalMode = null | 'tong' | 'trung'
+type ModalMode = null | 'tong' | 'trung' | 'trungCCCD'
 
 export default function DonTrungBtn() {
   const [mode, setMode]       = useState<ModalMode>(null)
@@ -15,6 +15,17 @@ export default function DonTrungBtn() {
 
   async function handleAction() {
     setLoading(true)
+    if (mode === 'trungCCCD') {
+      const res = await donNhanKhauTrungCCCD()
+      setLoading(false)
+      setMode(null)
+      if (res.success) {
+        setKetQua({ soHoXoa: 0, soNkXoa: res.soXoa, message: res.message })
+      } else {
+        alert(`Lỗi: ${res.message}`)
+      }
+      return
+    }
     const res = mode === 'tong'
       ? await xoaToanBoHoDan()
       : await xoaDuLieuTrung()
@@ -75,12 +86,45 @@ export default function DonTrungBtn() {
       btnLabel: 'Xác nhận dọn trùng',
       btnClass: 'bg-amber-600 hover:bg-amber-700',
     },
+    trungCCCD: {
+      title: 'Dọn nhân khẩu trùng CCCD',
+      sub: 'Giữ bản đầy đủ nhất, xoá bản dư',
+      iconBg: 'bg-orange-100',
+      iconColor: 'text-orange-600',
+      body: (
+        <div className="space-y-4">
+          <p className="text-slate-700 text-sm leading-relaxed">
+            Hệ thống tìm các nhân khẩu có <strong>cùng số CCCD</strong> (bị nhập trùng), giữ lại bản
+            đầy đủ thông tin nhất và xoá các bản dư.
+          </p>
+          <div className="bg-orange-50 border border-orange-100 rounded-xl p-4 text-sm text-orange-800 space-y-1">
+            <p className="font-semibold flex items-center gap-1.5"><AlertTriangle size={14} /> Quy tắc:</p>
+            <ul className="list-disc list-inside space-y-1 text-orange-700">
+              <li>Giữ bản có <strong>nhiều trường nhất</strong> (đầy đủ nhất)</li>
+              <li>Nếu bằng nhau → giữ bản <strong>cũ nhất</strong></li>
+              <li>Xoá mềm các bản trùng — có thể khôi phục nếu cần</li>
+            </ul>
+          </div>
+        </div>
+      ),
+      btnLabel: 'Dọn trùng CCCD',
+      btnClass: 'bg-orange-600 hover:bg-orange-700',
+    },
   }
 
   const c = mode ? cfg[mode] : null
 
   return (
     <>
+      {/* Nút dọn nhân khẩu trùng CCCD */}
+      <button
+        onClick={() => setMode('trungCCCD')}
+        className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-orange-50 text-orange-600 text-sm font-medium hover:bg-orange-100 transition-colors border border-orange-100"
+      >
+        <UserX size={14} />
+        Dọn trùng CCCD
+      </button>
+
       {/* Nút kích hoạt — "Xoá sạch" là ưu tiên hiện tại */}
       <button
         onClick={() => setMode('tong')}

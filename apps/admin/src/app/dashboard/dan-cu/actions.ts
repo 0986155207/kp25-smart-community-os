@@ -420,6 +420,31 @@ export async function capNhatNhanKhau(
     const hoTen = (formData.get('hoTen') as string)?.trim()
     if (!hoTen) return { success: false, message: 'Vui lòng nhập họ tên' }
 
+    // ── Kiểm tra CCCD trùng với bản ghi KHÁC (giúp phát hiện trùng lặp) ──
+    const cccdInput = (formData.get('cccd') as string)?.trim()
+    if (cccdInput) {
+      const { data: trung } = await supabase
+        .from('nhan_khau')
+        .select('id, ho_ten, ho_id')
+        .eq('cccd', cccdInput)
+        .neq('id', id)
+        .is('deleted_at', null)
+        .limit(1)
+        .maybeSingle()
+
+      if (trung) {
+        // Lấy tên chủ hộ của bản trùng để chỉ dẫn
+        const { data: hoTrung } = await supabase
+          .from('ho_dan').select('chu_ho').eq('id', trung.ho_id).maybeSingle()
+        return {
+          success: false,
+          message: `Số CCCD này đã thuộc về "${trung.ho_ten}"` +
+            (hoTrung?.chu_ho ? ` (hộ ${hoTrung.chu_ho})` : '') +
+            '. Có thể là bản ghi trùng — vui lòng kiểm tra và xoá bản dư, hoặc để trống CCCD ở bản này.',
+        }
+      }
+    }
+
     // da_mat chỉ có sau migration 009 — chỉ gửi nếu field tồn tại trong form
     const daMat = formData.get('daMat')
 
@@ -546,6 +571,89 @@ export async function xoaDuLieuTrung(): Promise<{
   } catch (err) {
     console.error('[xoaDuLieuTrung]', err)
     return { success: false, soHoXoa: 0, soNkXoa: 0, message: err instanceof Error ? err.message : 'Lỗi không xác định' }
+  }
+}
+
+// ─── Dọn nhân khẩu trùng CCCD ───────────────────────────────
+// Tìm các nhân khẩu cùng số CCCD → giữ bản đầy đủ nhất (nhiều trường nhất,
+// ưu tiên bản cũ nhất), soft-delete các bản dư.
+export async function donNhanKhauTrungCCCD(): Promise<{
+  success: boolean
+  soXoa: number
+  chiTiet: string[]
+  message: string
+}> {
+  try {
+    const supabase = await createClient()
+
+    // Lấy tất cả nhân khẩu có CCCD, còn hoạt động
+    const { data, error } = await supabase
+      .from('nhan_khau')
+      .select('id, ho_ten, cccd, ngay_sinh, gioi_tinh, nghe_nghiep, so_dien_thoai, quan_he, created_at')
+      .not('cccd', 'is', null)
+      .is('deleted_at', null)
+      .order('created_at', { ascending: true })
+
+    if (error) {
+      return { success: false, soXoa: 0, chiTiet: [], message: `Lỗi: ${error.message}` }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const rows = (data ?? []) as any[]
+
+    // Nhóm theo CCCD
+    const nhom = new Map<string, typeof rows>()
+    for (const r of rows) {
+      const k = String(r.cccd).trim()
+      if (!k) continue
+      if (!nhom.has(k)) nhom.set(k, [])
+      nhom.get(k)!.push(r)
+    }
+
+    // Điểm đầy đủ = số trường có giá trị
+    const diemDayDu = (r: Record<string, unknown>) =>
+      ['ngay_sinh', 'gioi_tinh', 'nghe_nghiep', 'so_dien_thoai', 'quan_he']
+        .filter(k => r[k] !== null && r[k] !== undefined && String(r[k]).trim() !== '').length
+
+    const idXoa: string[] = []
+    const chiTiet: string[] = []
+
+    for (const [cccd, ds] of nhom) {
+      if (ds.length < 2) continue
+      // Giữ bản đầy đủ nhất (tie → cũ nhất, đã sort sẵn theo created_at asc)
+      const giuLai = [...ds].sort((a, b) => diemDayDu(b) - diemDayDu(a))[0]
+      const xoa = ds.filter(r => r.id !== giuLai!.id)
+      idXoa.push(...xoa.map(r => r.id))
+      chiTiet.push(`CCCD ${cccd}: giữ "${giuLai!.ho_ten}", xoá ${xoa.length} bản trùng`)
+    }
+
+    if (idXoa.length === 0) {
+      return { success: true, soXoa: 0, chiTiet: [], message: 'Không tìm thấy nhân khẩu trùng CCCD' }
+    }
+
+    // Soft-delete các bản dư
+    const { error: errXoa } = await supabase
+      .from('nhan_khau')
+      .update({ deleted_at: new Date().toISOString() })
+      .in('id', idXoa)
+
+    if (errXoa) {
+      return { success: false, soXoa: 0, chiTiet, message: `Lỗi khi xoá: ${errXoa.message}` }
+    }
+
+    ghiAuditLog({ hanh_dong: 'XOA', bang: 'nhan_khau', mo_ta: `Dọn ${idXoa.length} nhân khẩu trùng CCCD` }).catch(() => {})
+    revalidatePath('/dashboard/dan-cu')
+    revalidatePath('/dashboard/dan-cu/ho-so-thieu')
+
+    return {
+      success: true,
+      soXoa: idXoa.length,
+      chiTiet,
+      message: `Đã dọn ${idXoa.length} nhân khẩu trùng CCCD (giữ lại bản đầy đủ nhất)`,
+    }
+  } catch (err) {
+    console.error('[donNhanKhauTrungCCCD]', err)
+    return { success: false, soXoa: 0, chiTiet: [], message: err instanceof Error ? err.message : 'Lỗi không xác định' }
   }
 }
 
