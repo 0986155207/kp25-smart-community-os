@@ -3,7 +3,7 @@ import Link from 'next/link'
 import {
   Home, Users, UserCheck, UserMinus, Plus,
   Phone, MapPin, ChevronRight, Search, AlertCircle, FileSpreadsheet,
-  UserRound, Clock,
+  UserRound, Clock, Zap,
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { formatDate, mapHoDan, truncate } from '@/lib/utils'
@@ -128,6 +128,13 @@ export default async function DanCuPage({
         </div>
         <div className="flex items-center gap-2 flex-wrap justify-end">
           <DonTrungBtn />
+          <Link
+            href="/dashboard/dan-cu/su-kien-nhanh"
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-amber-50 text-amber-700 text-sm font-semibold hover:bg-amber-100 border border-amber-200 transition-colors"
+          >
+            <Zap size={15} />
+            Cập nhật nhanh
+          </Link>
           <Link
             href="/dashboard/dan-cu/nhap-excel"
             className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-slate-100 text-slate-700 text-sm font-medium hover:bg-slate-200 transition-colors"

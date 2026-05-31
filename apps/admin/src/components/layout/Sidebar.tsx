@@ -6,7 +6,7 @@ import {
   LayoutDashboard, AlertCircle, Users, Bell, Map, BarChart3,
   Settings, LogOut, FileText, Shield, ChevronRight,
   Bot, TrendingUp, Heart, ShieldCheck, Home, Database, Sparkles, BellRing,
-  UserCog, CalendarDays, Layers, Activity, MessageSquareMore,
+  UserCog, CalendarDays, Layers, Activity, MessageSquareMore, Zap,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { dangXuat } from '@/lib/auth'
@@ -61,6 +61,11 @@ const MENU: MenuGroup[] = [
       {
         href: '/dashboard/dan-cu',
         icon: Users, label: 'Dân cư',
+        roles: ['BI_THU', 'TRUONG_KHU_PHO', 'CONG_AN'],
+      },
+      {
+        href: '/dashboard/dan-cu/su-kien-nhanh',
+        icon: Zap, label: 'Cập nhật nhanh',
         roles: ['BI_THU', 'TRUONG_KHU_PHO', 'CONG_AN'],
       },
       {
