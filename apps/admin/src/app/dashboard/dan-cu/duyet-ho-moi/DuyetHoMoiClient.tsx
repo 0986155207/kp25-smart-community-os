@@ -32,6 +32,8 @@ function Card({ item, onResolved }: { item: HoMoiItem; onResolved: () => void })
   const [chuHo, setChuHo]         = useState(item.chu_ho)
   const [diaChi, setDiaChi]       = useState(item.dia_chi)
   const [sdt, setSdt]             = useState(item.so_dien_thoai ?? '')
+  const [soNha, setSoNha]         = useState(item.so_nha ?? '')
+  const [duong, setDuong]         = useState(item.duong ?? '')
   const [to, setTo]               = useState(item.to_dan_pho ?? '')
   const [loaiCuTru, setLoaiCuTru] = useState(item.loai_cu_tru)
   const [tv, setTv]               = useState<ThanhVienKhai[]>(item.thanh_vien)
@@ -47,7 +49,9 @@ function Card({ item, onResolved }: { item: HoMoiItem; onResolved: () => void })
   function approve() {
     start(async () => {
       const res = await duyetHoMoi(item.id, {
-        chu_ho: chuHo, dia_chi: diaChi, so_dien_thoai: sdt, to_dan_pho: to, loai_cu_tru: loaiCuTru, thanh_vien: tv,
+        chu_ho: chuHo, dia_chi: diaChi, so_dien_thoai: sdt,
+        so_nha: soNha, duong: duong, to_khu_vuc: to,
+        loai_cu_tru: loaiCuTru, thanh_vien: tv,
       })
       if (res.success) { toast.success(res.message); onResolved() } else toast.error(res.message)
     })
@@ -81,7 +85,7 @@ function Card({ item, onResolved }: { item: HoMoiItem; onResolved: () => void })
       </div>
 
       <div className="p-4 space-y-4">
-        {/* Thông tin hộ */}
+        {/* Thông tin hộ — khớp form hộ dân chuẩn */}
         <div className="grid grid-cols-2 gap-3">
           <div>
             <label className="block text-[11px] font-semibold text-slate-600 mb-1">Chủ hộ</label>
@@ -91,13 +95,26 @@ function Card({ item, onResolved }: { item: HoMoiItem; onResolved: () => void })
             <label className="block text-[11px] font-semibold text-slate-600 mb-1">Số điện thoại</label>
             <input value={sdt} onChange={e => setSdt(e.target.value)} className={inp} />
           </div>
-          <div className="col-span-2">
-            <label className="block text-[11px] font-semibold text-slate-600 mb-1 flex items-center gap-1"><MapPin size={10} /> Địa chỉ</label>
-            <input value={diaChi} onChange={e => setDiaChi(e.target.value)} className={inp} />
+        </div>
+        {/* Số nhà · Đường/Hẻm · Tổ/Khu vực */}
+        <div className="grid grid-cols-3 gap-3">
+          <div>
+            <label className="block text-[11px] font-semibold text-slate-600 mb-1">Số nhà</label>
+            <input value={soNha} onChange={e => setSoNha(e.target.value)} className={inp} placeholder="63/15" />
           </div>
           <div>
-            <label className="block text-[11px] font-semibold text-slate-600 mb-1">Tổ dân phố</label>
-            <input value={to} onChange={e => setTo(e.target.value)} className={inp} />
+            <label className="block text-[11px] font-semibold text-slate-600 mb-1">Đường / Hẻm</label>
+            <input value={duong} onChange={e => setDuong(e.target.value)} className={inp} placeholder="Đường số 1" />
+          </div>
+          <div>
+            <label className="block text-[11px] font-semibold text-slate-600 mb-1">Tổ / Khu vực</label>
+            <input value={to} onChange={e => setTo(e.target.value)} className={inp} placeholder="Tổ 1, Hẻm 63..." />
+          </div>
+        </div>
+        <div className="grid grid-cols-[1fr_auto] gap-3">
+          <div>
+            <label className="block text-[11px] font-semibold text-slate-600 mb-1 flex items-center gap-1"><MapPin size={10} /> Địa chỉ đầy đủ</label>
+            <input value={diaChi} onChange={e => setDiaChi(e.target.value)} className={inp} />
           </div>
           <div>
             <label className="block text-[11px] font-semibold text-slate-600 mb-1">Hình thức</label>

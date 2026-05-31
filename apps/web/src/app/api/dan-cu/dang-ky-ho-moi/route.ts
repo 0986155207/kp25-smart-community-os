@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
       soDienThoai: string
       soNha?: string
       duong?: string
-      toDanPho?: string
+      toKhuVuc?: string
       loaiCuTru?: 'THUONG_TRU' | 'TAM_TRU'
       thanhVien: ThanhVien[]
       ghiChu?: string
@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
         so_dien_thoai:  soDienThoai,
         so_nha:         body.soNha?.trim() || null,
         duong:          body.duong?.trim() || null,
-        to_dan_pho:     body.toDanPho?.trim() || null,
+        to_dan_pho:     body.toKhuVuc?.trim() || null,
         loai_cu_tru:    body.loaiCuTru === 'TAM_TRU' ? 'TAM_TRU' : 'THUONG_TRU',
         thanh_vien:     tvSach,
         nguoi_khai_sdt: soDienThoai,

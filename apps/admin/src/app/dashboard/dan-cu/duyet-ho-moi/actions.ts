@@ -19,6 +19,8 @@ export interface HoMoiItem {
   chu_ho:         string
   dia_chi:        string
   so_dien_thoai:  string | null
+  so_nha:         string | null
+  duong:          string | null
   to_dan_pho:     string | null
   loai_cu_tru:    string
   thanh_vien:     ThanhVienKhai[]
@@ -71,7 +73,7 @@ export async function demHoMoiChoDuyet(): Promise<number> {
 // ── Duyệt → tạo ho_dan + nhan_khau ───────────────────────────
 export async function duyetHoMoi(
   id: string,
-  duLieu: { chu_ho: string; dia_chi: string; so_dien_thoai: string; to_dan_pho: string; loai_cu_tru: string; thanh_vien: ThanhVienKhai[] }
+  duLieu: { chu_ho: string; dia_chi: string; so_dien_thoai: string; so_nha: string; duong: string; to_khu_vuc: string; loai_cu_tru: string; thanh_vien: ThanhVienKhai[] }
 ): Promise<{ success: boolean; message: string }> {
   try {
     const supabase = await createClient()
@@ -86,14 +88,16 @@ export async function duyetHoMoi(
     const tv = (duLieu.thanh_vien ?? []).filter(t => t.ho_ten?.trim())
     if (tv.length === 0) return { success: false, message: 'Cần ít nhất 1 thành viên' }
 
-    // 1. Tạo hộ dân
+    // 1. Tạo hộ dân — khớp đầy đủ các trường form hộ dân chuẩn
     const { data: ho, error: errHo } = await supabase
       .from('ho_dan')
       .insert({
         ma_ho:         sinhMaHo(),
         chu_ho:        duLieu.chu_ho.trim(),
         dia_chi_day:   duLieu.dia_chi.trim(),
-        to_truong:     duLieu.to_dan_pho?.trim() || null,
+        so_nha:        duLieu.so_nha?.trim() || null,
+        duong:         duLieu.duong?.trim() || null,
+        to_truong:     duLieu.to_khu_vuc?.trim() || null,
         so_dien_thoai: duLieu.so_dien_thoai?.trim() || null,
         trang_thai:    duLieu.loai_cu_tru === 'TAM_TRU' ? 'TAM_TRU' : 'THUONG_TRU',
         so_nhan_khau:  tv.length,

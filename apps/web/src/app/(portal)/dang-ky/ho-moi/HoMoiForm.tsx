@@ -21,11 +21,13 @@ const QUAN_HE = ['Chủ hộ', 'Vợ / Chồng', 'Con', 'Cha / Mẹ', 'Anh / Ch�
 const inp = 'w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#1E3A5F] focus:ring-2 focus:ring-[#1E3A5F]/10 transition-all'
 
 export default function HoMoiForm() {
-  // Hộ
+  // Hộ — khớp chính xác với form hộ dân chuẩn
   const [chuHo, setChuHo]           = useState('')
+  const [soNha, setSoNha]           = useState('')
+  const [duong, setDuong]           = useState('')
+  const [toKhuVuc, setToKhuVuc]     = useState('')
   const [diaChi, setDiaChi]         = useState('')
   const [soDienThoai, setSoDienThoai] = useState('')
-  const [toDanPho, setToDanPho]     = useState('')
   const [loaiCuTru, setLoaiCuTru]   = useState<'THUONG_TRU' | 'TAM_TRU'>('THUONG_TRU')
   const [ghiChu, setGhiChu]         = useState('')
   // Thành viên
@@ -60,7 +62,7 @@ export default function HoMoiForm() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          chuHo, diaChi, soDienThoai, toDanPho, loaiCuTru, ghiChu,
+          chuHo, diaChi, soDienThoai, soNha, duong, toKhuVuc, loaiCuTru, ghiChu,
           thanhVien: thanhVien.map(tv => ({
             ho_ten: tv.ho_ten, ngay_sinh: tv.ngay_sinh, gioi_tinh: tv.gioi_tinh,
             cccd: tv.cccd, quan_he: tv.quan_he, nghe_nghiep: tv.nghe_nghiep,
@@ -109,23 +111,33 @@ export default function HoMoiForm() {
           <input value={chuHo} onChange={e => setChuHo(e.target.value)} className={inp} placeholder="Nguyễn Văn A" />
         </div>
 
-        <div>
-          <label className="block text-xs font-semibold text-slate-700 mb-1.5">Địa chỉ đầy đủ <span className="text-red-500">*</span></label>
-          <input value={diaChi} onChange={e => setDiaChi(e.target.value)} className={inp} placeholder="Số nhà, đường, Khu phố 25, Phường Long Trường" />
-        </div>
-
-        <div className="grid grid-cols-2 gap-3">
+        {/* Số nhà · Đường/Hẻm · Tổ/Khu vực — khớp form hộ dân chuẩn */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Số điện thoại <span className="text-red-500">*</span></label>
-            <div className="relative">
-              <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-              <input type="tel" value={soDienThoai} onChange={e => setSoDienThoai(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                className={`${inp} pl-9`} placeholder="Nhập số điện thoại" />
-            </div>
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Số nhà</label>
+            <input value={soNha} onChange={e => setSoNha(e.target.value)} className={inp} placeholder="63/15" />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Tổ dân phố</label>
-            <input value={toDanPho} onChange={e => setToDanPho(e.target.value)} className={inp} placeholder="Tổ..." />
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Đường / Hẻm</label>
+            <input value={duong} onChange={e => setDuong(e.target.value)} className={inp} placeholder="Đường số 1" />
+          </div>
+          <div>
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Tổ / Khu vực</label>
+            <input value={toKhuVuc} onChange={e => setToKhuVuc(e.target.value)} className={inp} placeholder="Tổ 1, Hẻm 63..." />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-xs font-semibold text-slate-700 mb-1.5">Địa chỉ đầy đủ <span className="text-red-500">*</span></label>
+          <input value={diaChi} onChange={e => setDiaChi(e.target.value)} className={inp} placeholder="63/15 Đường số 1, Khu phố 25, Phường Long Trường" />
+        </div>
+
+        <div>
+          <label className="block text-xs font-semibold text-slate-700 mb-1.5">Số điện thoại <span className="text-red-500">*</span></label>
+          <div className="relative">
+            <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+            <input type="tel" value={soDienThoai} onChange={e => setSoDienThoai(e.target.value.replace(/\D/g, '').slice(0, 10))}
+              className={`${inp} pl-9`} placeholder="Nhập số điện thoại" />
           </div>
         </div>
 
