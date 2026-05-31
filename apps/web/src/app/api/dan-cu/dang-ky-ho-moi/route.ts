@@ -18,6 +18,17 @@ interface ThanhVien {
   cccd?: string
   quan_he?: string
   nghe_nghiep?: string
+  // Trường mở rộng
+  noi_sinh?: string
+  nguyen_quan?: string
+  dan_toc?: string
+  ton_giao?: string
+  quoc_tich?: string
+  cccd_ngay_cap?: string
+  cccd_noi_cap?: string
+  tinh_trang_hon_nhan?: string
+  noi_lam_viec?: string
+  dia_chi_thuong_tru?: string
 }
 
 // POST /api/dan-cu/dang-ky-ho-moi
@@ -57,13 +68,25 @@ export async function POST(req: NextRequest) {
     const supabase = createServiceClient()
 
     // Làm sạch thành viên
+    const clean = (v?: string) => (v?.trim() || null)
     const tvSach = thanhVien.slice(0, 20).map(tv => ({
       ho_ten:      String(tv.ho_ten).trim(),
       ngay_sinh:   tv.ngay_sinh || null,
       gioi_tinh:   tv.gioi_tinh === 'NU' ? 'NU' : tv.gioi_tinh === 'KHAC' ? 'KHAC' : 'NAM',
-      cccd:        tv.cccd?.trim() || null,
+      cccd:        clean(tv.cccd),
       quan_he:     tv.quan_he?.trim() || 'Thành viên khác',
-      nghe_nghiep: tv.nghe_nghiep?.trim() || null,
+      nghe_nghiep: clean(tv.nghe_nghiep),
+      // Trường mở rộng
+      noi_sinh:            clean(tv.noi_sinh),
+      nguyen_quan:         clean(tv.nguyen_quan),
+      dan_toc:             clean(tv.dan_toc),
+      ton_giao:            clean(tv.ton_giao),
+      quoc_tich:           clean(tv.quoc_tich),
+      cccd_ngay_cap:       clean(tv.cccd_ngay_cap),
+      cccd_noi_cap:        clean(tv.cccd_noi_cap),
+      tinh_trang_hon_nhan: clean(tv.tinh_trang_hon_nhan),
+      noi_lam_viec:        clean(tv.noi_lam_viec),
+      dia_chi_thuong_tru:  clean(tv.dia_chi_thuong_tru),
     }))
 
     const { error } = await supabase

@@ -12,6 +12,17 @@ export interface ThanhVienKhai {
   cccd: string | null
   quan_he: string
   nghe_nghiep: string | null
+  // Trường mở rộng (migration 041)
+  noi_sinh?: string | null
+  nguyen_quan?: string | null
+  dan_toc?: string | null
+  ton_giao?: string | null
+  quoc_tich?: string | null
+  cccd_ngay_cap?: string | null
+  cccd_noi_cap?: string | null
+  tinh_trang_hon_nhan?: string | null
+  noi_lam_viec?: string | null
+  dia_chi_thuong_tru?: string | null
 }
 
 export interface HoMoiItem {
@@ -111,18 +122,41 @@ export async function duyetHoMoi(
       return { success: false, message: `Lỗi tạo hộ: ${errHo.message}` }
     }
 
-    // 2. Tạo nhân khẩu
-    const nkRows = tv.map(t => ({
+    // 2. Tạo nhân khẩu — đầy đủ trường mở rộng
+    const trangThaiNk = duLieu.loai_cu_tru === 'TAM_TRU' ? 'TAM_TRU' : 'THUONG_TRU'
+    const cl = (v?: string | null) => (v?.trim() || null)
+
+    const nkCore = tv.map(t => ({
       ho_id:       ho.id,
       ho_ten:      t.ho_ten.trim(),
       ngay_sinh:   t.ngay_sinh || null,
       gioi_tinh:   t.gioi_tinh === 'NU' ? 'NU' : t.gioi_tinh === 'KHAC' ? 'KHAC' : 'NAM',
-      cccd:        t.cccd?.trim() || null,
+      cccd:        cl(t.cccd),
       quan_he:     t.quan_he?.trim() || 'Thành viên khác',
-      nghe_nghiep: t.nghe_nghiep?.trim() || null,
-      trang_thai:  duLieu.loai_cu_tru === 'TAM_TRU' ? 'TAM_TRU' : 'THUONG_TRU',
+      nghe_nghiep: cl(t.nghe_nghiep),
+      trang_thai:  trangThaiNk,
     }))
-    const { error: errNk } = await supabase.from('nhan_khau').insert(nkRows)
+    // Thêm trường mở rộng (nếu migration 041 đã chạy)
+    const nkRows = tv.map((t, idx) => ({
+      ...nkCore[idx]!,
+      noi_sinh:            cl(t.noi_sinh),
+      nguyen_quan:         cl(t.nguyen_quan),
+      dan_toc:             cl(t.dan_toc),
+      ton_giao:            cl(t.ton_giao),
+      quoc_tich:           cl(t.quoc_tich),
+      cccd_ngay_cap:       cl(t.cccd_ngay_cap),
+      cccd_noi_cap:        cl(t.cccd_noi_cap),
+      tinh_trang_hon_nhan: cl(t.tinh_trang_hon_nhan),
+      noi_lam_viec:        cl(t.noi_lam_viec),
+      dia_chi_thuong_tru:  cl(t.dia_chi_thuong_tru),
+    }))
+
+    let { error: errNk } = await supabase.from('nhan_khau').insert(nkRows)
+    // Fallback: nếu cột mở rộng chưa tồn tại → chỉ insert trường cơ bản
+    if (errNk && errNk.message && ['noi_sinh', 'dan_toc', 'ton_giao', 'cccd_ngay_cap', 'tinh_trang_hon_nhan'].some(c => errNk!.message.includes(c))) {
+      const retry = await supabase.from('nhan_khau').insert(nkCore)
+      errNk = retry.error
+    }
     if (errNk) {
       console.error('[duyetHoMoi] nhan_khau', JSON.stringify(errNk))
       // Hộ đã tạo nhưng nhân khẩu lỗi → vẫn tiếp tục, cán bộ bổ sung sau
