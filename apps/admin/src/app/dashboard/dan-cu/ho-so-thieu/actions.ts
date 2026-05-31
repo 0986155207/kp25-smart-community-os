@@ -80,45 +80,58 @@ export async function layDanhSachHoSoThieu(opts: {
   try {
     const supabase = await createClient()
     const soLuong = opts.soLuong ?? 50
-    const trang   = opts.trang ?? 0
 
+    // ── Query 1: Lấy nhân khẩu (KHÔNG join, KHÔNG count exact — tránh timeout)
     const cols = TRUONG_HO_SO.map(t => t.key).join(',')
     let query = supabase
       .from('nhan_khau')
-      .select(`id, ho_id, ${cols}, ho_dan!inner(chu_ho, dia_chi_day)`, { count: 'exact' })
+      .select(`id, ho_id, ${cols}`)
       .is('deleted_at', null)
       .or('da_mat.is.null,da_mat.eq.false')
 
     if (opts.timKiem?.trim()) {
       query = query.ilike('ho_ten', `%${opts.timKiem.trim()}%`)
     }
-    // Nếu lọc theo trường thiếu → trường đó phải null
     if (opts.locTruong) {
       query = query.is(opts.locTruong, null)
     }
 
-    query = query.order('created_at', { ascending: false }).range(trang * soLuong, trang * soLuong + soLuong - 1)
+    // Lấy dư để lọc 100% hoàn thiện rồi mới cắt
+    query = query.order('created_at', { ascending: false }).limit(soLuong * 3)
 
-    const { data, count } = await query
+    const { data, error } = await query
+    if (error) {
+      console.error('[layDanhSachHoSoThieu] query', JSON.stringify(error))
+      return { items: [], tong: 0 }
+    }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const items: HoSoThieuItem[] = (data ?? []).map((r: any) => {
-      const { phanTram, thieu } = tinhHoanThien(r)
-      const hoDan = r.ho_dan ?? {}
-      return {
-        ...r,
-        ho_id:   r.ho_id,
-        chu_ho:  hoDan.chu_ho ?? null,
-        dia_chi: hoDan.dia_chi_day ?? null,
-        phanTram,
-        thieu,
-      }
-    })
+    const rows = (data ?? []) as any[]
 
-    // Sắp xếp: thiếu nhiều nhất lên đầu
-    items.sort((a, b) => a.phanTram - b.phanTram)
+    // ── Query 2: Lấy thông tin hộ riêng (đơn giản, theo danh sách id)
+    const hoIds = [...new Set(rows.map(r => r.ho_id).filter(Boolean))]
+    const hoMap = new Map<string, { chu_ho: string | null; dia_chi_day: string | null }>()
+    if (hoIds.length > 0) {
+      const { data: hoData } = await supabase
+        .from('ho_dan')
+        .select('id, chu_ho, dia_chi_day')
+        .in('id', hoIds)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      for (const h of (hoData ?? []) as any[]) hoMap.set(h.id, h)
+    }
 
-    return { items, tong: count ?? items.length }
+    // ── Tính hoàn thiện + lọc hồ sơ chưa đầy đủ
+    const items: HoSoThieuItem[] = rows
+      .map(r => {
+        const { phanTram, thieu } = tinhHoanThien(r)
+        const ho = hoMap.get(r.ho_id)
+        return { ...r, ho_id: r.ho_id, chu_ho: ho?.chu_ho ?? null, dia_chi: ho?.dia_chi_day ?? null, phanTram, thieu }
+      })
+      .filter(it => it.phanTram < 100)   // chỉ hiện hồ sơ chưa đầy đủ
+      .sort((a, b) => a.phanTram - b.phanTram)
+      .slice(0, soLuong)
+
+    return { items, tong: items.length }
   } catch (err) {
     console.error('[layDanhSachHoSoThieu]', err)
     return { items: [], tong: 0 }
