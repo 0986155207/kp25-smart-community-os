@@ -1,20 +1,17 @@
 name: DB Migrate — Áp dụng Supabase migrations
 
 # ── Trigger ──────────────────────────────────────────────────
+# LƯU Ý: Database KP25 được quản lý thủ công qua Supabase SQL Editor.
+# Migration history (supabase_migrations.schema_migrations) KHÔNG đồng bộ
+# với CLI, nên `supabase db push` tự động sẽ xung đột (bảng đã tồn tại).
+# Vì vậy workflow này CHỈ chạy thủ công khi cần (không auto-trigger trên push).
 on:
-  # Tự động khi có migration mới được push lên main
-  push:
-    branches: [main]
-    paths:
-      - 'supabase/migrations/**'
-
-  # Trigger thủ công — tiện để chạy lại khi cần
   workflow_dispatch:
     inputs:
       dry-run:
         description: 'Chạy thử (không thực sự apply migration)'
         required: false
-        default: 'false'
+        default: 'true'
         type: boolean
       migration-file:
         description: 'Tên file migration cụ thể (để trống = tất cả)'
