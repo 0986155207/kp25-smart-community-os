@@ -3,7 +3,7 @@
 import { useState, useTransition, useEffect } from 'react'
 import {
   UserPlus, Trash2, Loader2, X, User, Calendar,
-  CreditCard, Briefcase, Users, Crown, Pencil, Skull, AlertTriangle, Star,
+  CreditCard, Briefcase, Users, Crown, Pencil, Skull, AlertTriangle, Star, ChevronDown,
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { themNhanKhau, capNhatNhanKhau, xoaNhanKhau, doiChuHo } from '../actions'
@@ -25,6 +25,17 @@ interface NhanKhauItem {
   createdAt: string
   daMat: boolean
   ngayMat: string | null
+  // Trường mở rộng (migration 041)
+  noiSinh?: string
+  nguyenQuan?: string
+  danToc?: string
+  tonGiao?: string
+  quocTich?: string
+  cccdNgayCap?: string
+  cccdNoiCap?: string
+  tinhTrangHonNhan?: string
+  noiLamViec?: string
+  diaChiThuongTru?: string
 }
 
 interface Props {
@@ -51,12 +62,17 @@ interface FormState {
   quanHe: string; ngheNghiep: string; soDienThoai: string; trangThai: string; ghiChu: string
   daMat: string   // 'true' | 'false'
   ngayMat: string
+  // Trường mở rộng (migration 041)
+  noiSinh: string; nguyenQuan: string; danToc: string; tonGiao: string; quocTich: string
+  cccdNgayCap: string; cccdNoiCap: string; tinhTrangHonNhan: string; noiLamViec: string; diaChiThuongTru: string
 }
 
 const DEFAULT_FORM: FormState = {
   hoTen: '', ngaySinh: '', gioiTinh: 'NAM', cccd: '',
   quanHe: 'Thành viên khác', ngheNghiep: '', soDienThoai: '', trangThai: 'THUONG_TRU', ghiChu: '',
   daMat: 'false', ngayMat: '',
+  noiSinh: '', nguyenQuan: '', danToc: '', tonGiao: '', quocTich: '',
+  cccdNgayCap: '', cccdNoiCap: '', tinhTrangHonNhan: '', noiLamViec: '', diaChiThuongTru: '',
 }
 
 // ─── Component ───────────────────────────────────────────────
@@ -68,6 +84,7 @@ export default function NhanKhauSection({ hoId, initialData }: Props) {
   const [form, setForm] = useState<FormState>(DEFAULT_FORM)
   const [formError, setFormError] = useState('')
 
+  const [showChiTiet, setShowChiTiet] = useState(false)
   const [isSubmitting, startSubmitting] = useTransition()
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [, startDeleting] = useTransition()
@@ -90,6 +107,7 @@ export default function NhanKhauSection({ hoId, initialData }: Props) {
   function openAdd() {
     setForm(DEFAULT_FORM)
     setFormError('')
+    setShowChiTiet(false)
     setModalMode('add')
   }
 
@@ -107,6 +125,16 @@ export default function NhanKhauSection({ hoId, initialData }: Props) {
       ghiChu: nk.ghiChu ?? '',
       daMat: nk.daMat ? 'true' : 'false',
       ngayMat: nk.ngayMat ?? '',
+      noiSinh: nk.noiSinh ?? '',
+      nguyenQuan: nk.nguyenQuan ?? '',
+      danToc: nk.danToc ?? '',
+      tonGiao: nk.tonGiao ?? '',
+      quocTich: nk.quocTich ?? '',
+      cccdNgayCap: nk.cccdNgayCap ?? '',
+      cccdNoiCap: nk.cccdNoiCap ?? '',
+      tinhTrangHonNhan: nk.tinhTrangHonNhan ?? '',
+      noiLamViec: nk.noiLamViec ?? '',
+      diaChiThuongTru: nk.diaChiThuongTru ?? '',
     })
     setFormError('')
     setModalMode(nk.id)
@@ -619,6 +647,75 @@ export default function NhanKhauSection({ hoId, initialData }: Props) {
                     type="tel"
                   />
                 </div>
+              </div>
+
+              {/* ── Thông tin chi tiết (mở rộng) ── */}
+              <div className="border border-slate-200 rounded-xl overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => setShowChiTiet(s => !s)}
+                  className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 hover:bg-slate-100 transition-colors"
+                >
+                  <span className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+                    <CreditCard size={14} className="text-slate-400" />
+                    Thông tin chi tiết
+                    <span className="text-xs font-normal text-slate-400">(nơi sinh, dân tộc, hôn nhân, CCCD...)</span>
+                  </span>
+                  <ChevronDown size={16} className={`text-slate-400 transition-transform ${showChiTiet ? 'rotate-180' : ''}`} />
+                </button>
+
+                {showChiTiet && (
+                  <div className="p-4 space-y-3 border-t border-slate-100">
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-medium text-slate-600 mb-1">Nơi sinh</label>
+                        <input value={form.noiSinh} onChange={e => setForm(p => ({ ...p, noiSinh: e.target.value }))} className="input" placeholder="Tỉnh/thành" />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-slate-600 mb-1">Nguyên quán</label>
+                        <input value={form.nguyenQuan} onChange={e => setForm(p => ({ ...p, nguyenQuan: e.target.value }))} className="input" placeholder="Quê quán" />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-slate-600 mb-1">Dân tộc</label>
+                        <input value={form.danToc} onChange={e => setForm(p => ({ ...p, danToc: e.target.value }))} className="input" placeholder="Kinh" />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-slate-600 mb-1">Tôn giáo</label>
+                        <input value={form.tonGiao} onChange={e => setForm(p => ({ ...p, tonGiao: e.target.value }))} className="input" placeholder="Không" />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-slate-600 mb-1">Quốc tịch</label>
+                        <input value={form.quocTich} onChange={e => setForm(p => ({ ...p, quocTich: e.target.value }))} className="input" placeholder="Việt Nam" />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-slate-600 mb-1">Tình trạng hôn nhân</label>
+                        <select value={form.tinhTrangHonNhan} onChange={e => setForm(p => ({ ...p, tinhTrangHonNhan: e.target.value }))} className="input">
+                          <option value="">— Chọn —</option>
+                          <option value="DOC_THAN">Độc thân</option>
+                          <option value="DA_KET_HON">Đã kết hôn</option>
+                          <option value="LY_HON">Ly hôn</option>
+                          <option value="GOA">Góa</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-slate-600 mb-1">Ngày cấp CCCD</label>
+                        <input type="date" value={form.cccdNgayCap} onChange={e => setForm(p => ({ ...p, cccdNgayCap: e.target.value }))} className="input" />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-slate-600 mb-1">Nơi cấp CCCD</label>
+                        <input value={form.cccdNoiCap} onChange={e => setForm(p => ({ ...p, cccdNoiCap: e.target.value }))} className="input" placeholder="Cục CSQLHC..." />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-slate-600 mb-1">Nơi làm việc / học tập</label>
+                      <input value={form.noiLamViec} onChange={e => setForm(p => ({ ...p, noiLamViec: e.target.value }))} className="input" placeholder="Cơ quan, trường học..." />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-slate-600 mb-1">Địa chỉ thường trú</label>
+                      <input value={form.diaChiThuongTru} onChange={e => setForm(p => ({ ...p, diaChiThuongTru: e.target.value }))} className="input" placeholder="Địa chỉ thường trú đầy đủ" />
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Ghi chú */}

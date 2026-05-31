@@ -112,6 +112,17 @@ export function mapNhanKhau(row: SnakeRecord) {
     createdAt: (row['created_at'] ?? new Date().toISOString()) as string,
     daMat: (row['da_mat'] ?? false) as boolean,
     ngayMat: (row['ngay_mat'] ?? null) as string | null,
+    // Trường mở rộng (migration 041)
+    noiSinh: (row['noi_sinh'] ?? '') as string,
+    nguyenQuan: (row['nguyen_quan'] ?? '') as string,
+    danToc: (row['dan_toc'] ?? '') as string,
+    tonGiao: (row['ton_giao'] ?? '') as string,
+    quocTich: (row['quoc_tich'] ?? '') as string,
+    cccdNgayCap: (row['cccd_ngay_cap'] ?? '') as string,
+    cccdNoiCap: (row['cccd_noi_cap'] ?? '') as string,
+    tinhTrangHonNhan: (row['tinh_trang_hon_nhan'] ?? '') as string,
+    noiLamViec: (row['noi_lam_viec'] ?? '') as string,
+    diaChiThuongTru: (row['dia_chi_thuong_tru'] ?? '') as string,
   }
 }
 

@@ -156,20 +156,40 @@ export async function themNhanKhau(
     const hoTen = (formData.get('hoTen') as string)?.trim()
     if (!hoTen) return { success: false, message: 'Vui lòng nhập họ tên' }
 
-    const { error } = await supabase
-      .from('nhan_khau')
-      .insert({
-        ho_id: hoId,
-        ho_ten: hoTen,
-        ngay_sinh: (formData.get('ngaySinh') as string)?.trim() || null,
-        gioi_tinh: (formData.get('gioiTinh') as string) || 'NAM',
-        cccd: (formData.get('cccd') as string)?.trim() || null,
-        quan_he: (formData.get('quanHe') as string)?.trim() || 'Thành viên',
-        nghe_nghiep: (formData.get('ngheNghiep') as string)?.trim() || null,
-        so_dien_thoai: (formData.get('soDienThoai') as string)?.trim() || null,
-        trang_thai: (formData.get('trangThai') as string) || 'THUONG_TRU',
-        ghi_chu: (formData.get('ghiChu') as string)?.trim() || null,
-      })
+    const g2 = (k: string) => (formData.get(k) as string)?.trim() || null
+
+    const insertCore: Record<string, unknown> = {
+      ho_id: hoId,
+      ho_ten: hoTen,
+      ngay_sinh: g2('ngaySinh'),
+      gioi_tinh: (formData.get('gioiTinh') as string) || 'NAM',
+      cccd: g2('cccd'),
+      quan_he: g2('quanHe') || 'Thành viên',
+      nghe_nghiep: g2('ngheNghiep'),
+      so_dien_thoai: g2('soDienThoai'),
+      trang_thai: (formData.get('trangThai') as string) || 'THUONG_TRU',
+      ghi_chu: g2('ghiChu'),
+    }
+    // Trường mở rộng (migration 041)
+    const moRong: Record<string, string | null> = {}
+    if (formData.has('noiSinh'))          moRong.noi_sinh = g2('noiSinh')
+    if (formData.has('nguyenQuan'))       moRong.nguyen_quan = g2('nguyenQuan')
+    if (formData.has('danToc'))           moRong.dan_toc = g2('danToc')
+    if (formData.has('tonGiao'))          moRong.ton_giao = g2('tonGiao')
+    if (formData.has('quocTich'))         moRong.quoc_tich = g2('quocTich')
+    if (formData.has('cccdNgayCap'))      moRong.cccd_ngay_cap = g2('cccdNgayCap')
+    if (formData.has('cccdNoiCap'))       moRong.cccd_noi_cap = g2('cccdNoiCap')
+    if (formData.has('tinhTrangHonNhan')) moRong.tinh_trang_hon_nhan = g2('tinhTrangHonNhan')
+    if (formData.has('noiLamViec'))       moRong.noi_lam_viec = g2('noiLamViec')
+    if (formData.has('diaChiThuongTru'))  moRong.dia_chi_thuong_tru = g2('diaChiThuongTru')
+
+    let { error } = await supabase.from('nhan_khau').insert({ ...insertCore, ...moRong })
+
+    // Fallback nếu cột mở rộng chưa tồn tại
+    if (error && error.message && Object.keys(moRong).some(c => error!.message.includes(c))) {
+      const retry = await supabase.from('nhan_khau').insert(insertCore)
+      error = retry.error
+    }
 
     if (error) {
       console.error('[themNhanKhau] Supabase error:', JSON.stringify(error))
@@ -448,18 +468,34 @@ export async function capNhatNhanKhau(
     // da_mat chỉ có sau migration 009 — chỉ gửi nếu field tồn tại trong form
     const daMat = formData.get('daMat')
 
+    const g = (k: string) => (formData.get(k) as string)?.trim() || null
+
     const updatePayload: Record<string, unknown> = {
       ho_ten: hoTen,
-      ngay_sinh: (formData.get('ngaySinh') as string)?.trim() || null,
+      ngay_sinh: g('ngaySinh'),
       gioi_tinh: (formData.get('gioiTinh') as string) || 'NAM',
-      cccd: (formData.get('cccd') as string)?.trim() || null,
-      quan_he: (formData.get('quanHe') as string)?.trim() || 'Thành viên',
-      nghe_nghiep: (formData.get('ngheNghiep') as string)?.trim() || null,
-      so_dien_thoai: (formData.get('soDienThoai') as string)?.trim() || null,
+      cccd: g('cccd'),
+      quan_he: g('quanHe') || 'Thành viên',
+      nghe_nghiep: g('ngheNghiep'),
+      so_dien_thoai: g('soDienThoai'),
       trang_thai: (formData.get('trangThai') as string) || 'THUONG_TRU',
-      ghi_chu: (formData.get('ghiChu') as string)?.trim() || null,
+      ghi_chu: g('ghiChu'),
       updated_at: new Date().toISOString(),
     }
+
+    // ── Trường mở rộng (migration 041) — chỉ thêm nếu form có gửi ──
+    const truongMoRong: Record<string, string | null> = {}
+    if (formData.has('noiSinh'))          truongMoRong.noi_sinh = g('noiSinh')
+    if (formData.has('nguyenQuan'))       truongMoRong.nguyen_quan = g('nguyenQuan')
+    if (formData.has('danToc'))           truongMoRong.dan_toc = g('danToc')
+    if (formData.has('tonGiao'))          truongMoRong.ton_giao = g('tonGiao')
+    if (formData.has('quocTich'))         truongMoRong.quoc_tich = g('quocTich')
+    if (formData.has('cccdNgayCap'))      truongMoRong.cccd_ngay_cap = g('cccdNgayCap')
+    if (formData.has('cccdNoiCap'))       truongMoRong.cccd_noi_cap = g('cccdNoiCap')
+    if (formData.has('tinhTrangHonNhan')) truongMoRong.tinh_trang_hon_nhan = g('tinhTrangHonNhan')
+    if (formData.has('noiLamViec'))       truongMoRong.noi_lam_viec = g('noiLamViec')
+    if (formData.has('diaChiThuongTru'))  truongMoRong.dia_chi_thuong_tru = g('diaChiThuongTru')
+    Object.assign(updatePayload, truongMoRong)
 
     // Chỉ cập nhật da_mat/ngay_mat nếu form có gửi field này (sau migration 009)
     if (daMat !== null) {
@@ -473,12 +509,16 @@ export async function capNhatNhanKhau(
       .update(updatePayload)
       .eq('id', id)
 
-    // Nếu cột da_mat/ngay_mat chưa tồn tại (migration 009 chưa chạy) → thử lại không có 2 cột đó
-    if (error && daMat !== null && (error.message?.includes('da_mat') || error.message?.includes('ngay_mat'))) {
-      const { da_mat: _dm, ngay_mat: _nm, ...payloadWithout } = updatePayload as Record<string, unknown>
-      void _dm; void _nm
-      const retryResult = await supabase.from('nhan_khau').update(payloadWithout).eq('id', id)
-      error = retryResult.error
+    // Fallback: nếu cột mở rộng/da_mat chưa tồn tại (migration chưa chạy) → bỏ ra thử lại
+    if (error && error.message) {
+      const msg = error.message
+      const conNghiNgo = ['da_mat', 'ngay_mat', ...Object.keys(truongMoRong)].some(c => msg.includes(c))
+      if (conNghiNgo) {
+        const payloadCore = { ...updatePayload }
+        for (const c of ['da_mat', 'ngay_mat', ...Object.keys(truongMoRong)]) delete payloadCore[c]
+        const retryResult = await supabase.from('nhan_khau').update(payloadCore).eq('id', id)
+        error = retryResult.error
+      }
     }
 
     if (error) {
