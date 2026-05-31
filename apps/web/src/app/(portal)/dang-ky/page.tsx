@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import {
   UserCheck, UserMinus, Search, ArrowRight,
-  Clock, FileText, Phone, CheckCircle2, Info,
+  Clock, FileText, Phone, CheckCircle2, Info, Home as HomeIcon,
 } from 'lucide-react'
 
 export const metadata: Metadata = {
@@ -125,6 +125,31 @@ export default function DangKyPage() {
           </Link>
         ))}
       </div>
+
+      {/* ── Đăng ký hộ dân mới ───────────────────────────────── */}
+      <Link
+        href="/dang-ky/ho-moi"
+        className="group block bg-gradient-to-r from-[#1E3A5F] to-indigo-700 rounded-2xl shadow-sm p-6 transition-all hover:shadow-md"
+      >
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
+            <HomeIcon size={22} className="text-white" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h2 className="text-lg font-bold text-white">Đăng ký hộ dân mới</h2>
+              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-white/20 text-white">
+                Hộ mới chuyển đến
+              </span>
+            </div>
+            <p className="text-sm text-blue-100 leading-relaxed mt-0.5">
+              Hộ mới chưa có hồ sơ trên hệ thống? Khai báo thông tin hộ và các thành viên —
+              cán bộ xác minh và tạo hồ sơ chính thức.
+            </p>
+          </div>
+          <ArrowRight size={20} className="text-blue-200 group-hover:translate-x-1 transition-transform shrink-0" />
+        </div>
+      </Link>
 
       {/* ── Tra cứu ──────────────────────────────────────────── */}
       <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 flex flex-col sm:flex-row items-center gap-5">

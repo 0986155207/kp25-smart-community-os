@@ -1,0 +1,222 @@
+'use client'
+
+import { useState } from 'react'
+import Link from 'next/link'
+import {
+  Home, User, Plus, Trash2, Loader2, Check, Phone, MapPin, Users, CheckCircle2,
+} from 'lucide-react'
+
+interface ThanhVien {
+  ho_ten: string
+  ngay_sinh: string
+  gioi_tinh: string
+  cccd: string
+  quan_he: string
+  nghe_nghiep: string
+}
+
+const TV_RONG: ThanhVien = { ho_ten: '', ngay_sinh: '', gioi_tinh: 'NAM', cccd: '', quan_he: 'Chủ hộ', nghe_nghiep: '' }
+const QUAN_HE = ['Chủ hộ', 'Vợ / Chồng', 'Con', 'Cha / Mẹ', 'Anh / Chị / Em', 'Ông / Bà', 'Cháu', 'Thành viên khác']
+
+const inp = 'w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#1E3A5F] focus:ring-2 focus:ring-[#1E3A5F]/10 transition-all'
+
+export default function HoMoiForm() {
+  // Hộ
+  const [chuHo, setChuHo]           = useState('')
+  const [diaChi, setDiaChi]         = useState('')
+  const [soDienThoai, setSoDienThoai] = useState('')
+  const [toDanPho, setToDanPho]     = useState('')
+  const [loaiCuTru, setLoaiCuTru]   = useState<'THUONG_TRU' | 'TAM_TRU'>('THUONG_TRU')
+  const [ghiChu, setGhiChu]         = useState('')
+  // Thành viên
+  const [thanhVien, setThanhVien]   = useState<ThanhVien[]>([{ ...TV_RONG }])
+
+  const [loading, setLoading] = useState(false)
+  const [err, setErr]         = useState('')
+  const [done, setDone]       = useState(false)
+
+  function setTV(i: number, k: keyof ThanhVien, v: string) {
+    setThanhVien(prev => prev.map((tv, idx) => idx === i ? { ...tv, [k]: v } : tv))
+  }
+  function themTV() {
+    setThanhVien(prev => [...prev, { ...TV_RONG, quan_he: 'Con', gioi_tinh: 'NAM' }])
+  }
+  function xoaTV(i: number) {
+    setThanhVien(prev => prev.filter((_, idx) => idx !== i))
+  }
+
+  async function submit() {
+    setErr('')
+    if (!chuHo.trim())  { setErr('Vui lòng nhập tên chủ hộ'); return }
+    if (!diaChi.trim()) { setErr('Vui lòng nhập địa chỉ'); return }
+    if (!/^0\d{9}$/.test(soDienThoai)) { setErr('Số điện thoại không hợp lệ (10 chữ số)'); return }
+    if (thanhVien.length === 0 || !thanhVien.every(tv => tv.ho_ten.trim())) {
+      setErr('Mỗi thành viên cần có họ tên'); return
+    }
+
+    setLoading(true)
+    try {
+      const res = await fetch('/api/dan-cu/dang-ky-ho-moi', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chuHo, diaChi, soDienThoai, toDanPho, loaiCuTru, ghiChu,
+          thanhVien: thanhVien.map(tv => ({
+            ho_ten: tv.ho_ten, ngay_sinh: tv.ngay_sinh, gioi_tinh: tv.gioi_tinh,
+            cccd: tv.cccd, quan_he: tv.quan_he, nghe_nghiep: tv.nghe_nghiep,
+          })),
+        }),
+      })
+      const json = await res.json()
+      if (!res.ok || !json.success) { setErr(json.message ?? 'Lỗi gửi đăng ký'); return }
+      setDone(true)
+    } catch {
+      setErr('Lỗi kết nối. Vui lòng thử lại.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // ── Done ──
+  if (done) {
+    return (
+      <div className="bg-white rounded-2xl border border-emerald-200 shadow-sm p-8 text-center">
+        <div className="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-4">
+          <CheckCircle2 size={32} className="text-emerald-600" />
+        </div>
+        <h3 className="text-xl font-bold text-slate-900 mb-1">Đã gửi đăng ký!</h3>
+        <p className="text-slate-500 text-sm leading-relaxed mb-5">
+          Cán bộ khu phố sẽ xác minh thông tin và tạo hồ sơ chính thức cho hộ của bạn
+          trong thời gian sớm nhất. Bạn sẽ được liên hệ qua số điện thoại đã cung cấp.
+        </p>
+        <Link href="/" className="inline-block py-3 px-6 bg-[#1E3A5F] text-white text-sm font-semibold rounded-xl hover:bg-[#162d4a] transition-colors">
+          Về trang chủ
+        </Link>
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-5">
+      {/* ── Thông tin hộ ── */}
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 space-y-4">
+        <h2 className="font-bold text-slate-800 flex items-center gap-2">
+          <Home size={17} className="text-[#1E3A5F]" /> Thông tin hộ
+        </h2>
+
+        <div>
+          <label className="block text-xs font-semibold text-slate-700 mb-1.5">Họ tên chủ hộ <span className="text-red-500">*</span></label>
+          <input value={chuHo} onChange={e => setChuHo(e.target.value)} className={inp} placeholder="Nguyễn Văn A" />
+        </div>
+
+        <div>
+          <label className="block text-xs font-semibold text-slate-700 mb-1.5">Địa chỉ đầy đủ <span className="text-red-500">*</span></label>
+          <input value={diaChi} onChange={e => setDiaChi(e.target.value)} className={inp} placeholder="Số nhà, đường, Khu phố 25, Phường Long Trường" />
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Số điện thoại <span className="text-red-500">*</span></label>
+            <div className="relative">
+              <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+              <input type="tel" value={soDienThoai} onChange={e => setSoDienThoai(e.target.value.replace(/\D/g, '').slice(0, 10))}
+                className={`${inp} pl-9`} placeholder="Nhập số điện thoại" />
+            </div>
+          </div>
+          <div>
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Tổ dân phố</label>
+            <input value={toDanPho} onChange={e => setToDanPho(e.target.value)} className={inp} placeholder="Tổ..." />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-xs font-semibold text-slate-700 mb-1.5">Hình thức cư trú</label>
+          <div className="flex gap-2">
+            {([['THUONG_TRU', 'Thường trú'], ['TAM_TRU', 'Tạm trú']] as const).map(([v, l]) => (
+              <button key={v} type="button" onClick={() => setLoaiCuTru(v)}
+                className={`flex-1 py-2.5 rounded-xl text-sm font-semibold border-2 transition-all
+                  ${loaiCuTru === v ? 'border-[#1E3A5F] bg-[#1E3A5F]/5 text-[#1E3A5F]' : 'border-slate-200 text-slate-500'}`}>
+                {l}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Thành viên ── */}
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="font-bold text-slate-800 flex items-center gap-2">
+            <Users size={17} className="text-[#1E3A5F]" /> Thành viên trong hộ
+            <span className="text-xs font-normal text-slate-400">({thanhVien.length})</span>
+          </h2>
+          <button type="button" onClick={themTV}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1E3A5F] text-white text-xs font-semibold hover:bg-[#162d4a] transition-colors">
+            <Plus size={13} /> Thêm người
+          </button>
+        </div>
+
+        {thanhVien.map((tv, i) => (
+          <div key={i} className="border border-slate-200 rounded-xl p-4 space-y-3 relative">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-slate-500 flex items-center gap-1.5">
+                <User size={12} /> Thành viên {i + 1}
+              </span>
+              {thanhVien.length > 1 && (
+                <button type="button" onClick={() => xoaTV(i)} className="text-slate-400 hover:text-red-500 transition-colors">
+                  <Trash2 size={14} />
+                </button>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-[11px] font-semibold text-slate-600 mb-1">Họ tên <span className="text-red-500">*</span></label>
+              <input value={tv.ho_ten} onChange={e => setTV(i, 'ho_ten', e.target.value)} className={inp} placeholder="Nguyễn Văn B" />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-[11px] font-semibold text-slate-600 mb-1">Ngày sinh</label>
+                <input type="date" value={tv.ngay_sinh} onChange={e => setTV(i, 'ngay_sinh', e.target.value)} className={inp} />
+              </div>
+              <div>
+                <label className="block text-[11px] font-semibold text-slate-600 mb-1">Giới tính</label>
+                <select value={tv.gioi_tinh} onChange={e => setTV(i, 'gioi_tinh', e.target.value)} className={inp}>
+                  <option value="NAM">Nam</option><option value="NU">Nữ</option><option value="KHAC">Khác</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-[11px] font-semibold text-slate-600 mb-1">Số CCCD</label>
+                <input value={tv.cccd} onChange={e => setTV(i, 'cccd', e.target.value.replace(/\D/g, '').slice(0, 12))} className={inp} placeholder="079..." />
+              </div>
+              <div>
+                <label className="block text-[11px] font-semibold text-slate-600 mb-1">Quan hệ chủ hộ</label>
+                <select value={tv.quan_he} onChange={e => setTV(i, 'quan_he', e.target.value)} className={inp}>
+                  {QUAN_HE.map(q => <option key={q} value={q}>{q}</option>)}
+                </select>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Ghi chú */}
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
+        <label className="block text-xs font-semibold text-slate-700 mb-1.5">Ghi chú thêm (nếu có)</label>
+        <textarea value={ghiChu} onChange={e => setGhiChu(e.target.value)} rows={2} className={`${inp} resize-none`}
+          placeholder="Thông tin bổ sung cho cán bộ..." />
+      </div>
+
+      {err && <p className="text-sm text-red-500 text-center">{err}</p>}
+
+      <button onClick={submit} disabled={loading}
+        className="w-full py-4 bg-[#1E3A5F] text-white font-bold text-sm rounded-2xl hover:bg-[#162d4a] disabled:opacity-60 flex items-center justify-center gap-2 transition-all shadow-sm">
+        {loading ? <><Loader2 size={17} className="animate-spin" /> Đang gửi...</> : <><Check size={17} /> Gửi đăng ký hộ dân mới</>}
+      </button>
+
+      <p className="text-[11px] text-slate-400 text-center leading-relaxed">
+        Thông tin được bảo mật theo Nghị định 13/2023/NĐ-CP. Cán bộ sẽ xác minh trước khi tạo hồ sơ chính thức.
+      </p>
+    </div>
+  )
+}

@@ -7,7 +7,7 @@ import {
   Settings, LogOut, FileText, Shield, ChevronRight,
   Bot, TrendingUp, Heart, ShieldCheck, Home, Database, Sparkles, BellRing,
   UserCog, CalendarDays, Layers, Activity, MessageSquareMore, Zap, ClipboardCheck, ScanLine,
-  Inbox as InboxIcon, Megaphone,
+  Inbox as InboxIcon, Megaphone, Building2,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { dangXuat } from '@/lib/auth'
@@ -82,6 +82,11 @@ const MENU: MenuGroup[] = [
       {
         href: '/dashboard/dan-cu/duyet-cap-nhat',
         icon: InboxIcon, label: 'Duyệt tự khai',
+        roles: ['BI_THU', 'TRUONG_KHU_PHO', 'CONG_AN'],
+      },
+      {
+        href: '/dashboard/dan-cu/duyet-ho-moi',
+        icon: Building2, label: 'Duyệt hộ mới',
         roles: ['BI_THU', 'TRUONG_KHU_PHO', 'CONG_AN'],
       },
       {
