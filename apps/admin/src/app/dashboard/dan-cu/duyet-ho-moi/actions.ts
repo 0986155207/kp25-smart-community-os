@@ -82,10 +82,20 @@ export async function demHoMoiChoDuyet(): Promise<number> {
 }
 
 // ── Duyệt → tạo ho_dan + nhan_khau ───────────────────────────
+export interface KetQuaDuyet {
+  success: boolean
+  message: string
+  // Thông tin QR cấp ngay sau khi duyệt
+  hoId?:    string
+  maHo?:    string
+  chuHo?:   string
+  qrToken?: string
+}
+
 export async function duyetHoMoi(
   id: string,
   duLieu: { chu_ho: string; dia_chi: string; so_dien_thoai: string; so_nha: string; duong: string; to_khu_vuc: string; loai_cu_tru: string; thanh_vien: ThanhVienKhai[] }
-): Promise<{ success: boolean; message: string }> {
+): Promise<KetQuaDuyet> {
   try {
     const supabase = await createClient()
     const canBo = await layCanBoHienTai()
@@ -99,11 +109,15 @@ export async function duyetHoMoi(
     const tv = (duLieu.thanh_vien ?? []).filter(t => t.ho_ten?.trim())
     if (tv.length === 0) return { success: false, message: 'Cần ít nhất 1 thành viên' }
 
+    // Sinh mã hộ + QR token ngay khi tạo hộ (cấp QR tức thì)
+    const maHo    = sinhMaHo()
+    const qrToken = crypto.randomUUID()
+
     // 1. Tạo hộ dân — khớp đầy đủ các trường form hộ dân chuẩn
     const { data: ho, error: errHo } = await supabase
       .from('ho_dan')
       .insert({
-        ma_ho:         sinhMaHo(),
+        ma_ho:         maHo,
         chu_ho:        duLieu.chu_ho.trim(),
         dia_chi_day:   duLieu.dia_chi.trim(),
         so_nha:        duLieu.so_nha?.trim() || null,
@@ -112,7 +126,7 @@ export async function duyetHoMoi(
         so_dien_thoai: duLieu.so_dien_thoai?.trim() || null,
         trang_thai:    duLieu.loai_cu_tru === 'TAM_TRU' ? 'TAM_TRU' : 'THUONG_TRU',
         so_nhan_khau:  tv.length,
-        qr_token:      crypto.randomUUID(),
+        qr_token:      qrToken,
       })
       .select('id')
       .single()
@@ -176,7 +190,14 @@ export async function duyetHoMoi(
 
     revalidatePath('/dashboard/dan-cu/duyet-ho-moi')
     revalidatePath('/dashboard/dan-cu')
-    return { success: true, message: `Đã tạo hộ "${duLieu.chu_ho}" với ${tv.length} nhân khẩu` }
+    return {
+      success: true,
+      message: `Đã tạo hộ "${duLieu.chu_ho}" với ${tv.length} nhân khẩu`,
+      hoId:    ho.id as string,
+      maHo,
+      chuHo:   duLieu.chu_ho.trim(),
+      qrToken,
+    }
   } catch (err) {
     console.error('[duyetHoMoi]', err)
     return { success: false, message: err instanceof Error ? err.message : 'Lỗi không xác định' }

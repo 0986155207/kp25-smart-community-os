@@ -4,31 +4,143 @@ import { useState, useTransition } from 'react'
 import toast from 'react-hot-toast'
 import {
   Home, User, Phone, Clock, Check, X, Loader2, MapPin, Users, Trash2,
+  QrCode, Download, Printer, ExternalLink, CheckCircle2,
 } from 'lucide-react'
-import { duyetHoMoi, tuChoiHoMoi, type HoMoiItem, type ThanhVienKhai } from './actions'
+import { duyetHoMoi, tuChoiHoMoi, type HoMoiItem, type ThanhVienKhai, type KetQuaDuyet } from './actions'
 
 const GT: Record<string, string> = { NAM: 'Nam', NU: 'Nữ', KHAC: 'Khác' }
 
+// URL web công khai (cho link QR)
+const WEB_URL = 'https://smart-kp25-web.vercel.app'
+
 export default function DuyetHoMoiClient({ initial }: { initial: HoMoiItem[] }) {
   const [items, setItems] = useState(initial)
+  const [qrResult, setQrResult] = useState<KetQuaDuyet | null>(null)
+
   function remove(id: string) { setItems(prev => prev.filter(i => i.id !== id)) }
 
-  if (items.length === 0) {
-    return (
-      <div className="text-center py-16">
-        <div className="w-16 h-16 rounded-2xl bg-emerald-50 flex items-center justify-center mx-auto mb-4">
-          <Check size={30} className="text-emerald-500" />
+  return (
+    <>
+      {items.length === 0 ? (
+        <div className="text-center py-16">
+          <div className="w-16 h-16 rounded-2xl bg-emerald-50 flex items-center justify-center mx-auto mb-4">
+            <Check size={30} className="text-emerald-500" />
+          </div>
+          <h3 className="font-bold text-slate-800">Không có đăng ký chờ duyệt</h3>
+          <p className="text-sm text-slate-500 mt-1">Tất cả đăng ký hộ dân mới đã được xử lý.</p>
         </div>
-        <h3 className="font-bold text-slate-800">Không có đăng ký chờ duyệt</h3>
-        <p className="text-sm text-slate-500 mt-1">Tất cả đăng ký hộ dân mới đã được xử lý.</p>
-      </div>
-    )
-  }
+      ) : (
+        <div className="space-y-4">
+          {items.map(it => (
+            <Card key={it.id} item={it}
+              onApproved={(res) => { remove(it.id); if (res.qrToken) setQrResult(res) }}
+              onRejected={() => remove(it.id)} />
+          ))}
+        </div>
+      )}
 
-  return <div className="space-y-4">{items.map(it => <Card key={it.id} item={it} onResolved={() => remove(it.id)} />)}</div>
+      {/* Modal cấp QR ngay sau khi duyệt */}
+      {qrResult && qrResult.qrToken && (
+        <QrCapModal result={qrResult} onClose={() => setQrResult(null)} />
+      )}
+    </>
+  )
 }
 
-function Card({ item, onResolved }: { item: HoMoiItem; onResolved: () => void }) {
+// ════════════════════════════════════════════════════════════
+//  MODAL CẤP QR NGAY SAU KHI DUYỆT
+// ════════════════════════════════════════════════════════════
+function QrCapModal({ result, onClose }: { result: KetQuaDuyet; onClose: () => void }) {
+  const qrUrl = `${WEB_URL}/qr/${result.qrToken}`
+  const qrImg = `https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=12&data=${encodeURIComponent(qrUrl)}`
+
+  async function tai() {
+    try {
+      const res = await fetch(qrImg)
+      const blob = await res.blob()
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `QR-${result.maHo}-${(result.chuHo ?? '').replace(/\s+/g, '_')}.png`
+      a.click()
+      URL.revokeObjectURL(url)
+    } catch { toast.error('Không tải được QR') }
+  }
+
+  function inPhieu() {
+    const w = window.open('', '_blank', 'width=500,height=650')
+    if (!w) return
+    w.document.write(`<!DOCTYPE html><html lang="vi"><head><meta charset="utf-8"/><title>QR Hộ dân — ${result.maHo}</title>
+      <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Segoe UI',sans-serif;background:#fff}
+      .card{width:360px;margin:30px auto;border:2px solid #1E3A5F;border-radius:16px;overflow:hidden;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+      .h{background:#1E3A5F;color:#fff;padding:14px 20px;text-align:center}.h h1{font-size:15px;font-weight:700}.h p{font-size:11px;opacity:.75;margin-top:2px}
+      .b{padding:20px;text-align:center}.b img{width:220px;height:220px;border:1px solid #e5e7eb;border-radius:8px}
+      .nm{font-size:17px;font-weight:700;color:#1E3A5F;margin-top:14px}.mh{font-size:11px;color:#64748b;font-family:monospace;margin-top:4px}
+      .nt{margin-top:14px;font-size:10px;color:#9ca3af;line-height:1.6}.u{font-size:9px;color:#94a3b8;word-break:break-all;margin-top:8px}</style></head>
+      <body><div class="card"><div class="h"><h1>KHU PHỐ 25 — PHƯỜNG LONG TRƯỜNG</h1><p>Phiếu hộ dân điện tử · QR Tra cứu nhanh</p></div>
+      <div class="b"><img src="${qrImg}" alt="QR"/><div class="nm">${result.chuHo}</div><div class="mh">Mã hộ: ${result.maHo}</div>
+      <div class="nt">Quét mã QR để xem thông tin hộ dân điện tử.<br/>Dùng để khai báo, liên hệ cán bộ và tra cứu thủ tục.</div>
+      <div class="u">${qrUrl}</div></div></div>
+      <script>window.onload=()=>{window.print();window.close()}<\/script></body></html>`)
+    w.document.close()
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden">
+        {/* Header thành công */}
+        <div className="bg-gradient-to-r from-emerald-600 to-green-600 px-5 py-4 text-white flex items-center gap-3">
+          <CheckCircle2 size={22} />
+          <div className="flex-1">
+            <p className="font-bold text-sm">Đã tạo hộ & cấp mã QR!</p>
+            <p className="text-xs text-emerald-100">{result.message}</p>
+          </div>
+          <button onClick={onClose} className="p-1 hover:bg-white/20 rounded-lg transition-colors"><X size={16} /></button>
+        </div>
+
+        <div className="p-5 flex flex-col items-center gap-4">
+          {/* QR */}
+          <div className="bg-white border-2 border-emerald-100 rounded-2xl p-3 shadow-inner">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={qrImg} alt={`QR ${result.chuHo}`} width={220} height={220} className="rounded-lg" />
+          </div>
+
+          <div className="text-center">
+            <p className="font-bold text-slate-900">{result.chuHo}</p>
+            <p className="text-xs text-slate-500 mt-0.5 font-mono">Mã hộ: {result.maHo}</p>
+            <a href={qrUrl} target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 mt-2 text-xs text-emerald-600 hover:underline">
+              <ExternalLink size={11} /> Xem phiếu hộ dân điện tử
+            </a>
+          </div>
+
+          {/* Hành động */}
+          <div className="flex items-center gap-2 w-full">
+            <button onClick={tai}
+              className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-[#1E3A5F] hover:bg-[#162d4a] text-white text-sm font-semibold transition-colors">
+              <Download size={14} /> Tải QR
+            </button>
+            <button onClick={inPhieu}
+              className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold transition-colors">
+              <Printer size={14} /> In phiếu
+            </button>
+          </div>
+
+          <a href={`/dashboard/dan-cu/${result.hoId}`}
+            className="text-xs text-slate-500 hover:text-slate-700 transition-colors">
+            Xem chi tiết hồ sơ hộ →
+          </a>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function Card({ item, onApproved, onRejected }: {
+  item: HoMoiItem
+  onApproved: (res: KetQuaDuyet) => void
+  onRejected: () => void
+}) {
   const [chuHo, setChuHo]         = useState(item.chu_ho)
   const [diaChi, setDiaChi]       = useState(item.dia_chi)
   const [sdt, setSdt]             = useState(item.so_dien_thoai ?? '')
@@ -53,13 +165,13 @@ function Card({ item, onResolved }: { item: HoMoiItem; onResolved: () => void })
         so_nha: soNha, duong: duong, to_khu_vuc: to,
         loai_cu_tru: loaiCuTru, thanh_vien: tv,
       })
-      if (res.success) { toast.success(res.message); onResolved() } else toast.error(res.message)
+      if (res.success) { toast.success(res.message); onApproved(res) } else toast.error(res.message)
     })
   }
   function reject() {
     start(async () => {
       const res = await tuChoiHoMoi(item.id, lyDo)
-      if (res.success) { toast.success(res.message); onResolved() } else toast.error(res.message)
+      if (res.success) { toast.success(res.message); onRejected() } else toast.error(res.message)
     })
   }
 
