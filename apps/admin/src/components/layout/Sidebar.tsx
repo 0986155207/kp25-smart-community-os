@@ -6,7 +6,8 @@ import {
   LayoutDashboard, AlertCircle, Users, Bell, Map, BarChart3,
   Settings, LogOut, FileText, Shield, ChevronRight,
   Bot, TrendingUp, Heart, ShieldCheck, Home, Database, Sparkles, BellRing,
-  UserCog, CalendarDays, Layers, Activity, MessageSquareMore, Zap,
+  UserCog, CalendarDays, Layers, Activity, MessageSquareMore, Zap, ClipboardCheck, ScanLine,
+  Inbox as InboxIcon,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { dangXuat } from '@/lib/auth'
@@ -66,6 +67,21 @@ const MENU: MenuGroup[] = [
       {
         href: '/dashboard/dan-cu/su-kien-nhanh',
         icon: Zap, label: 'Cập nhật nhanh',
+        roles: ['BI_THU', 'TRUONG_KHU_PHO', 'CONG_AN'],
+      },
+      {
+        href: '/dashboard/dan-cu/ho-so-thieu',
+        icon: ClipboardCheck, label: 'Hồ sơ thiếu TT',
+        roles: ['BI_THU', 'TRUONG_KHU_PHO', 'CONG_AN'],
+      },
+      {
+        href: '/dashboard/dan-cu/quet-cccd',
+        icon: ScanLine, label: 'Quét CCCD (AI)',
+        roles: ['BI_THU', 'TRUONG_KHU_PHO', 'CONG_AN'],
+      },
+      {
+        href: '/dashboard/dan-cu/duyet-cap-nhat',
+        icon: InboxIcon, label: 'Duyệt tự khai',
         roles: ['BI_THU', 'TRUONG_KHU_PHO', 'CONG_AN'],
       },
       {

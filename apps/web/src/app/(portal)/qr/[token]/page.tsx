@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import {
   Home, Phone, MapPin, Users, QrCode, MessageSquare,
-  AlertCircle, ChevronRight, Calendar, Hash, Shield, ArrowLeft,
+  AlertCircle, ChevronRight, Calendar, Hash, Shield, ArrowLeft, UserCog,
 } from 'lucide-react'
 import { createServiceClient } from '@/lib/supabase/server'
 
@@ -180,6 +180,21 @@ export default async function QRScanPage({ params }: Props) {
             </div>
           </div>
         </div>
+
+        {/* ── Cập nhật thông tin (tự khai) ─────────────────── */}
+        <Link
+          href={`/qr/${token}/cap-nhat`}
+          className="flex items-center gap-3 p-4 bg-gradient-to-r from-[#1E3A5F] to-indigo-700 text-white rounded-2xl shadow-sm hover:opacity-95 transition-opacity group"
+        >
+          <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
+            <UserCog size={18} />
+          </div>
+          <div className="flex-1">
+            <p className="font-bold text-sm">Cập nhật thông tin hộ</p>
+            <p className="text-xs text-blue-200">Tự khai báo, bổ sung thông tin cá nhân</p>
+          </div>
+          <ChevronRight size={16} className="text-blue-200 group-hover:translate-x-0.5 transition-transform" />
+        </Link>
 
         {/* ── Thao tác nhanh ───────────────────────────────── */}
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 space-y-1">
