@@ -203,13 +203,13 @@ function KetQuaCard({ hs }: { hs: KetQuaTraCuu }) {
           Xem chi tiết thủ tục
         </Link>
         <a
-          href={`tel:028 3734 5678`}
+          href={`tel:02837461111`}
           className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 bg-slate-50
                      border border-slate-200 text-slate-700 text-sm font-semibold rounded-xl
                      hover:border-slate-300 transition-all"
         >
           <Phone size={14} />
-          028 3734 5678
+          028 3746 1111
         </a>
       </div>
     </div>
@@ -371,7 +371,7 @@ export default function TraCuuHoSoPage() {
                 <ul className="space-y-1 text-xs">
                   <li>• Mã hồ sơ có dạng <code className="bg-amber-100 px-1 rounded">KP25-YYYY-XXXXXX</code></li>
                   <li>• Hồ sơ nộp trực tiếp cần 1–2 ngày để cập nhật vào hệ thống</li>
-                  <li>• Liên hệ <strong>028 3734 5678</strong> để kiểm tra thủ công</li>
+                  <li>• Liên hệ <strong>028 3746 1111</strong> để kiểm tra thủ công</li>
                 </ul>
               </div>
             </div>
@@ -400,7 +400,7 @@ export default function TraCuuHoSoPage() {
               {
                 icon: '📞',
                 title: 'Hỗ trợ trực tiếp',
-                desc: 'Gọi 028 3734 5678 (giờ hành chính) hoặc hỏi AI Trợ lý để được hỗ trợ.',
+                desc: 'Gọi 028 3746 1111 (giờ hành chính) hoặc hỏi AI Trợ lý để được hỗ trợ.',
                 color: 'bg-green-50 border-green-100',
               },
             ].map((item) => (

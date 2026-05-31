@@ -373,7 +373,7 @@ export default function NguoiCaoTuoiEditForm({ nct }: Props) {
                   <Input name="ten_nguoi_cham_soc" defaultValue={nct.ten_nguoi_cham_soc ?? ''} placeholder="Nguyễn Văn B" />
                 </Field>
                 <Field label="Số điện thoại">
-                  <Input name="sdt_nguoi_cham_soc" type="tel" defaultValue={nct.sdt_nguoi_cham_soc ?? ''} placeholder="0901234567" />
+                  <Input name="sdt_nguoi_cham_soc" type="tel" defaultValue={nct.sdt_nguoi_cham_soc ?? ''} placeholder="Nhập số điện thoại" />
                 </Field>
               </>
             )}

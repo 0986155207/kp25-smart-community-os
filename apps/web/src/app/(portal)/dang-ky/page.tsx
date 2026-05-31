@@ -216,7 +216,7 @@ export default function DangKyPage() {
         <Link href="/lien-he" className="text-[#8B1A1A] font-semibold hover:underline">
           Liên hệ Ban quản lý Khu phố 25
         </Link>
-        {' '}hoặc gọi <a href="tel:0901234567" className="text-[#8B1A1A] font-semibold hover:underline">0901 234 567</a>
+        {' '}hoặc gọi <a href="tel:0773735317" className="text-[#8B1A1A] font-semibold hover:underline">0773 735 317</a>
       </div>
     </div>
   )

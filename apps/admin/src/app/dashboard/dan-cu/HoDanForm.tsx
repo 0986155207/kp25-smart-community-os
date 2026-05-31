@@ -177,7 +177,7 @@ export default function HoDanForm({ mode, id, defaultValues }: Props) {
               value={soDienThoai}
               onChange={(e) => setSoDienThoai(e.target.value)}
               className="input"
-              placeholder="0901 234 567"
+              placeholder="Nhập số điện thoại"
               type="tel"
             />
           </div>

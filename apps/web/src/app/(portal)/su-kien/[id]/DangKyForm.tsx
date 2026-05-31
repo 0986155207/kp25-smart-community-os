@@ -112,7 +112,7 @@ export default function DangKyForm({ suKienId, tenSuKien }: Props) {
             type="tel"
             value={form.soDienThoai}
             onChange={e => setForm(f => ({ ...f, soDienThoai: e.target.value }))}
-            placeholder="0901 234 567"
+            placeholder="Nhập số điện thoại của bạn"
             className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-200
                        focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/20
                        focus:border-[#1E3A5F] text-sm transition-colors"

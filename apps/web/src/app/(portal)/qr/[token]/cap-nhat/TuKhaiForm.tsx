@@ -138,7 +138,7 @@ export default function TuKhaiForm({ token, nhanKhau }: Props) {
         <div className="relative">
           <Phone size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
           <input type="tel" value={sdt} onChange={e => setSdt(e.target.value.replace(/\D/g, '').slice(0, 10))}
-            placeholder="0901234567"
+            placeholder="Nhập số điện thoại của bạn"
             className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#1E3A5F] focus:ring-2 focus:ring-[#1E3A5F]/10" />
         </div>
       </div>

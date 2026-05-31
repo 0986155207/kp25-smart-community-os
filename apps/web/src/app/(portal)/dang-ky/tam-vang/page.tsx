@@ -220,7 +220,7 @@ export default function DangKyTamVangPage() {
 
             <div>
               <label className="label-form">SĐT liên lạc <span className="text-red-500">*</span></label>
-              <input className="input" placeholder="0901234567" type="tel" value={form.sdt_lien_lac}
+              <input className="input" placeholder="Nhập số điện thoại của bạn" type="tel" value={form.sdt_lien_lac}
                 onChange={e => set('sdt_lien_lac', e.target.value)} />
             </div>
 

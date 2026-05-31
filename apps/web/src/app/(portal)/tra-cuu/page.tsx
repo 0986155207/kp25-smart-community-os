@@ -177,8 +177,8 @@ export default function TraCuuPage() {
         <ArrowRight size={16} className="text-slate-400 shrink-0" />
         <p className="text-sm text-slate-600">
           Cần hỗ trợ? Gọi{' '}
-          <a href="tel:02837345678" className="font-bold text-[#8B1A1A] hover:underline">
-            028 3734 5678
+          <a href="tel:02837461111" className="font-bold text-[#8B1A1A] hover:underline">
+            028 3746 1111
           </a>
           {' '}(giờ hành chính) hoặc đến{' '}
           <Link href="/lien-he" className="font-medium text-slate-700 hover:text-[#8B1A1A] hover:underline transition-colors">

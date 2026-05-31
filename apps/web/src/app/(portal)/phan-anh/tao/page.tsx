@@ -601,7 +601,7 @@ export default function TaoPhanAnhSmartPage() {
               <label className="block text-sm font-semibold text-slate-700 mb-1.5">
                 Số điện thoại <span className="text-red-500">*</span>
               </label>
-              <input {...register('nguoiGuiSdt')} className="input" placeholder="0901234567" type="tel" />
+              <input {...register('nguoiGuiSdt')} className="input" placeholder="Nhập số điện thoại của bạn" type="tel" />
               {errors.nguoiGuiSdt && <p className="text-red-500 text-xs mt-1">{errors.nguoiGuiSdt.message}</p>}
             </div>
           </div>
