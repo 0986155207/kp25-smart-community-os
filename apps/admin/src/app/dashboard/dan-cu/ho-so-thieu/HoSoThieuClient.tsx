@@ -6,7 +6,8 @@ import {
   User, Home, ChevronDown, Check, Loader2, Save,
   Sparkles, AlertCircle, Filter, X,
 } from 'lucide-react'
-import { capNhatHoSoNhanh, TRUONG_HO_SO, type HoSoThieuItem } from './actions'
+import { capNhatHoSoNhanh, type HoSoThieuItem } from './actions'
+import { TRUONG_HO_SO } from './constants'
 
 // ─── Config trường để render input ───────────────────────────
 const FIELD_META: Record<string, { label: string; type: 'text' | 'date' | 'select'; options?: { v: string; l: string }[] }> = {
