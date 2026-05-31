@@ -7,7 +7,7 @@ import {
   Settings, LogOut, FileText, Shield, ChevronRight,
   Bot, TrendingUp, Heart, ShieldCheck, Home, Database, Sparkles, BellRing,
   UserCog, CalendarDays, Layers, Activity, MessageSquareMore, Zap, ClipboardCheck, ScanLine,
-  Inbox as InboxIcon, Megaphone, Building2,
+  Inbox as InboxIcon, Megaphone, Building2, BookOpen,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { dangXuat } from '@/lib/auth'
@@ -139,6 +139,10 @@ const MENU: MenuGroup[] = [
   {
     group: 'Hệ thống',
     items: [
+      {
+        href: '/dashboard/huong-dan',
+        icon: BookOpen, label: 'Hướng dẫn sử dụng',
+      },
       {
         href: '/dashboard/tai-lieu',
         icon: FileText, label: 'Tài liệu',

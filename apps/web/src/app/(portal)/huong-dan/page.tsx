@@ -1,0 +1,57 @@
+import type { Metadata } from 'next'
+import { BookOpen, Phone, MessageSquare } from 'lucide-react'
+import Link from 'next/link'
+import HuongDanClient from './HuongDanClient'
+
+export const metadata: Metadata = {
+  title: 'Hướng dẫn sử dụng — KP25',
+  description: 'Hướng dẫn chi tiết sử dụng cổng dịch vụ số Khu phố 25, Phường Long Trường, TP.HCM',
+}
+
+export default function HuongDanPage() {
+  return (
+    <div className="max-w-3xl mx-auto px-4 py-8">
+      {/* Header */}
+      <div className="text-center space-y-2 mb-7">
+        <div className="w-16 h-16 rounded-2xl bg-[#8B1A1A]/10 flex items-center justify-center mx-auto">
+          <BookOpen size={28} className="text-[#8B1A1A]" />
+        </div>
+        <h1 className="text-2xl font-bold text-slate-900">Hướng dẫn sử dụng</h1>
+        <p className="text-slate-500 text-sm leading-relaxed">
+          Hướng dẫn chi tiết các dịch vụ trên cổng KP25 Smart Community<br />
+          Khu phố 25 · Phường Long Trường · TP.HCM
+        </p>
+      </div>
+
+      <HuongDanClient />
+
+      {/* Hỗ trợ */}
+      <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <a
+          href="tel:0773735317"
+          className="flex items-center gap-3 p-4 bg-white border border-slate-200 rounded-2xl hover:border-slate-300 hover:shadow-sm transition-all"
+        >
+          <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0">
+            <Phone size={18} className="text-emerald-600" />
+          </div>
+          <div>
+            <p className="font-semibold text-slate-800 text-sm">Gọi Trưởng khu phố</p>
+            <p className="text-xs text-slate-500">0773 735 317</p>
+          </div>
+        </a>
+        <Link
+          href="/chat"
+          className="flex items-center gap-3 p-4 bg-gradient-to-r from-[#8B1A1A] to-[#a52a2a] text-white rounded-2xl hover:opacity-95 transition-all"
+        >
+          <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
+            <MessageSquare size={18} />
+          </div>
+          <div>
+            <p className="font-semibold text-sm">Hỏi Trợ lý AI</p>
+            <p className="text-xs text-white/70">Hỗ trợ 24/7</p>
+          </div>
+        </Link>
+      </div>
+    </div>
+  )
+}

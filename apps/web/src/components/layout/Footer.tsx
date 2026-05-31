@@ -29,6 +29,7 @@ export default function Footer() {
             <h3 className="font-semibold text-white mb-4">Liên kết nhanh</h3>
             <ul className="space-y-2">
               {[
+                { href: '/huong-dan', label: 'Hướng dẫn sử dụng' },
                 { href: '/thong-bao', label: 'Thông báo' },
                 { href: '/phan-anh', label: 'Phản ánh hiện trường' },
                 { href: '/tra-cuu', label: 'Tra cứu thông tin' },
