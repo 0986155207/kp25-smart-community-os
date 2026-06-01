@@ -17,6 +17,8 @@ export type LinhVuc =
   | 'CU_TRU'
   | 'CHUNG_THUC'
   | 'AN_SINH'
+  | 'Y_TE'
+  | 'GIAO_DUC'
   | 'TU_PHAP'
   | 'XAY_DUNG'
   | 'KINH_DOANH'
@@ -26,6 +28,8 @@ export const LINH_VUC_CONFIG: Record<LinhVuc, { label: string; color: string; bg
   CU_TRU:     { label: 'Cư trú',            color: '#1D4ED8', bg: '#EFF6FF', icon: '🏠' },
   CHUNG_THUC: { label: 'Chứng thực',        color: '#065F46', bg: '#ECFDF5', icon: '✅' },
   AN_SINH:    { label: 'An sinh xã hội',    color: '#B45309', bg: '#FFFBEB', icon: '🤝' },
+  Y_TE:       { label: 'Y tế – Bảo hiểm',   color: '#0E7490', bg: '#ECFEFF', icon: '🏥' },
+  GIAO_DUC:   { label: 'Giáo dục',          color: '#7C3AED', bg: '#F5F3FF', icon: '🎓' },
   TU_PHAP:    { label: 'Tư pháp',           color: '#5B21B6', bg: '#F5F3FF', icon: '⚖️'  },
   XAY_DUNG:   { label: 'Đất đai – Xây dựng', color: '#0F766E', bg: '#F0FDFA', icon: '🏗️'  },
   KINH_DOANH: { label: 'Kinh doanh',        color: '#9D174D', bg: '#FDF2F8', icon: '🏪' },
@@ -845,6 +849,240 @@ export const DS_THU_TUC: ThuTuc[] = [
     thoiGianLamViec: 'Thứ 2 – Thứ 6: 7h30 – 11h30 & 13h00 – 17h00',
     noiBat: false,
     tags: ['an toàn thực phẩm', 'quán ăn', 'nhà hàng', 'vệ sinh thực phẩm', 'kinh doanh ăn uống'],
+  },
+
+  // ══════════════════════════════════════════════
+  //  LĨNH VỰC Y TẾ – BẢO HIỂM Y TẾ (BHYT)
+  //  Cập nhật theo Luật BHYT sửa đổi 2024 (51/2024/QH15),
+  //  hiệu lực 01/07/2025 · Lương cơ sở 2.340.000đ
+  // ══════════════════════════════════════════════
+
+  {
+    id: 'yt-001',
+    maSo: '1.001651',
+    ten: 'Đăng ký tham gia BHYT hộ gia đình',
+    linhVuc: 'Y_TE',
+    mucDoTrucTuyen: 4,
+    coQuanGiaiQuyet: 'Cơ quan BHXH khu vực / Tổ chức dịch vụ thu (UBND Phường, Bưu điện)',
+    doiTuong: 'Người dân chưa tham gia BHYT theo nhóm khác (không phải người lao động, HSSV, hộ nghèo...).',
+    moTa: 'Đăng ký tham gia Bảo hiểm Y tế theo hộ gia đình. Từ 01/07/2025, áp dụng Luật BHYT sửa đổi 2024: mở rộng quyền lợi, thông tuyến khám chữa bệnh, dùng CCCD gắn chip / ứng dụng VssID thay thẻ giấy.',
+    thoiHanGiaiQuyet: '5 ngày làm việc (thẻ có giá trị sau khi đóng tiền)',
+    lePhi: 'Mức đóng người thứ 1: 4,5% lương cơ sở = 105.300đ/tháng. Người thứ 2 đóng 70%, người 3 đóng 60%, người 4 đóng 50%, từ người 5 đóng 40% mức người thứ 1.',
+    phiDichVu: 'Không',
+    ketQua: 'Thẻ BHYT (bản điện tử trên VssID hoặc thẻ giấy)',
+    thanhPhanHoSo: [
+      { ten: 'Tờ khai tham gia BHYT (Mẫu TK1-TS)', soLuong: '01 bản', ghiChu: 'Có thể khai trực tuyến trên Cổng DVC / VssID' },
+      { ten: 'CCCD/CMND của người tham gia', soLuong: '01 bản (xuất trình)' },
+      { ten: 'Danh sách thành viên hộ gia đình', soLuong: '01 bản', ghiChu: 'Đối chiếu dữ liệu cư trú để được giảm trừ mức đóng' },
+    ],
+    trinhTu: [
+      'Kê khai trực tuyến qua ứng dụng VssID hoặc Cổng Dịch vụ công, hoặc đến đại lý thu (UBND Phường, Bưu điện)',
+      'Đối chiếu thông tin thành viên hộ gia đình để tính mức đóng giảm trừ',
+      'Đóng tiền theo phương thức 3/6/12 tháng',
+      'Nhận thẻ BHYT điện tử trên VssID (hoặc thẻ giấy nếu yêu cầu)',
+    ],
+    canCuPhapLy: [
+      'Luật Bảo hiểm Y tế sửa đổi 2024 (số 51/2024/QH15) — hiệu lực 01/07/2025',
+      'Luật BHYT 2008 (số 25/2008/QH12) và Luật sửa đổi 2014',
+      'Nghị định 75/2023/NĐ-CP về mức đóng, mức hưởng BHYT',
+      'Quyết định 595/QĐ-BHXH về quy trình thu BHXH, BHYT',
+    ],
+    diaDiemNop: 'Đại lý thu BHYT tại UBND Phường Long Trường / Bưu điện / cơ quan BHXH khu vực',
+    thoiGianLamViec: 'Thứ 2 – Thứ 7: 7h30 – 11h30 & 13h00 – 17h00',
+    liuY: 'Tham gia BHYT liên tục đủ 5 năm được hưởng quyền lợi cao hơn khi chi phí khám chữa bệnh vượt mức quy định. Khuyến khích cài đặt ứng dụng VssID để dùng thẻ BHYT điện tử.',
+    hotline: '1900 9068',
+    noiBat: true,
+    tags: ['bhyt', 'bảo hiểm y tế', 'thẻ bảo hiểm', 'hộ gia đình', 'vssid', 'khám chữa bệnh', 'bảo hiểm'],
+  },
+
+  {
+    id: 'yt-002',
+    maSo: '1.001787',
+    ten: 'Cấp lại, đổi thẻ BHYT',
+    linhVuc: 'Y_TE',
+    mucDoTrucTuyen: 4,
+    coQuanGiaiQuyet: 'Cơ quan BHXH khu vực / Tổ chức dịch vụ thu (UBND Phường, Bưu điện)',
+    doiTuong: 'Người có thẻ BHYT bị mất, rách, hỏng hoặc sai thông tin cần điều chỉnh.',
+    moTa: 'Cấp lại hoặc đổi thẻ BHYT khi mất, hỏng, sai thông tin, hoặc thay đổi nơi đăng ký khám chữa bệnh ban đầu. Có thể thực hiện hoàn toàn trực tuyến qua VssID.',
+    thoiHanGiaiQuyet: 'Trong ngày (nếu không thay đổi thông tin); tối đa 3 ngày làm việc',
+    lePhi: 'Không thu',
+    phiDichVu: 'Không',
+    ketQua: 'Thẻ BHYT mới (điện tử hoặc giấy)',
+    thanhPhanHoSo: [
+      { ten: 'Tờ khai điều chỉnh thông tin (Mẫu TK1-TS)', soLuong: '01 bản', ghiChu: 'Khai trực tuyến qua VssID' },
+      { ten: 'CCCD/CMND', soLuong: '01 bản (xuất trình)' },
+      { ten: 'Thẻ BHYT cũ (nếu đổi do sai thông tin)', soLuong: '01 bản' },
+    ],
+    trinhTu: [
+      'Đăng nhập ứng dụng VssID hoặc Cổng DVC, chọn "Cấp lại / đổi thẻ BHYT"',
+      'Kê khai lý do và thông tin cần điều chỉnh',
+      'Cơ quan BHXH xử lý và cấp thẻ điện tử mới',
+      'Tra cứu thẻ trên VssID hoặc nhận thẻ giấy tại điểm đăng ký',
+    ],
+    canCuPhapLy: [
+      'Luật Bảo hiểm Y tế sửa đổi 2024 (số 51/2024/QH15)',
+      'Quyết định 595/QĐ-BHXH',
+      'Quyết định 811/QĐ-BHXH về dịch vụ công trực tuyến BHXH',
+    ],
+    diaDiemNop: 'Trực tuyến qua VssID / đại lý thu tại UBND Phường Long Trường',
+    thoiGianLamViec: 'Trực tuyến 24/7 · Đại lý: Thứ 2 – Thứ 7 giờ hành chính',
+    liuY: 'Từ 2025, thẻ BHYT giấy không còn bắt buộc — chỉ cần xuất trình CCCD gắn chip hoặc thẻ BHYT trên VssID khi khám chữa bệnh.',
+    hotline: '1900 9068',
+    noiBat: false,
+    tags: ['bhyt', 'cấp lại thẻ', 'đổi thẻ', 'mất thẻ bảo hiểm', 'vssid', 'thẻ bảo hiểm y tế'],
+  },
+
+  {
+    id: 'yt-003',
+    maSo: '2.002193',
+    ten: 'Hỗ trợ BHYT cho hộ nghèo, cận nghèo, đối tượng chính sách',
+    linhVuc: 'Y_TE',
+    mucDoTrucTuyen: 3,
+    coQuanGiaiQuyet: 'UBND Phường Long Trường (xác nhận) → Cơ quan BHXH',
+    doiTuong: 'Người thuộc hộ nghèo, cận nghèo, người cao tuổi từ 80 tuổi, người có công, trẻ em dưới 6 tuổi, đồng bào DTTS vùng khó khăn.',
+    moTa: 'Cấp thẻ BHYT miễn phí hoặc hỗ trợ một phần mức đóng cho các đối tượng chính sách theo quy định. Hộ nghèo được hỗ trợ 100%, hộ cận nghèo tối thiểu 70% mức đóng.',
+    thoiHanGiaiQuyet: '5 – 10 ngày làm việc',
+    lePhi: 'Miễn phí (hộ nghèo, người có công, trẻ dưới 6 tuổi); hỗ trợ 70-100% (hộ cận nghèo)',
+    phiDichVu: 'Không',
+    ketQua: 'Thẻ BHYT miễn phí / được hỗ trợ mức đóng',
+    thanhPhanHoSo: [
+      { ten: 'Đơn đề nghị cấp thẻ BHYT theo đối tượng chính sách', soLuong: '01 bản' },
+      { ten: 'Giấy xác nhận hộ nghèo/cận nghèo hoặc giấy tờ chứng minh đối tượng', soLuong: '01 bản', ghiChu: 'UBND Phường xác nhận' },
+      { ten: 'CCCD/CMND', soLuong: '01 bản photo' },
+    ],
+    trinhTu: [
+      'Người dân nộp hồ sơ tại UBND Phường Long Trường (hoặc nhờ Khu phố hỗ trợ)',
+      'UBND Phường rà soát, xác nhận đối tượng chính sách',
+      'Chuyển danh sách sang cơ quan BHXH cấp thẻ',
+      'Nhận thẻ BHYT miễn phí / được hỗ trợ',
+    ],
+    canCuPhapLy: [
+      'Luật Bảo hiểm Y tế sửa đổi 2024 (số 51/2024/QH15)',
+      'Nghị định 75/2023/NĐ-CP về mức đóng, mức hưởng và hỗ trợ BHYT',
+      'Nghị định 20/2021/NĐ-CP về chính sách trợ giúp xã hội',
+    ],
+    diaDiemNop: 'Bộ phận Một cửa UBND Phường Long Trường',
+    thoiGianLamViec: 'Thứ 2 – Thứ 6: 7h30 – 11h30 & 13h00 – 17h00',
+    liuY: 'Khu phố 25 hỗ trợ rà soát và lập danh sách đối tượng. Liên hệ Ban quản lý khu phố nếu gia đình thuộc diện chính sách nhưng chưa được cấp thẻ.',
+    hotline: '028 3746 1111',
+    noiBat: false,
+    tags: ['bhyt', 'hộ nghèo', 'cận nghèo', 'người có công', 'trẻ em', 'miễn phí bảo hiểm', 'chính sách', 'người cao tuổi'],
+  },
+
+  // ══════════════════════════════════════════════
+  //  LĨNH VỰC GIÁO DỤC
+  //  Cập nhật: Miễn học phí toàn bộ HS công lập từ
+  //  năm học 2025-2026 (Nghị quyết Quốc hội 06/2025)
+  // ══════════════════════════════════════════════
+
+  {
+    id: 'gd-001',
+    maSo: '1.005402',
+    ten: 'Đăng ký tuyển sinh đầu cấp (mầm non, lớp 1, lớp 6)',
+    linhVuc: 'GIAO_DUC',
+    mucDoTrucTuyen: 4,
+    coQuanGiaiQuyet: 'Nhà trường / Phòng Giáo dục & Đào tạo — qua hệ thống tuyển sinh TP.HCM',
+    doiTuong: 'Cha mẹ, người giám hộ của trẻ vào học mầm non, lớp 1, lớp 6 năm học mới.',
+    moTa: 'Đăng ký tuyển sinh đầu cấp trực tuyến. Từ năm học 2025-2026, TP.HCM áp dụng tuyển sinh theo bản đồ số GIS phân tuyến theo NƠI CƯ TRÚ THỰC TẾ (không còn theo hộ khẩu cứng), thực hiện qua hệ thống tuyensinhdaucap.hcm.edu.vn.',
+    thoiHanGiaiQuyet: 'Theo kế hoạch tuyển sinh hằng năm (thường tháng 5 – 7)',
+    lePhi: 'Không thu',
+    phiDichVu: 'Không',
+    ketQua: 'Kết quả phân bổ trường; Giấy báo nhập học',
+    thanhPhanHoSo: [
+      { ten: 'Mã định danh cá nhân của trẻ (số định danh / CCCD)', soLuong: '01', ghiChu: 'Hệ thống tự lấy dữ liệu cư trú từ CSDL quốc gia' },
+      { ten: 'Giấy khai sinh của trẻ', soLuong: '01 bản (đối chiếu)' },
+      { ten: 'Thông tin cư trú (nơi ở thực tế)', soLuong: '—', ghiChu: 'Dùng để phân tuyến trường theo bản đồ GIS' },
+    ],
+    trinhTu: [
+      'Truy cập hệ thống tuyển sinh đầu cấp TP.HCM (tuyensinhdaucap.hcm.edu.vn) theo lịch công bố',
+      'Nhập mã định danh của trẻ — hệ thống tự lấy dữ liệu cư trú và đề xuất trường theo phân tuyến',
+      'Xác nhận nguyện vọng và nộp hồ sơ trực tuyến',
+      'Nhận kết quả phân bổ trường, hoàn tất nhập học tại trường được phân',
+    ],
+    canCuPhapLy: [
+      'Luật Giáo dục 2019 (số 43/2019/QH14)',
+      'Thông tư 30/2024/TT-BGDĐT về Quy chế tuyển sinh THCS và THPT',
+      'Kế hoạch tuyển sinh đầu cấp hằng năm của UBND TP.HCM',
+      'Đề án 06/CP về dữ liệu dân cư phục vụ tuyển sinh',
+    ],
+    diaDiemNop: 'Trực tuyến: tuyensinhdaucap.hcm.edu.vn · Hỗ trợ trực tiếp tại trường / UBND Phường',
+    thoiGianLamViec: 'Theo lịch tuyển sinh hằng năm (công bố trên cổng thông tin)',
+    liuY: 'Phân tuyến dựa trên NƠI CƯ TRÚ THỰC TẾ qua bản đồ GIS. Hãy đảm bảo thông tin cư trú của trẻ chính xác trong hệ thống. Khu phố 25 hỗ trợ phụ huynh chưa quen thao tác trực tuyến.',
+    hotline: '028 3746 1111',
+    noiBat: true,
+    tags: ['tuyển sinh', 'lớp 1', 'lớp 6', 'mầm non', 'đầu cấp', 'nhập học', 'trường học', 'giáo dục', 'học sinh'],
+  },
+
+  {
+    id: 'gd-002',
+    maSo: '1.005410',
+    ten: 'Miễn học phí học sinh trường công lập',
+    linhVuc: 'GIAO_DUC',
+    mucDoTrucTuyen: 1,
+    coQuanGiaiQuyet: 'Cơ sở giáo dục công lập (tự động áp dụng)',
+    doiTuong: 'Toàn bộ học sinh từ mầm non đến hết THPT tại cơ sở giáo dục công lập trên cả nước.',
+    moTa: 'Từ năm học 2025-2026, theo Nghị quyết của Quốc hội (tháng 6/2025), MIỄN HỌC PHÍ cho toàn bộ học sinh công lập từ mầm non đến hết THPT trên cả nước. Chính sách được áp dụng tự động, phụ huynh KHÔNG cần nộp đơn xin miễn.',
+    thoiHanGiaiQuyet: 'Áp dụng tự động từ năm học 2025-2026',
+    lePhi: 'Không (được miễn học phí)',
+    phiDichVu: 'Không',
+    ketQua: 'Miễn học phí — không phải đóng học phí cho nhà trường',
+    thanhPhanHoSo: [
+      { ten: 'Không cần hồ sơ', soLuong: '—', ghiChu: 'Chính sách áp dụng tự động cho học sinh công lập' },
+    ],
+    trinhTu: [
+      'Học sinh nhập học tại trường công lập như bình thường',
+      'Nhà trường áp dụng miễn học phí theo chính sách của Nhà nước',
+      'Phụ huynh không phải đóng khoản học phí (các khoản thu khác như BHYT, ăn bán trú... vẫn theo quy định riêng)',
+    ],
+    canCuPhapLy: [
+      'Nghị quyết của Quốc hội về miễn học phí (kỳ họp tháng 6/2025)',
+      'Luật Giáo dục 2019 (số 43/2019/QH14)',
+      'Nghị định 81/2021/NĐ-CP (sửa đổi bởi Nghị định 97/2023/NĐ-CP) về học phí',
+    ],
+    diaDiemNop: 'Tại cơ sở giáo dục (tự động) — không cần nộp đơn',
+    thoiGianLamViec: '—',
+    liuY: 'Miễn học phí KHÔNG bao gồm các khoản thu khác (bảo hiểm, ăn bán trú, đồng phục, học liệu...). Nếu trường thu sai quy định, phụ huynh có thể phản ánh qua mục Phản ánh của khu phố hoặc Phòng GD&ĐT.',
+    hotline: '028 3746 1111',
+    noiBat: true,
+    tags: ['miễn học phí', 'học phí', 'trường công lập', 'giáo dục', 'học sinh', 'chính sách giáo dục', '2026'],
+  },
+
+  {
+    id: 'gd-003',
+    maSo: '2.001629',
+    ten: 'Hỗ trợ chi phí học tập cho đối tượng chính sách',
+    linhVuc: 'GIAO_DUC',
+    mucDoTrucTuyen: 3,
+    coQuanGiaiQuyet: 'UBND Phường Long Trường (xác nhận) → Phòng GD&ĐT / nhà trường',
+    doiTuong: 'Học sinh thuộc hộ nghèo, cận nghèo, mồ côi, khuyết tật, con thương binh - liệt sĩ, đồng bào DTTS.',
+    moTa: 'Hỗ trợ chi phí học tập (sách vở, đồ dùng học tập) và các khoản hỗ trợ khác cho học sinh thuộc diện chính sách, ngoài chính sách miễn học phí chung.',
+    thoiHanGiaiQuyet: '10 – 15 ngày làm việc',
+    lePhi: 'Không thu',
+    phiDichVu: 'Không',
+    ketQua: 'Quyết định hỗ trợ chi phí học tập',
+    thanhPhanHoSo: [
+      { ten: 'Đơn đề nghị hỗ trợ chi phí học tập', soLuong: '01 bản' },
+      { ten: 'Giấy xác nhận đối tượng (hộ nghèo/cận nghèo, khuyết tật, con thương binh - liệt sĩ...)', soLuong: '01 bản', ghiChu: 'UBND Phường xác nhận' },
+      { ten: 'Giấy xác nhận học sinh đang học (do nhà trường cấp)', soLuong: '01 bản' },
+      { ten: 'CCCD/CMND của cha mẹ và giấy khai sinh của học sinh', soLuong: '01 bản photo' },
+    ],
+    trinhTu: [
+      'Nộp hồ sơ tại UBND Phường Long Trường (hoặc nhờ Khu phố 25 hỗ trợ)',
+      'UBND Phường xác nhận đối tượng chính sách',
+      'Chuyển Phòng GD&ĐT / nhà trường thẩm định, ra quyết định hỗ trợ',
+      'Nhận hỗ trợ theo quy định (chuyển khoản hoặc qua nhà trường)',
+    ],
+    canCuPhapLy: [
+      'Nghị định 81/2021/NĐ-CP (sửa đổi bởi Nghị định 97/2023/NĐ-CP) về học phí và hỗ trợ chi phí học tập',
+      'Nghị định 20/2021/NĐ-CP về chính sách trợ giúp xã hội',
+      'Luật Giáo dục 2019 (số 43/2019/QH14)',
+    ],
+    diaDiemNop: 'Bộ phận Một cửa UBND Phường Long Trường',
+    thoiGianLamViec: 'Thứ 2 – Thứ 6: 7h30 – 11h30 & 13h00 – 17h00',
+    liuY: 'Hồ sơ thường nộp vào đầu năm học. Khu phố 25 hỗ trợ rà soát, lập danh sách học sinh thuộc diện chính sách trên địa bàn.',
+    hotline: '028 3746 1111',
+    noiBat: false,
+    tags: ['hỗ trợ học tập', 'chi phí học tập', 'hộ nghèo', 'học sinh chính sách', 'miễn giảm', 'khuyết tật', 'con thương binh', 'giáo dục'],
   },
 ]
 

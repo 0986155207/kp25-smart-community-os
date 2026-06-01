@@ -22,6 +22,8 @@ const TABS: { value: LinhVuc | 'TAT_CA'; label: string; icon: string }[] = [
   { value: 'CU_TRU',    label: 'Cư trú',              icon: '🏠' },
   { value: 'CHUNG_THUC',label: 'Chứng thực',          icon: '✅' },
   { value: 'AN_SINH',   label: 'An sinh XH',          icon: '🤝' },
+  { value: 'Y_TE',      label: 'Y tế – BHYT',         icon: '🏥' },
+  { value: 'GIAO_DUC',  label: 'Giáo dục',            icon: '🎓' },
   { value: 'TU_PHAP',   label: 'Tư pháp',             icon: '⚖️'  },
   { value: 'XAY_DUNG',  label: 'Đất đai',             icon: '🏗️'  },
   { value: 'KINH_DOANH',label: 'Kinh doanh',          icon: '🏪' },
