@@ -38,7 +38,7 @@ export default function PhieuKeKhaiClient() {
             <li>Cán bộ/tổ trưởng phát trực tiếp cho từng hộ</li>
             <li>Hộ kê khai: quét QR điền online (nhanh) hoặc điền phiếu giấy</li>
             <li>Dữ liệu online vào hàng chờ → cán bộ duyệt (tự phát hiện trùng) → lưu chính thức</li>
-            <li>Phiếu giấy: nhập qua "Nhập từ Excel" hoặc gõ vào hệ thống</li>
+            <li>Phiếu giấy: nhập qua « Nhập từ Excel » hoặc gõ vào hệ thống</li>
           </ol>
         </div>
       </div>
