@@ -1,12 +1,15 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState, useEffect, useTransition } from 'react'
 import toast from 'react-hot-toast'
 import {
   Home, User, Phone, Clock, Check, X, Loader2, MapPin, Users, Trash2,
-  QrCode, Download, Printer, ExternalLink, CheckCircle2,
+  Download, Printer, ExternalLink, CheckCircle2, AlertTriangle, RefreshCw,
 } from 'lucide-react'
-import { duyetHoMoi, tuChoiHoMoi, type HoMoiItem, type ThanhVienKhai, type KetQuaDuyet } from './actions'
+import {
+  duyetHoMoi, duyetVaCapNhatHo, tuChoiHoMoi, timHoTrung,
+  type HoMoiItem, type ThanhVienKhai, type KetQuaDuyet, type HoTrungItem,
+} from './actions'
 
 const GT: Record<string, string> = { NAM: 'Nam', NU: 'Nữ', KHAC: 'Khác' }
 
@@ -152,6 +155,18 @@ function Card({ item, onApproved, onRejected }: {
   const [rejecting, setRejecting] = useState(false)
   const [lyDo, setLyDo]           = useState('')
   const [pending, start]          = useTransition()
+  const [hoTrung, setHoTrung]     = useState<HoTrungItem[]>([])
+
+  // Tự kiểm tra trùng khi card hiển thị
+  useEffect(() => {
+    timHoTrung(item.chu_ho, item.so_dien_thoai ?? '').then(setHoTrung)
+  }, [item.chu_ho, item.so_dien_thoai])
+
+  const duLieu = () => ({
+    chu_ho: chuHo, dia_chi: diaChi, so_dien_thoai: sdt,
+    so_nha: soNha, duong: duong, to_khu_vuc: to,
+    loai_cu_tru: loaiCuTru, thanh_vien: tv,
+  })
 
   function setTvField(i: number, k: keyof ThanhVienKhai, v: string) {
     setTv(prev => prev.map((t, idx) => idx === i ? { ...t, [k]: v } : t))
@@ -160,11 +175,13 @@ function Card({ item, onApproved, onRejected }: {
 
   function approve() {
     start(async () => {
-      const res = await duyetHoMoi(item.id, {
-        chu_ho: chuHo, dia_chi: diaChi, so_dien_thoai: sdt,
-        so_nha: soNha, duong: duong, to_khu_vuc: to,
-        loai_cu_tru: loaiCuTru, thanh_vien: tv,
-      })
+      const res = await duyetHoMoi(item.id, duLieu())
+      if (res.success) { toast.success(res.message); onApproved(res) } else toast.error(res.message)
+    })
+  }
+  function capNhatHo(hoIdCu: string) {
+    start(async () => {
+      const res = await duyetVaCapNhatHo(item.id, hoIdCu, duLieu())
       if (res.success) { toast.success(res.message); onApproved(res) } else toast.error(res.message)
     })
   }
@@ -262,13 +279,46 @@ function Card({ item, onApproved, onRejected }: {
         )}
       </div>
 
+      {/* ── Cảnh báo trùng — hộ đã tồn tại trong hệ thống ── */}
+      {hoTrung.length > 0 && (
+        <div className="px-4 pb-1">
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-3">
+            <div className="flex items-center gap-2 mb-2">
+              <AlertTriangle size={14} className="text-amber-600" />
+              <p className="text-xs font-bold text-amber-800">
+                Phát hiện {hoTrung.length} hộ có thể trùng trong hệ thống
+              </p>
+            </div>
+            <p className="text-[11px] text-amber-700 mb-2 leading-relaxed">
+              Nếu đây là cập nhật cho hộ đã có, hãy chọn <strong>&quot;Cập nhật&quot;</strong> để tránh tạo trùng
+              (nhân khẩu trùng CCCD sẽ được cập nhật, người mới được thêm vào):
+            </p>
+            <div className="space-y-1.5">
+              {hoTrung.map(h => (
+                <div key={h.id} className="flex items-center gap-2 bg-white rounded-lg border border-amber-100 p-2">
+                  <Home size={13} className="text-amber-500 shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-semibold text-slate-800 truncate">{h.chu_ho} <span className="font-mono text-slate-400">· {h.ma_ho}</span></p>
+                    <p className="text-[10px] text-slate-400 truncate">{h.dia_chi_day} · {h.so_nhan_khau} NK</p>
+                  </div>
+                  <button onClick={() => capNhatHo(h.id)} disabled={pending}
+                    className="shrink-0 inline-flex items-center gap-1 px-2.5 py-1.5 bg-amber-600 text-white text-[11px] font-bold rounded-lg hover:bg-amber-700 disabled:opacity-60 transition-colors">
+                    {pending ? <Loader2 size={11} className="animate-spin" /> : <RefreshCw size={11} />} Cập nhật
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Hành động */}
       {!rejecting ? (
         <div className="flex items-center gap-2 p-4 border-t border-slate-100">
           <button onClick={approve} disabled={pending}
             className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-emerald-600 text-white text-sm font-semibold rounded-xl hover:bg-emerald-700 disabled:opacity-60 transition-all">
             {pending ? <Loader2 size={14} className="animate-spin" /> : <Check size={15} />}
-            Duyệt & tạo hồ sơ
+            {hoTrung.length > 0 ? 'Tạo hộ MỚI (không trùng)' : 'Duyệt & tạo hồ sơ'}
           </button>
           <button onClick={() => setRejecting(true)} disabled={pending}
             className="px-4 py-2.5 border border-slate-200 text-slate-600 text-sm font-semibold rounded-xl hover:bg-slate-50 transition-all">

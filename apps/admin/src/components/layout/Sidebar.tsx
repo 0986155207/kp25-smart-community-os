@@ -8,7 +8,7 @@ import {
   Settings, LogOut, FileText, Shield, ChevronRight,
   Bot, TrendingUp, Heart, ShieldCheck, Home, Database, Sparkles, BellRing,
   UserCog, CalendarDays, Layers, Activity, MessageSquareMore, Zap, ClipboardCheck, ScanLine,
-  Inbox as InboxIcon, Megaphone, Building2, BookOpen, X,
+  Inbox as InboxIcon, Megaphone, Building2, BookOpen, X, ClipboardList,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { dangXuat } from '@/lib/auth'
@@ -79,6 +79,11 @@ const MENU: MenuGroup[] = [
       {
         href: '/dashboard/dan-cu/quet-cccd',
         icon: ScanLine, label: 'Quét CCCD (AI)',
+        roles: ['BI_THU', 'TRUONG_KHU_PHO', 'CONG_AN'],
+      },
+      {
+        href: '/dashboard/dan-cu/phieu-ke-khai',
+        icon: ClipboardList, label: 'Phiếu kê khai',
         roles: ['BI_THU', 'TRUONG_KHU_PHO', 'CONG_AN'],
       },
       {

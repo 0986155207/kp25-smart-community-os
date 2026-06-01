@@ -204,6 +204,152 @@ export async function duyetHoMoi(
   }
 }
 
+// ════════════════════════════════════════════════════════════
+//  PHÁT HIỆN TRÙNG — tìm hộ đã tồn tại khớp với kê khai
+// ════════════════════════════════════════════════════════════
+export interface HoTrungItem {
+  id:           string
+  ma_ho:        string
+  chu_ho:       string
+  dia_chi_day:  string | null
+  so_dien_thoai: string | null
+  so_nhan_khau: number
+}
+
+export async function timHoTrung(chuHo: string, soDienThoai: string): Promise<HoTrungItem[]> {
+  try {
+    if (!chuHo?.trim()) return []
+    const supabase = await createClient()
+
+    // Tìm theo tên chủ hộ (gần đúng) HOẶC số điện thoại (chính xác)
+    const orParts: string[] = [`chu_ho.ilike.%${chuHo.trim()}%`]
+    if (soDienThoai?.trim()) orParts.push(`so_dien_thoai.eq.${soDienThoai.trim()}`)
+
+    const { data } = await supabase
+      .from('ho_dan')
+      .select('id, ma_ho, chu_ho, dia_chi_day, so_dien_thoai, so_nhan_khau')
+      .is('deleted_at', null)
+      .or(orParts.join(','))
+      .limit(5)
+
+    return (data ?? []) as HoTrungItem[]
+  } catch (err) {
+    console.error('[timHoTrung]', err)
+    return []
+  }
+}
+
+// ── Duyệt & CẬP NHẬT hộ có sẵn (thay vì tạo trùng) ───────────
+export async function duyetVaCapNhatHo(
+  id: string,
+  hoIdCu: string,
+  duLieu: { chu_ho: string; dia_chi: string; so_dien_thoai: string; so_nha: string; duong: string; to_khu_vuc: string; loai_cu_tru: string; thanh_vien: ThanhVienKhai[] }
+): Promise<KetQuaDuyet> {
+  try {
+    const supabase = await createClient()
+    const canBo = await layCanBoHienTai()
+
+    const { data: dk } = await supabase.from('dang_ky_ho_moi').select('trang_thai').eq('id', id).single()
+    if (!dk) return { success: false, message: 'Không tìm thấy đăng ký' }
+    if (dk.trang_thai !== 'CHO_DUYET') return { success: false, message: 'Đăng ký đã được xử lý' }
+
+    // Lấy hộ cũ + nhân khẩu hiện có
+    const { data: hoCu } = await supabase.from('ho_dan').select('ma_ho, qr_token').eq('id', hoIdCu).single()
+    if (!hoCu) return { success: false, message: 'Hộ cần cập nhật không tồn tại' }
+
+    const { data: nkHienCo } = await supabase
+      .from('nhan_khau').select('id, cccd, ho_ten').eq('ho_id', hoIdCu).is('deleted_at', null)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const nkList = (nkHienCo ?? []) as any[]
+    const cccdMap = new Map<string, string>()  // cccd → nhan_khau_id
+    for (const nk of nkList) if (nk.cccd) cccdMap.set(String(nk.cccd).trim(), nk.id)
+
+    const trangThaiNk = duLieu.loai_cu_tru === 'TAM_TRU' ? 'TAM_TRU' : 'THUONG_TRU'
+    const cl = (v?: string | null) => (v?.trim() || null)
+    const tv = (duLieu.thanh_vien ?? []).filter(t => t.ho_ten?.trim())
+
+    // 1. Cập nhật thông tin hộ
+    await supabase.from('ho_dan').update({
+      chu_ho:        duLieu.chu_ho.trim(),
+      dia_chi_day:   duLieu.dia_chi.trim(),
+      so_nha:        cl(duLieu.so_nha),
+      duong:         cl(duLieu.duong),
+      to_truong:     cl(duLieu.to_khu_vuc),
+      so_dien_thoai: cl(duLieu.so_dien_thoai),
+      trang_thai:    trangThaiNk,
+      updated_at:    new Date().toISOString(),
+    }).eq('id', hoIdCu)
+
+    // 2. Merge nhân khẩu theo CCCD: có CCCD trùng → cập nhật; không → thêm mới
+    let soCapNhat = 0, soThemMoi = 0
+    for (const t of tv) {
+      const cccd = t.cccd?.trim()
+      const fields = {
+        ho_ten:      t.ho_ten.trim(),
+        ngay_sinh:   t.ngay_sinh || null,
+        gioi_tinh:   t.gioi_tinh === 'NU' ? 'NU' : t.gioi_tinh === 'KHAC' ? 'KHAC' : 'NAM',
+        quan_he:     t.quan_he?.trim() || 'Thành viên khác',
+        nghe_nghiep: cl(t.nghe_nghiep),
+        trang_thai:  trangThaiNk,
+        updated_at:  new Date().toISOString(),
+      }
+      // Trường mở rộng
+      const moRong = {
+        noi_sinh: cl(t.noi_sinh), nguyen_quan: cl(t.nguyen_quan), dan_toc: cl(t.dan_toc),
+        ton_giao: cl(t.ton_giao), quoc_tich: cl(t.quoc_tich), cccd_ngay_cap: cl(t.cccd_ngay_cap),
+        cccd_noi_cap: cl(t.cccd_noi_cap), tinh_trang_hon_nhan: cl(t.tinh_trang_hon_nhan),
+        noi_lam_viec: cl(t.noi_lam_viec), dia_chi_thuong_tru: cl(t.dia_chi_thuong_tru),
+      }
+
+      if (cccd && cccdMap.has(cccd)) {
+        // Cập nhật nhân khẩu có sẵn
+        const nkId = cccdMap.get(cccd)!
+        let { error } = await supabase.from('nhan_khau').update({ ...fields, ...moRong }).eq('id', nkId)
+        if (error && error.message && Object.keys(moRong).some(c => error!.message.includes(c))) {
+          const r = await supabase.from('nhan_khau').update(fields).eq('id', nkId); error = r.error
+        }
+        if (!error) soCapNhat++
+      } else {
+        // Thêm nhân khẩu mới
+        const insertCore = { ho_id: hoIdCu, cccd: cccd || null, ...fields }
+        let { error } = await supabase.from('nhan_khau').insert({ ...insertCore, ...moRong })
+        if (error && error.message && Object.keys(moRong).some(c => error!.message.includes(c))) {
+          const r = await supabase.from('nhan_khau').insert(insertCore); error = r.error
+        }
+        if (!error) soThemMoi++
+      }
+    }
+
+    // 3. Cập nhật số nhân khẩu
+    const { count } = await supabase
+      .from('nhan_khau').select('id', { count: 'exact', head: true })
+      .eq('ho_id', hoIdCu).is('deleted_at', null).or('da_mat.is.null,da_mat.eq.false')
+    await supabase.from('ho_dan').update({ so_nhan_khau: count ?? tv.length }).eq('id', hoIdCu)
+
+    // 4. Đánh dấu đã duyệt
+    await supabase.from('dang_ky_ho_moi').update({
+      trang_thai: 'DA_DUYET', ho_id_tao: hoIdCu,
+      can_bo_duyet_id: canBo?.id ?? null, can_bo_duyet_ten: canBo?.ho_ten ?? null,
+      ngay_duyet: new Date().toISOString(), updated_at: new Date().toISOString(),
+    }).eq('id', id)
+
+    ghiAuditLog({ hanh_dong: 'CAP_NHAT', bang: 'ho_dan', ban_ghi_id: hoIdCu, mo_ta: `Cập nhật hộ từ kê khai: "${duLieu.chu_ho}" — ${soCapNhat} cập nhật, ${soThemMoi} thêm mới` }).catch(() => {})
+
+    revalidatePath('/dashboard/dan-cu/duyet-ho-moi')
+    revalidatePath('/dashboard/dan-cu')
+    revalidatePath(`/dashboard/dan-cu/${hoIdCu}`)
+    return {
+      success: true,
+      message: `Đã cập nhật hộ "${duLieu.chu_ho}" (${soCapNhat} người cập nhật, ${soThemMoi} thêm mới)`,
+      hoId: hoIdCu, maHo: hoCu.ma_ho as string, chuHo: duLieu.chu_ho.trim(),
+      qrToken: (hoCu.qr_token as string) ?? undefined,
+    }
+  } catch (err) {
+    console.error('[duyetVaCapNhatHo]', err)
+    return { success: false, message: err instanceof Error ? err.message : 'Lỗi không xác định' }
+  }
+}
+
 // ── Từ chối ──────────────────────────────────────────────────
 export async function tuChoiHoMoi(id: string, lyDo: string): Promise<{ success: boolean; message: string }> {
   try {
