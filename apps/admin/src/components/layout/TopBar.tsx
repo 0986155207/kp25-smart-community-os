@@ -1,8 +1,9 @@
 'use client'
 
-import { Bell } from 'lucide-react'
+import { Bell, Menu } from 'lucide-react'
 import type { CanBo } from '@/lib/auth-config'
 import GlobalSearch from '@/components/search/GlobalSearch'
+import { useSidebar } from '@/lib/sidebar-store'
 
 function getInitials(name: string): string {
   return name
@@ -15,11 +16,19 @@ function getInitials(name: string): string {
 
 export default function TopBar({ canBo }: { canBo: CanBo | null }) {
   const initials = canBo ? getInitials(canBo.ho_ten) : 'CB'
+  const { toggle } = useSidebar()
 
   return (
-    <header className="h-14 bg-white border-b border-slate-100 flex items-center justify-between px-6 shrink-0">
-      {/* Search */}
-      <div className="flex items-center gap-3 flex-1 max-w-lg">
+    <header className="h-14 bg-white border-b border-slate-100 flex items-center justify-between px-4 sm:px-6 shrink-0">
+      {/* Hamburger (mobile) + Search */}
+      <div className="flex items-center gap-2 flex-1 max-w-lg">
+        <button
+          onClick={toggle}
+          className="lg:hidden p-2 rounded-lg hover:bg-slate-100 text-slate-600 transition-colors shrink-0"
+          aria-label="Mở menu"
+        >
+          <Menu size={20} />
+        </button>
         <GlobalSearch />
       </div>
 

@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
@@ -7,10 +8,11 @@ import {
   Settings, LogOut, FileText, Shield, ChevronRight,
   Bot, TrendingUp, Heart, ShieldCheck, Home, Database, Sparkles, BellRing,
   UserCog, CalendarDays, Layers, Activity, MessageSquareMore, Zap, ClipboardCheck, ScanLine,
-  Inbox as InboxIcon, Megaphone, Building2, BookOpen,
+  Inbox as InboxIcon, Megaphone, Building2, BookOpen, X,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { dangXuat } from '@/lib/auth'
+import { useSidebar } from '@/lib/sidebar-store'
 import { type CanBo, type VaiTro, VAI_TRO_LABEL, VAI_TRO_COLOR } from '@/lib/auth-config'
 
 // ─── Cấu hình menu ────────────────────────────────────────────
@@ -199,6 +201,7 @@ function getInitials(name: string): string {
 
 export default function Sidebar({ canBo }: { canBo: CanBo | null }) {
   const pathname = usePathname()
+  const { open, setOpen } = useSidebar()
   const vaiTro = canBo?.vai_tro
   const filteredMenu = filterMenu(vaiTro)
 
@@ -206,8 +209,25 @@ export default function Sidebar({ canBo }: { canBo: CanBo | null }) {
   const tenHienThi = canBo?.ho_ten ?? 'Cán bộ'
   const chucVu     = canBo ? (VAI_TRO_LABEL[canBo.vai_tro] ?? canBo.vai_tro) : 'Khu phố 25'
 
+  // Tự đóng drawer khi chuyển trang (mobile)
+  useEffect(() => { setOpen(false) }, [pathname, setOpen])
+
   return (
-    <aside className="w-60 bg-[#1E3A5F] text-white flex flex-col h-screen sticky top-0 shrink-0">
+    <>
+      {/* Backdrop mobile */}
+      {open && (
+        <div
+          onClick={() => setOpen(false)}
+          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+          aria-hidden
+        />
+      )}
+
+      <aside className={cn(
+        'w-60 bg-[#1E3A5F] text-white flex flex-col h-screen shrink-0 z-50',
+        'fixed inset-y-0 left-0 transition-transform duration-300 lg:sticky lg:top-0 lg:translate-x-0',
+        open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+      )}>
 
       {/* ── Logo ─────────────────────────────────────────────── */}
       <div className="p-5 border-b border-white/10">
@@ -216,10 +236,14 @@ export default function Sidebar({ canBo }: { canBo: CanBo | null }) {
             <span className="text-white font-bold text-xs">KP</span>
             <span className="text-[#FCD34D] font-bold text-xs">25</span>
           </div>
-          <div>
+          <div className="flex-1">
             <div className="font-bold text-sm text-white leading-tight">KP25 Admin</div>
             <div className="text-[10px] text-white/50">Hệ thống điều hành</div>
           </div>
+          {/* Nút đóng (mobile) */}
+          <button onClick={() => setOpen(false)} className="lg:hidden p-1 text-white/60 hover:text-white">
+            <X size={18} />
+          </button>
         </div>
       </div>
 
@@ -294,6 +318,7 @@ export default function Sidebar({ canBo }: { canBo: CanBo | null }) {
           </button>
         </form>
       </div>
-    </aside>
+      </aside>
+    </>
   )
 }
