@@ -12,6 +12,7 @@ import {
 } from '../data'
 import { getMauDonByThuTuc } from '../mau-don/data'
 import NopHoSoForm from './NopHoSoForm'
+import HuongDanGiaiQuyet from './HuongDanGiaiQuyet'
 
 // ─── Metadata động ──────────────────────────────────────────
 export async function generateMetadata(
@@ -221,6 +222,9 @@ export default async function ChiTietThuTucPage(
             ))}
           </div>
 
+          {/* ── Hướng dẫn giải quyết (3 cách) — thủ tục cấp Phường ── */}
+          <HuongDanGiaiQuyet tt={tt} />
+
           {/* ── Đối tượng thực hiện ───────────────────── */}
           <Section icon={<Users size={15} className="text-[#8B1A1A]" />} title="Đối tượng thực hiện">
             <p className="text-sm text-slate-700 leading-relaxed">{tt.doiTuong}</p>
@@ -342,6 +346,7 @@ export default async function ChiTietThuTucPage(
         <div className="space-y-5">
 
           {/* ── Nộp hồ sơ ───────────────────────────────── */}
+          <div id="nop-ho-so" className="scroll-mt-24" />
           {coTheNopTrucTuyen ? (
             <NopHoSoForm thuTucId={tt.id} tenThuTuc={tt.ten} />
           ) : (
