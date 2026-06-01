@@ -107,10 +107,11 @@ export default function HoMoiForm() {
         <div className="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-4">
           <CheckCircle2 size={32} className="text-emerald-600" />
         </div>
-        <h3 className="text-xl font-bold text-slate-900 mb-1">Đã gửi đăng ký!</h3>
+        <h3 className="text-xl font-bold text-slate-900 mb-1">Đã gửi kê khai!</h3>
         <p className="text-slate-500 text-sm leading-relaxed mb-5">
-          Cán bộ khu phố sẽ xác minh thông tin và tạo hồ sơ chính thức cho hộ của bạn
-          trong thời gian sớm nhất. Bạn sẽ được liên hệ qua số điện thoại đã cung cấp.
+          Cán bộ khu phố sẽ xác minh và cập nhật thông tin vào hệ thống trong thời gian sớm nhất.
+          Nếu hộ đã có hồ sơ, thông tin sẽ được bổ sung (không tạo trùng). Bạn sẽ được liên hệ
+          qua số điện thoại đã cung cấp.
         </p>
         <Link href="/" className="inline-block py-3 px-6 bg-[#1E3A5F] text-white text-sm font-semibold rounded-xl hover:bg-[#162d4a] transition-colors">
           Về trang chủ
@@ -308,7 +309,7 @@ export default function HoMoiForm() {
 
       <button onClick={submit} disabled={loading}
         className="w-full py-4 bg-[#1E3A5F] text-white font-bold text-sm rounded-2xl hover:bg-[#162d4a] disabled:opacity-60 flex items-center justify-center gap-2 transition-all shadow-sm">
-        {loading ? <><Loader2 size={17} className="animate-spin" /> Đang gửi...</> : <><Check size={17} /> Gửi đăng ký hộ dân mới</>}
+        {loading ? <><Loader2 size={17} className="animate-spin" /> Đang gửi...</> : <><Check size={17} /> Gửi kê khai thông tin hộ</>}
       </button>
 
       <p className="text-[11px] text-slate-400 text-center leading-relaxed">

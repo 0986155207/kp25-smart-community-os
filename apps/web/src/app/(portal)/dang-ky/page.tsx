@@ -137,14 +137,14 @@ export default function DangKyPage() {
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <h2 className="text-lg font-bold text-white">Đăng ký hộ dân mới</h2>
+              <h2 className="text-lg font-bold text-white">Kê khai thông tin hộ dân</h2>
               <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-white/20 text-white">
-                Hộ mới chuyển đến
+                Hộ đã có & hộ mới
               </span>
             </div>
             <p className="text-sm text-blue-100 leading-relaxed mt-0.5">
-              Hộ mới chưa có hồ sơ trên hệ thống? Khai báo thông tin hộ và các thành viên —
-              cán bộ xác minh và tạo hồ sơ chính thức.
+              Kê khai, bổ sung thông tin hộ và các thành viên — dành cho cả hộ đã có hồ sơ
+              (cập nhật) và hộ mới. Cán bộ xác minh, gộp dữ liệu không trùng.
             </p>
           </div>
           <ArrowRight size={20} className="text-blue-200 group-hover:translate-x-1 transition-transform shrink-0" />

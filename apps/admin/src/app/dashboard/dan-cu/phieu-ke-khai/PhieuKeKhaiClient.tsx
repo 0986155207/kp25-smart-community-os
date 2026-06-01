@@ -154,6 +154,8 @@ const PRINT_HTML = `<!DOCTYPE html><html lang="vi"><head><meta charset="utf-8"/>
 
   <p>Nhằm xây dựng hệ thống dữ liệu dân cư số chính xác, phục vụ tốt hơn công tác an sinh xã hội, thông báo khẩn cấp và các dịch vụ hành chính cho bà con, Ban quản lý Khu phố 25 trân trọng kính mời quý hộ gia đình phối hợp <b>kê khai, cập nhật thông tin hộ và các thành viên</b>.</p>
 
+  <p style="background:#f5f5f5; border:1px solid #999; padding:7px 10px;"><b>Phiếu này dành cho TẤT CẢ các hộ gia đình:</b> dù quý hộ <b>đã có thông tin trong hệ thống</b> (kê khai để bổ sung, cập nhật phần còn thiếu) hay là <b>hộ mới chuyển đến</b> chưa có hồ sơ. Cán bộ sẽ tự động đối chiếu và gộp dữ liệu, <b>không tạo trùng lặp</b>.</p>
+
   <p><b>Quý hộ có thể kê khai theo một trong hai cách:</b></p>
   <p style="margin-left:14px;">
     <b>Cách 1 (khuyến khích):</b> Dùng điện thoại quét mã QR bên dưới để điền trực tuyến — nhanh chóng, chỉ mất khoảng 3-5 phút.<br/>
