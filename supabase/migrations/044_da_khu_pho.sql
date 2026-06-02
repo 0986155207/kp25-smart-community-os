@@ -134,6 +134,35 @@ END $$;
 -- 4. RLS HELPER FUNCTIONS (SECURITY DEFINER — tránh đệ quy)
 -- ─────────────────────────────────────────────────────────────
 
+-- 4.0. Đảm bảo các helper cũ tồn tại (phòng khi migration 022 chưa chạy)
+CREATE OR REPLACE FUNCTION public.la_can_bo()
+RETURNS BOOLEAN
+LANGUAGE SQL SECURITY DEFINER STABLE SET search_path = public
+AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM public.profiles
+    WHERE id = auth.uid() AND deleted_at IS NULL
+    AND vai_tro IN (
+      'SUPER_ADMIN','ADMIN_PHUONG','BI_THU','TRUONG_KHU_PHO',
+      'CONG_AN','CAN_BO','DOAN_THE'
+    )
+  )
+$$;
+
+CREATE OR REPLACE FUNCTION public.la_quan_ly()
+RETURNS BOOLEAN
+LANGUAGE SQL SECURITY DEFINER STABLE SET search_path = public
+AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM public.profiles
+    WHERE id = auth.uid() AND deleted_at IS NULL
+    AND vai_tro IN ('SUPER_ADMIN','ADMIN_PHUONG','BI_THU','TRUONG_KHU_PHO')
+  )
+$$;
+
+GRANT EXECUTE ON FUNCTION public.la_can_bo()  TO anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.la_quan_ly() TO anon, authenticated;
+
 -- Đơn vị (khu phố) của user hiện tại
 CREATE OR REPLACE FUNCTION public.don_vi_cua_toi()
 RETURNS UUID
@@ -221,7 +250,8 @@ CREATE POLICY "nhan_khau_update" ON public.nhan_khau
   FOR UPDATE USING (public.la_can_bo() AND public.co_quyen_don_vi(don_vi_id));
 
 -- phan_anh: người gửi xem của mình; cán bộ xem theo khu phố; anon đọc (portal công khai)
-DROP POLICY IF EXISTS "phan_anh_read_v2" ON public.phan_anh;
+DROP POLICY IF EXISTS "phan_anh_own_read" ON public.phan_anh;  -- policy đệ quy cũ (migration 001)
+DROP POLICY IF EXISTS "phan_anh_read_v2"  ON public.phan_anh;
 CREATE POLICY "phan_anh_read_v2" ON public.phan_anh
   FOR SELECT USING (
     deleted_at IS NULL
