@@ -69,7 +69,7 @@ VALUES
    'Khu phố 25, Phường Long Trường, TP. Hồ Chí Minh',
    'kp25',
    'Phường Long Trường',
-   'Đặng Uy',
+   'Nguyễn Thị Hồng Thủy',
    '0773735317',
    '#8B1A1A',
    25)
