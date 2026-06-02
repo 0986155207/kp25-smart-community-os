@@ -222,3 +222,48 @@ export interface QrHoDan {
   token: string
   expiresAt?: string
 }
+
+// --- ĐƠN VỊ (KHU PHỐ) — nền tảng đa khu phố ---
+
+export enum LoaiDonVi {
+  KHU_PHO = 'KHU_PHO',
+  TO_DAN_PHO = 'TO_DAN_PHO',
+  PHUONG = 'PHUONG',
+}
+
+export const LOAI_DON_VI_LABEL: Record<LoaiDonVi, string> = {
+  [LoaiDonVi.KHU_PHO]: 'Khu phố',
+  [LoaiDonVi.TO_DAN_PHO]: 'Tổ dân phố',
+  [LoaiDonVi.PHUONG]: 'Phường',
+}
+
+/**
+ * UUID cố định của Khu phố 25 — đơn vị mặc định của hệ thống.
+ * Trùng với giá trị seed trong migration 044_da_khu_pho.sql.
+ * Mọi dữ liệu chưa chỉ định đơn vị sẽ mặc định thuộc KP25.
+ */
+export const KP25_DON_VI_ID = '00000000-0000-4000-8000-000000000025'
+
+export interface DonVi {
+  id: string
+  ma: string
+  ten: string
+  ten_day_du: string | null
+  loai: LoaiDonVi | string
+  phuong: string
+  tinh_thanh: string
+  slug: string | null
+  dia_chi: string | null
+  truong_kp_ten: string | null
+  truong_kp_sdt: string | null
+  bi_thu_ten: string | null
+  bi_thu_sdt: string | null
+  mau_chu_dao: string | null
+  logo_url: string | null
+  thu_tu: number
+  is_active: boolean
+  ghi_chu: string | null
+  created_at: string
+  updated_at: string
+  deleted_at: string | null
+}

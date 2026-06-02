@@ -147,6 +147,11 @@ const MENU: MenuGroup[] = [
     group: 'Hệ thống',
     items: [
       {
+        href: '/dashboard/khu-pho',
+        icon: Building2, label: 'Quản lý Khu phố',
+        roles: ['BI_THU', 'TRUONG_KHU_PHO'],
+      },
+      {
         href: '/dashboard/huong-dan',
         icon: BookOpen, label: 'Hướng dẫn sử dụng',
       },

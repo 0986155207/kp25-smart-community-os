@@ -62,6 +62,7 @@ export const QUYEN_TRUY_CAP: Record<string, VaiTro[]> = {
   '/dashboard/an-sinh/bhyt':           ['BI_THU', 'TRUONG_KHU_PHO', 'PHU_TRACH_NCT'],
   '/dashboard/an-sinh/ho-ngheo':       ['BI_THU', 'TRUONG_KHU_PHO', 'PHU_TRACH_NCT'],
   '/dashboard/an-sinh/nguoi-cao-tuoi': ['BI_THU', 'TRUONG_KHU_PHO', 'PHU_TRACH_NCT'],
+  '/dashboard/khu-pho':     ['BI_THU', 'TRUONG_KHU_PHO'],
   '/dashboard/cai-dat':     ['BI_THU', 'TRUONG_KHU_PHO'],
   '/dashboard/phan-quyen':  ['BI_THU'],
   '/dashboard/setup':       ['BI_THU'],
