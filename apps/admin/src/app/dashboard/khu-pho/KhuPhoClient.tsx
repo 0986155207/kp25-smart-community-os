@@ -3,7 +3,7 @@
 import { useState, useTransition } from 'react'
 import {
   Building2, Plus, Pencil, Trash2, X, Users, Home as HomeIcon,
-  UserCog, Phone, Check, Loader2, MapPin, Palette,
+  UserCog, Phone, Check, Loader2, MapPin, Palette, Award,
 } from 'lucide-react'
 import {
   type DonViItem, type DuLieuDonVi,
@@ -143,14 +143,31 @@ export default function KhuPhoClient({ danhSach }: { danhSach: DonViItem[] }) {
               </div>
             </div>
 
-            {dv.truong_kp_ten && (
-              <div className="flex items-center gap-1.5 text-xs text-slate-600">
-                <UserCog size={13} className="text-slate-400 shrink-0" />
-                <span className="truncate">{dv.truong_kp_ten}</span>
-                {dv.truong_kp_sdt && (
-                  <span className="inline-flex items-center gap-0.5 text-slate-400">
-                    <Phone size={11} /> {dv.truong_kp_sdt}
-                  </span>
+            {(dv.bi_thu_ten || dv.truong_kp_ten) && (
+              <div className="space-y-1">
+                {dv.bi_thu_ten && (
+                  <div className="flex items-center gap-1.5 text-xs text-slate-600">
+                    <Award size={13} className="text-amber-500 shrink-0" />
+                    <span className="text-slate-400">Bí thư:</span>
+                    <span className="truncate font-medium text-slate-700">{dv.bi_thu_ten}</span>
+                    {dv.bi_thu_sdt && (
+                      <span className="inline-flex items-center gap-0.5 text-slate-400">
+                        <Phone size={11} /> {dv.bi_thu_sdt}
+                      </span>
+                    )}
+                  </div>
+                )}
+                {dv.truong_kp_ten && (
+                  <div className="flex items-center gap-1.5 text-xs text-slate-600">
+                    <UserCog size={13} className="text-slate-400 shrink-0" />
+                    <span className="text-slate-400">Trưởng KP:</span>
+                    <span className="truncate font-medium text-slate-700">{dv.truong_kp_ten}</span>
+                    {dv.truong_kp_sdt && (
+                      <span className="inline-flex items-center gap-0.5 text-slate-400">
+                        <Phone size={11} /> {dv.truong_kp_sdt}
+                      </span>
+                    )}
+                  </div>
                 )}
               </div>
             )}
