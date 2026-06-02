@@ -59,33 +59,54 @@ export interface KetQua {
 // ════════════════════════════════════════════════════════════
 //  DANH SÁCH ĐƠN VỊ (kèm thống kê)
 // ════════════════════════════════════════════════════════════
-export async function layDanhSachDonVi(): Promise<DonViItem[]> {
-  const svc = createServiceClient()
-
-  const { data: dsDonVi, error } = await svc
-    .from('don_vi')
-    .select('*')
-    .is('deleted_at', null)
-    .order('thu_tu', { ascending: true })
-
-  if (error || !dsDonVi) {
-    console.error('[KhuPho] Lỗi lấy danh sách:', error?.message)
-    return []
+// Đếm an toàn — không bao giờ ném lỗi (tránh 503 cả trang)
+async function demAnToan(
+  svc: ReturnType<typeof createServiceClient>,
+  bang: string,
+  donViId: string,
+  loaiBoXoa: boolean,
+): Promise<number> {
+  try {
+    let q = svc.from(bang).select('id', { count: 'exact', head: true }).eq('don_vi_id', donViId)
+    if (loaiBoXoa) q = q.is('deleted_at', null)
+    const { count, error } = await q
+    if (error) {
+      console.error(`[KhuPho] Lỗi đếm ${bang}:`, error.message)
+      return 0
+    }
+    return count ?? 0
+  } catch (err) {
+    console.error(`[KhuPho] Ngoại lệ đếm ${bang}:`, err)
+    return 0
   }
+}
 
-  // Đếm hộ / nhân khẩu / cán bộ theo từng đơn vị (song song)
-  const ket = await Promise.all(
-    dsDonVi.map(async (dv) => {
-      const [hoRes, nkRes, cbRes] = await Promise.all([
-        svc.from('ho_dan').select('id', { count: 'exact', head: true })
-          .eq('don_vi_id', dv.id).is('deleted_at', null),
-        svc.from('nhan_khau').select('id', { count: 'exact', head: true })
-          .eq('don_vi_id', dv.id).is('deleted_at', null),
-        svc.from('can_bo').select('id', { count: 'exact', head: true })
-          .eq('don_vi_id', dv.id),
+export async function layDanhSachDonVi(): Promise<DonViItem[]> {
+  try {
+    const svc = createServiceClient()
+
+    const { data: dsDonVi, error } = await svc
+      .from('don_vi')
+      .select('*')
+      .is('deleted_at', null)
+      .order('thu_tu', { ascending: true })
+
+    if (error || !dsDonVi) {
+      console.error('[KhuPho] Lỗi lấy danh sách:', error?.message)
+      return []
+    }
+
+    // Đếm hộ / nhân khẩu / cán bộ theo từng đơn vị (tuần tự từng đơn vị,
+    // song song 3 bảng) — mỗi phép đếm chống lỗi riêng, không làm sập trang.
+    const ket: DonViItem[] = []
+    for (const dv of dsDonVi) {
+      const [so_ho, so_nhan_khau, so_can_bo] = await Promise.all([
+        demAnToan(svc, 'ho_dan', dv.id, true),
+        demAnToan(svc, 'nhan_khau', dv.id, true),
+        demAnToan(svc, 'can_bo', dv.id, false),
       ])
 
-      return {
+      ket.push({
         id: dv.id,
         ma: dv.ma,
         ten: dv.ten,
@@ -103,14 +124,17 @@ export async function layDanhSachDonVi(): Promise<DonViItem[]> {
         is_active: dv.is_active,
         ghi_chu: dv.ghi_chu,
         created_at: dv.created_at,
-        so_ho: hoRes.count ?? 0,
-        so_nhan_khau: nkRes.count ?? 0,
-        so_can_bo: cbRes.count ?? 0,
-      } satisfies DonViItem
-    })
-  )
+        so_ho,
+        so_nhan_khau,
+        so_can_bo,
+      })
+    }
 
-  return ket
+    return ket
+  } catch (err) {
+    console.error('[KhuPho] Ngoại lệ layDanhSachDonVi:', err)
+    return []
+  }
 }
 
 // ════════════════════════════════════════════════════════════
