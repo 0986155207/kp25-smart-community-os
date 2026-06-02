@@ -61,7 +61,7 @@ CREATE TRIGGER trg_don_vi_updated_at
 --    KP25_DON_VI_ID = '00000000-0000-4000-8000-000000000025'
 -- ─────────────────────────────────────────────────────────────
 INSERT INTO public.don_vi
-  (id, ma, ten, ten_day_du, slug, phuong, truong_kp_ten, truong_kp_sdt, mau_chu_dao, thu_tu)
+  (id, ma, ten, ten_day_du, slug, phuong, truong_kp_ten, truong_kp_sdt, bi_thu_ten, mau_chu_dao, thu_tu)
 VALUES
   ('00000000-0000-4000-8000-000000000025',
    'KP25',
@@ -71,6 +71,7 @@ VALUES
    'Phường Long Trường',
    'Nguyễn Thị Hồng Thủy',
    '0773735317',
+   'Phan Tấn Tài',
    '#8B1A1A',
    25)
 ON CONFLICT (ma) DO NOTHING;
