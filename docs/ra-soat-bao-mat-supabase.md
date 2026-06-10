@@ -61,14 +61,21 @@ Nếu cần, lên kế hoạch riêng + kiểm thử trên nhánh trước. Tạ
 
 ---
 
-## 5. Performance Advisor (tham khảo)
+## 5. Performance Advisor — ĐÃ XỬ LÝ (migration 046)
 
-Các gợi ý hiệu năng thường gặp + hướng xử lý:
-- **Unindexed foreign keys** → thêm index cho cột khóa ngoại hay lọc/join
-  (migration 044 đã thêm index cho mọi `don_vi_id`).
-- **Unused index** → cân nhắc bỏ index không dùng (chỉ khi chắc chắn).
-- **Auth RLS InitPlan** → bọc `auth.uid()` bằng `(SELECT auth.uid())` trong policy
-  để Postgres cache, tránh gọi lại mỗi dòng (tối ưu khi bảng lớn).
+Chạy **`046_performance_indexes_rls.sql`**:
+- **Unindexed foreign keys** → thêm index cho các FK hay join/lọc:
+  `phan_anh.nguoi_gui_id`, `phan_anh_lich_su.phan_anh_id`, `nhan_khau.profile_id`,
+  `workflow_assignments.phan_anh_id`/`can_bo_phu_trach_id`, `workflow_lich_su.assignment_id`,
+  `profiles.don_vi_id`/`ho_id`. (Migration 044 đã index mọi `don_vi_id` của bảng dữ liệu.)
+- **Auth RLS InitPlan** → bọc `auth.uid()` bằng `(SELECT auth.uid())` trong các policy
+  `profiles`, `phan_anh`, `chat_sessions`, `chat_messages` → Postgres cache, không tính lại mỗi dòng.
+- Tiện thể **sửa policy `profiles` đệ quy** còn sót (migration 022 chưa chạy ở DB này).
+
+Lưu ý không xử lý (có chủ đích):
+- **FK cột audit** (`created_by`/`updated_by`/`nguoi_tao_id`…) — không thêm index vì hầu như
+  không lọc theo; thêm sẽ phình index + chậm ghi. Cân nhắc nếu muốn Advisor sạch tuyệt đối.
+- **Unused index** → chỉ bỏ khi chắc chắn không dùng (theo dõi thêm thời gian).
 
 ---
 
