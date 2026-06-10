@@ -71,23 +71,12 @@ CREATE POLICY "phan_anh_read_v2" ON public.phan_anh
     )
   );
 
--- chat_sessions / chat_messages: bọc auth.uid()
+-- chat_sessions / chat_messages: KHÔNG đụng tới.
+-- Migration 034 đã dựng lại bảng chat theo mô hình ẩn danh (session_key từ
+-- localStorage), RLS bật nhưng KHÔNG có policy → chặn client trực tiếp, chỉ
+-- service role truy cập. Dọn policy cũ (nếu còn sót từ migration 001) cho sạch:
 DROP POLICY IF EXISTS "chat_sessions_own" ON public.chat_sessions;
-CREATE POLICY "chat_sessions_own" ON public.chat_sessions
-  FOR ALL USING (
-    nguoi_dung_id = (SELECT auth.uid())
-    OR nguoi_dung_id IS NULL
-  );
-
 DROP POLICY IF EXISTS "chat_messages_own" ON public.chat_messages;
-CREATE POLICY "chat_messages_own" ON public.chat_messages
-  FOR ALL USING (
-    EXISTS (
-      SELECT 1 FROM public.chat_sessions cs
-      WHERE cs.id = chat_messages.session_id
-      AND (cs.nguoi_dung_id = (SELECT auth.uid()) OR cs.nguoi_dung_id IS NULL)
-    )
-  );
 
 -- ─────────────────────────────────────────────────────────────
 -- GHI CHÚ (không chạy):
