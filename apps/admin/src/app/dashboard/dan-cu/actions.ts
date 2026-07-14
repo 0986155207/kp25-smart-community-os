@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { ghiAuditLog } from '@/lib/audit'
+import { KHU_PHO } from '@/lib/khu-pho'
 
 // ─── Sinh mã hộ tự động ─────────────────────────────────────
 function sinhMaHo(): string {
@@ -11,7 +12,7 @@ function sinhMaHo(): string {
   const yy = now.getFullYear().toString().slice(-2)
   const mm = String(now.getMonth() + 1).padStart(2, '0')
   const rand = Math.floor(Math.random() * 9999).toString().padStart(4, '0')
-  return `KP25-${yy}${mm}-${rand}`
+  return `${KHU_PHO.ma}-${yy}${mm}-${rand}`
 }
 
 // ─── Thêm hộ dân ────────────────────────────────────────────
@@ -44,6 +45,7 @@ export async function taoHoDan(
         trang_thai: (formData.get('trangThai') as string) || 'THUONG_TRU',
         ghi_chu: (formData.get('ghiChu') as string)?.trim() || null,
         qr_token: crypto.randomUUID(),
+        don_vi_id: KHU_PHO.id,
       })
       .select('id')
       .single()
@@ -169,6 +171,7 @@ export async function themNhanKhau(
       so_dien_thoai: g2('soDienThoai'),
       trang_thai: (formData.get('trangThai') as string) || 'THUONG_TRU',
       ghi_chu: g2('ghiChu'),
+      don_vi_id: KHU_PHO.id,
     }
     // Trường mở rộng (migration 041)
     const moRong: Record<string, string | null> = {}
@@ -301,7 +304,7 @@ export async function nhapDuLieuHangLoat(
 
   const hoRecords = danhSach.map((ho, idx) => ({
     _idx: idx,
-    ma_ho: `KP25-${yy}${mm}-${ts}${String(idx).padStart(3, '0')}`,
+    ma_ho: `${KHU_PHO.ma}-${yy}${mm}-${ts}${String(idx).padStart(3, '0')}`,
     chu_ho: ho.chuHo.trim(),
     dia_chi_day: ho.diaChiDay.trim(),
     so_nha: ho.soNha?.trim() || null,
@@ -311,6 +314,7 @@ export async function nhapDuLieuHangLoat(
     trang_thai: (ho.trangThai || 'THUONG_TRU') as string,
     so_nhan_khau: ho.nhanKhau.length,
     ghi_chu: null as null,
+    don_vi_id: KHU_PHO.id,
   }))
 
   // ── Batch INSERT hộ dân ──────────────────────────────────────
@@ -360,6 +364,7 @@ export async function nhapDuLieuHangLoat(
     so_dien_thoai: string | null
     trang_thai: string
     ghi_chu: null
+    don_vi_id: string
     _label: string  // chỉ để báo lỗi, không insert vào DB
   }[] = []
 
@@ -379,6 +384,7 @@ export async function nhapDuLieuHangLoat(
         so_dien_thoai: nk.soDienThoai?.trim() || null,
         trang_thai: nk.trangThai || 'THUONG_TRU',
         ghi_chu: null,
+        don_vi_id: KHU_PHO.id,
         _label: `${nk.hoTen} (hộ ${ho.chuHo})`,
       })
     })

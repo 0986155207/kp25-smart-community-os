@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Be_Vietnam_Pro } from 'next/font/google'
 import './globals.css'
 import { Toaster } from 'react-hot-toast'
+import { KHU_PHO } from '@/lib/khu-pho'
 
 const beVietnamPro = Be_Vietnam_Pro({
   subsets:  ['vietnamese', 'latin'],
@@ -12,17 +13,17 @@ const beVietnamPro = Be_Vietnam_Pro({
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | KP25 Smart Community',
-    default:  'KP25 Smart Community OS - Khu phố 25 Long Trường',
+    template: `%s | ${KHU_PHO.ma} Smart Community`,
+    default:  `${KHU_PHO.ma} Smart Community OS - ${KHU_PHO.ten} ${KHU_PHO.phuong.replace(/^Phường\s+/, '')}`,
   },
   description:
-    'Hệ điều hành số cộng đồng Khu phố 25, Phường Long Trường, TP.HCM. Phản ánh hiện trường, tra cứu thông tin, AI hỗ trợ 24/7.',
-  keywords: ['khu phố 25', 'long trường', 'smart community', 'chuyển đổi số', 'phản ánh hiện trường'],
-  authors:  [{ name: 'KP25 Smart Community OS' }],
+    `Hệ điều hành số cộng đồng ${KHU_PHO.ten}, ${KHU_PHO.phuong}, TP.HCM. Phản ánh hiện trường, tra cứu thông tin, AI hỗ trợ 24/7.`,
+  keywords: [KHU_PHO.ten.toLowerCase(), 'long trường', 'smart community', 'chuyển đổi số', 'phản ánh hiện trường'],
+  authors:  [{ name: `${KHU_PHO.ma} Smart Community OS` }],
   robots:   'index, follow',
   openGraph: {
-    title:       'KP25 Smart Community OS',
-    description: 'Hệ điều hành số cộng đồng Khu phố 25, Phường Long Trường, TP.HCM',
+    title:       `${KHU_PHO.ma} Smart Community OS`,
+    description: `Hệ điều hành số cộng đồng ${KHU_PHO.ten}, ${KHU_PHO.phuong}, TP.HCM`,
     locale:      'vi_VN',
     type:        'website',
   },
@@ -50,7 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="mobile-web-app-capable"       content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title"   content="KP25" />
+        <meta name="apple-mobile-web-app-title"   content={KHU_PHO.ma} />
       </head>
       <body>
         {children}

@@ -13,6 +13,7 @@ import {
 import { cn } from '@/lib/utils'
 import { dangXuat } from '@/lib/auth'
 import { useSidebar } from '@/lib/sidebar-store'
+import { KHU_PHO } from '@/lib/khu-pho'
 import { type CanBo, type VaiTro, VAI_TRO_LABEL, VAI_TRO_COLOR } from '@/lib/auth-config'
 
 // ─── Cấu hình menu ────────────────────────────────────────────
@@ -217,7 +218,7 @@ export default function Sidebar({ canBo }: { canBo: CanBo | null }) {
 
   const initials  = canBo ? getInitials(canBo.ho_ten) : 'CB'
   const tenHienThi = canBo?.ho_ten ?? 'Cán bộ'
-  const chucVu     = canBo ? (VAI_TRO_LABEL[canBo.vai_tro] ?? canBo.vai_tro) : 'Khu phố 25'
+  const chucVu     = canBo ? (VAI_TRO_LABEL[canBo.vai_tro] ?? canBo.vai_tro) : KHU_PHO.ten
 
   // Tự đóng drawer khi chuyển trang (mobile)
   useEffect(() => { setOpen(false) }, [pathname, setOpen])
@@ -243,11 +244,11 @@ export default function Sidebar({ canBo }: { canBo: CanBo | null }) {
       <div className="p-5 border-b border-white/10">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-lg bg-[#8B1A1A] flex items-center justify-center shrink-0">
-            <span className="text-white font-bold text-xs">KP</span>
-            <span className="text-[#FCD34D] font-bold text-xs">25</span>
+            <span className="text-white font-bold text-xs">{KHU_PHO.logoChu}</span>
+            <span className="text-[#FCD34D] font-bold text-xs">{KHU_PHO.logoSo}</span>
           </div>
           <div className="flex-1">
-            <div className="font-bold text-sm text-white leading-tight">KP25 Admin</div>
+            <div className="font-bold text-sm text-white leading-tight">{KHU_PHO.ma} Admin</div>
             <div className="text-[10px] text-white/50">Hệ thống điều hành</div>
           </div>
           {/* Nút đóng (mobile) */}

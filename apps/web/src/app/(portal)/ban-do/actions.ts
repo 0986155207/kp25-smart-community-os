@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient, createServiceClient } from '@/lib/supabase/server'
+import { KHU_PHO } from '@/lib/khu-pho'
 
 export interface PhanAnhMap {
   id: string
@@ -35,6 +36,7 @@ export async function layDuLieuBanDoPublic(): Promise<{
         .from('phan_anh')
         .select('id, tieu_de, loai, muc_do, trang_thai, dia_chi_phan_anh, toa_do_lat, toa_do_lng')
         .is('deleted_at', null)
+        .eq('don_vi_id', KHU_PHO.id)
         .neq('trang_thai', 'DONG')
         .not('toa_do_lat', 'is', null)
         .not('toa_do_lng', 'is', null)
@@ -45,13 +47,15 @@ export async function layDuLieuBanDoPublic(): Promise<{
       svc
         .from('ho_dan')
         .select('id, so_nhan_khau, trang_thai')
-        .is('deleted_at', null),
+        .is('deleted_at', null)
+        .eq('don_vi_id', KHU_PHO.id),
     ])
 
     const phanAnhAll = await supabase
       .from('phan_anh')
       .select('trang_thai')
       .is('deleted_at', null)
+      .eq('don_vi_id', KHU_PHO.id)
       .neq('trang_thai', 'DONG')
 
     const phanAnh: PhanAnhMap[] = (paRes.data ?? []).map(p => ({

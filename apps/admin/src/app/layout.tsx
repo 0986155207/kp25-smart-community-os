@@ -3,6 +3,7 @@ import { Be_Vietnam_Pro } from 'next/font/google'
 import './globals.css'
 import { Toaster } from 'react-hot-toast'
 import PWAManager from '@/components/pwa/PWAManager'
+import { KHU_PHO } from '@/lib/khu-pho'
 
 const beVietnamPro = Be_Vietnam_Pro({
   subsets:  ['vietnamese', 'latin'],
@@ -22,16 +23,16 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | KP25 Admin',
-    default:  'KP25 Admin — Hệ thống điều hành Khu phố 25',
+    template: `%s | ${KHU_PHO.ma} Admin`,
+    default:  `${KHU_PHO.ma} Admin — Hệ thống điều hành ${KHU_PHO.ten}`,
   },
-  description:  'Hệ thống quản trị thông minh dành cho cán bộ Khu phố 25, Phường Long Trường, TP.HCM',
+  description:  `Hệ thống quản trị thông minh dành cho cán bộ ${KHU_PHO.ten}, ${KHU_PHO.phuong}, TP.HCM`,
   // manifest được handle tự động bởi src/app/manifest.ts — không khai báo ở đây để tránh duplicate
   robots:       'noindex, nofollow',
   appleWebApp: {
     capable:         true,
     statusBarStyle:  'black-translucent',
-    title:           'KP25 Admin',
+    title:           `${KHU_PHO.ma} Admin`,
     startupImage:    '/icons/icon-512x512.png',
   },
   icons: {
@@ -58,8 +59,8 @@ export default function AdminRootLayout({ children }: { children: React.ReactNod
         <meta name="mobile-web-app-capable"                content="yes" />
         <meta name="apple-mobile-web-app-capable"          content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title"            content="KP25 Admin" />
-        <meta name="application-name"                      content="KP25 Admin" />
+        <meta name="apple-mobile-web-app-title"            content={`${KHU_PHO.ma} Admin`} />
+        <meta name="application-name"                      content={`${KHU_PHO.ma} Admin`} />
         <meta name="msapplication-TileColor"               content="#1E3A5F" />
         <meta name="msapplication-TileImage"               content="/icons/icon-144x144.png" />
         <meta name="format-detection"                      content="telephone=no" />

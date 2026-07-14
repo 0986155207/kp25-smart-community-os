@@ -1,4 +1,5 @@
 import { createClient, createServiceClient } from '@/lib/supabase/server'
+import { KHU_PHO } from '@/lib/khu-pho'
 import HeroSection from '@/components/home/HeroSection'
 import QuickActions from '@/components/home/QuickActions'
 import StatsSection from '@/components/home/StatsSection'
@@ -21,6 +22,7 @@ async function getSuKienSapToi(): Promise<SuKienTomTat[]> {
       .from('su_kien')
       .select('id, tieu_de, loai, trang_thai, ngay_bat_dau, dia_diem, noi_bat, anh_bia_url')
       .is('deleted_at', null)
+      .eq('don_vi_id', KHU_PHO.id)
       .in('trang_thai', ['SAP_DIEN_RA', 'DANG_DIEN_RA'])
       .order('noi_bat', { ascending: false })
       .order('ngay_bat_dau', { ascending: true })
@@ -45,6 +47,7 @@ async function getThongBaoMoiNhat(): Promise<ThongBao[]> {
       .from('thong_bao')
       .select('*')
       .is('deleted_at', null)
+      .eq('don_vi_id', KHU_PHO.id)
       .order('ghim_len', { ascending: false })
       .order('created_at', { ascending: false })
       .limit(6)
@@ -63,16 +66,18 @@ async function getDashboardStats() {
     const svc = createServiceClient()
 
     const [hoDan, phanAnhDaXuLy, phanAnhDangXuLy] = await Promise.all([
-      svc.from('ho_dan').select('id, so_nhan_khau').is('deleted_at', null),
+      svc.from('ho_dan').select('id, so_nhan_khau').is('deleted_at', null).eq('don_vi_id', KHU_PHO.id),
       supabase
         .from('phan_anh')
         .select('id', { count: 'exact' })
         .eq('trang_thai', 'DA_XU_LY')
+        .eq('don_vi_id', KHU_PHO.id)
         .is('deleted_at', null),
       supabase
         .from('phan_anh')
         .select('id', { count: 'exact' })
         .eq('trang_thai', 'DANG_XU_LY')
+        .eq('don_vi_id', KHU_PHO.id)
         .is('deleted_at', null),
     ])
 

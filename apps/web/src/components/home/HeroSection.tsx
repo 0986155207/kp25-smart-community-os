@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { MessageSquare, AlertCircle, Search, ChevronRight, Wifi, Shield, Users } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { KHU_PHO } from '@/lib/khu-pho'
 
 const features = [
   { icon: Wifi, label: 'Hoạt động 24/7' },
@@ -31,7 +32,7 @@ export default function HeroSection() {
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/15 border border-white/20 text-sm font-medium mb-6"
           >
             <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-            Hệ thống đang hoạt động · Khu phố 25
+            Hệ thống đang hoạt động · {KHU_PHO.ten}
           </motion.div>
 
           {/* Tiêu đề */}
@@ -43,7 +44,7 @@ export default function HeroSection() {
           >
             Hệ điều hành số
             <br />
-            <span className="text-[#FCD34D]">Cộng đồng Khu phố 25</span>
+            <span className="text-[#FCD34D]">Cộng đồng {KHU_PHO.ten}</span>
           </motion.h1>
 
           <motion.p
@@ -52,7 +53,7 @@ export default function HeroSection() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-white/80 text-lg md:text-xl mb-8 leading-relaxed"
           >
-            Phường Long Trường · TP.HCM
+            {KHU_PHO.phuong} · TP.HCM
             <br className="hidden md:block" />
             Phản ánh hiện trường · Tra cứu thông tin · AI hỗ trợ 24/7
           </motion.p>

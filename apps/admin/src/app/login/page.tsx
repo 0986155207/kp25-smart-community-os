@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
 import LoginForm from './LoginForm'
 import { Shield } from 'lucide-react'
+import { KHU_PHO } from '@/lib/khu-pho'
 
-export const metadata: Metadata = { title: 'Đăng nhập — KP25 Admin' }
+export const metadata: Metadata = { title: `Đăng nhập — ${KHU_PHO.ma} Admin` }
 
 interface Props {
   searchParams: Promise<{ redirect?: string }>
@@ -26,15 +27,15 @@ export default async function LoginPage({ searchParams }: Props) {
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-3 mb-5">
             <div className="w-14 h-14 rounded-2xl bg-[#8B1A1A] shadow-lg shadow-red-900/30 flex items-center justify-center">
-              <span className="text-white font-black text-xl">KP</span>
-              <span className="text-[#FCD34D] font-black text-xl">25</span>
+              <span className="text-white font-black text-xl">{KHU_PHO.logoChu}</span>
+              <span className="text-[#FCD34D] font-black text-xl">{KHU_PHO.logoSo}</span>
             </div>
           </div>
           <h1 className="text-2xl font-bold text-white leading-tight">
-            KP25 Smart Community OS
+            {KHU_PHO.ma} Smart Community OS
           </h1>
           <p className="text-white/50 text-sm mt-1.5">
-            Hệ thống điều hành Khu phố 25 · Long Trường · TP.HCM
+            Hệ thống điều hành {KHU_PHO.ten} · {KHU_PHO.phuong.replace(/^Phường\s+/, '')} · TP.HCM
           </p>
         </div>
 
@@ -64,7 +65,7 @@ export default async function LoginPage({ searchParams }: Props) {
 
         {/* Bottom note */}
         <p className="text-center text-white/30 text-xs mt-6">
-          © 2026 Khu phố 25 · Phường Long Trường · TP.HCM
+          © 2026 {KHU_PHO.ten} · {KHU_PHO.phuong} · TP.HCM
         </p>
       </div>
     </div>

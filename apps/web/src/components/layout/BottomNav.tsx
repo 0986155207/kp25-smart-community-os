@@ -6,6 +6,7 @@ import { Home, Bell, AlertCircle, MessageSquare, Grid3X3 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { KHU_PHO } from '@/lib/khu-pho'
 
 // ─── Menu đầy đủ (khi nhấn "Thêm") ──────────────────────────
 import { Map, Users, FileText, Phone, QrCode, X, CalendarDays, ClipboardList, MessageSquareMore, Search, BookOpen } from 'lucide-react'
@@ -17,7 +18,7 @@ const EXTRA_MENU = [
   { href: '/ban-do',    icon: Map,                label: 'Bản đồ'    },
   { href: '/dan-cu',    icon: Users,              label: 'Dân cư'    },
   { href: '/dang-ky',   icon: FileText,           label: 'Đăng ký'   },
-  { href: '/zalo',      icon: MessageSquareMore,  label: 'Zalo KP25' },
+  { href: '/zalo',      icon: MessageSquareMore,  label: `Zalo ${KHU_PHO.ma}` },
   { href: '/huong-dan', icon: BookOpen,           label: 'Hướng dẫn' },
   { href: '/lien-he',   icon: Phone,              label: 'Liên hệ'   },
   { href: '/qr',        icon: QrCode,             label: 'QR Hộ dân' },

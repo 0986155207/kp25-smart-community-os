@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { AlertCircle, Plus, Clock, CheckCircle, Loader2, Sparkles, Camera } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
+import { KHU_PHO } from '@/lib/khu-pho'
 import { formatRelativeTime, truncate, mapPhanAnh } from '@/lib/utils'
 import type { PhanAnh } from '@kp25/types'
 import { TrangThaiPhanAnh } from '@kp25/types'
@@ -52,6 +53,7 @@ async function getPhanAnh(): Promise<PhanAnhWithAI[]> {
       .from('phan_anh')
       .select('*, ai_da_phan_tich, ai_tom_tat')
       .is('deleted_at', null)
+      .eq('don_vi_id', KHU_PHO.id)
       .order('created_at', { ascending: false })
       .limit(30)
     return (data ?? []).map(row => ({

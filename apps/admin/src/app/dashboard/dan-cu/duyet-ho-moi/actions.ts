@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { ghiAuditLog } from '@/lib/audit'
 import { layCanBoHienTai } from '@/lib/auth'
+import { KHU_PHO } from '@/lib/khu-pho'
 
 export interface ThanhVienKhai {
   ho_ten: string
@@ -47,7 +48,7 @@ function sinhMaHo(): string {
   const yy = now.getFullYear().toString().slice(-2)
   const mm = String(now.getMonth() + 1).padStart(2, '0')
   const rand = Math.floor(Math.random() * 9999).toString().padStart(4, '0')
-  return `KP25-${yy}${mm}-${rand}`
+  return `${KHU_PHO.ma}-${yy}${mm}-${rand}`
 }
 
 // ── Danh sách chờ duyệt ──────────────────────────────────────
@@ -127,6 +128,7 @@ export async function duyetHoMoi(
         trang_thai:    duLieu.loai_cu_tru === 'TAM_TRU' ? 'TAM_TRU' : 'THUONG_TRU',
         so_nhan_khau:  tv.length,
         qr_token:      qrToken,
+        don_vi_id:     KHU_PHO.id,
       })
       .select('id')
       .single()
@@ -149,6 +151,7 @@ export async function duyetHoMoi(
       quan_he:     t.quan_he?.trim() || 'Thành viên khác',
       nghe_nghiep: cl(t.nghe_nghiep),
       trang_thai:  trangThaiNk,
+      don_vi_id:   KHU_PHO.id,
     }))
     // Thêm trường mở rộng (nếu migration 041 đã chạy)
     const nkRows = tv.map((t, idx) => ({
@@ -311,7 +314,7 @@ export async function duyetVaCapNhatHo(
         if (!error) soCapNhat++
       } else {
         // Thêm nhân khẩu mới
-        const insertCore = { ho_id: hoIdCu, cccd: cccd || null, ...fields }
+        const insertCore = { ho_id: hoIdCu, cccd: cccd || null, don_vi_id: KHU_PHO.id, ...fields }
         let { error } = await supabase.from('nhan_khau').insert({ ...insertCore, ...moRong })
         if (error && error.message && Object.keys(moRong).some(c => error!.message.includes(c))) {
           const r = await supabase.from('nhan_khau').insert(insertCore); error = r.error

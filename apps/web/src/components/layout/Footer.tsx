@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Phone, Mail, MapPin, Facebook, MessageCircle } from 'lucide-react'
+import { KHU_PHO } from '@/lib/khu-pho'
 
 export default function Footer() {
   return (
@@ -10,17 +11,17 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-[#8B1A1A] flex items-center justify-center">
-                <span className="text-white font-bold text-xs">KP</span>
-                <span className="text-[#FCD34D] font-bold text-xs">25</span>
+                <span className="text-white font-bold text-xs">{KHU_PHO.logoChu}</span>
+                <span className="text-[#FCD34D] font-bold text-xs">{KHU_PHO.logoSo}</span>
               </div>
               <div>
-                <div className="font-bold text-white text-sm">KP25 Smart Community OS</div>
+                <div className="font-bold text-white text-sm">{KHU_PHO.ma} Smart Community OS</div>
                 <div className="text-blue-200 text-xs">Hệ điều hành số cộng đồng</div>
               </div>
             </div>
             <p className="text-blue-200 text-sm leading-relaxed">
-              Nền tảng chuyển đổi số toàn diện phục vụ người dân Khu phố 25,
-              Phường Long Trường, TP.HCM. Vận hành 24/7, AI hỗ trợ thường xuyên.
+              Nền tảng chuyển đổi số toàn diện phục vụ người dân {KHU_PHO.ten},
+              {' '}{KHU_PHO.phuong}, TP.HCM. Vận hành 24/7, AI hỗ trợ thường xuyên.
             </p>
           </div>
 
@@ -102,10 +103,10 @@ export default function Footer() {
 
         <div className="border-t border-white/10 mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2">
           <p className="text-blue-300 text-xs text-center sm:text-left">
-            © 2026 KP25 Smart Community OS · Khu phố 25 · Phường Long Trường · TP.HCM
+            © 2026 {KHU_PHO.ma} Smart Community OS · {KHU_PHO.ten} · {KHU_PHO.phuong} · TP.HCM
           </p>
           <p className="text-blue-300 text-xs">
-            Phiên bản 1.0.0 · Tổ chuyển đổi số khu phố 25
+            Phiên bản 1.0.0 · Tổ chuyển đổi số {KHU_PHO.ten}
           </p>
         </div>
       </div>

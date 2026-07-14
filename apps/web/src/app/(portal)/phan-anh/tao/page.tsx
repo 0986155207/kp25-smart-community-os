@@ -12,6 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import toast from 'react-hot-toast'
 import { createClient } from '@/lib/supabase/client'
+import { KHU_PHO } from '@/lib/khu-pho'
 import { guiThongBaoPhanAnhMoi } from './actions'
 import AIPhanTichCard from './AIPhanTichCard'
 import GPSLocator, { type GPSData } from './GPSLocator'
@@ -246,6 +247,9 @@ export default function TaoPhanAnhSmartPage() {
         payload['ai_de_xuat']      = aiResult?.deXuat  ?? null
         payload['ai_do_tin_cay']   = aiResult?.doTinCay ?? null
       }
+
+      // Gắn phản ánh vào khu phố của deployment hiện tại
+      payload['don_vi_id'] = KHU_PHO.id
 
       const { error, data: inserted } = await supabase
         .from('phan_anh')

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Bell, Pin, Eye, Calendar, ChevronRight } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
+import { KHU_PHO } from '@/lib/khu-pho'
 import { formatDate, truncate, mapThongBao } from '@/lib/utils'
 import type { ThongBao } from '@kp25/types'
 
@@ -27,6 +28,7 @@ async function getThongBao(): Promise<ThongBao[]> {
       .from('thong_bao')
       .select('*')
       .is('deleted_at', null)
+      .eq('don_vi_id', KHU_PHO.id)
       .order('ghim_len', { ascending: false })
       .order('created_at', { ascending: false })
       .limit(50)

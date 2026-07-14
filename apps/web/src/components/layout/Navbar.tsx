@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Bell, MessageSquare, Home, AlertCircle, Map, Phone, Users, FileText, CalendarDays, ClipboardList, MessageSquareMore, Search } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { KHU_PHO, TEN_THUONG_HIEU } from '@/lib/khu-pho'
 
 const menu = [
   { href: '/',          label: 'Trang chủ', icon: Home              },
@@ -12,7 +13,7 @@ const menu = [
   { href: '/phan-anh',  label: 'Phản ánh',  icon: AlertCircle       },
   { href: '/thu-tuc',   label: 'Thủ tục',   icon: ClipboardList     },
   { href: '/tra-cuu',   label: 'Tra cứu',   icon: Search            },
-  { href: '/zalo',      label: 'Zalo KP25', icon: MessageSquareMore },
+  { href: '/zalo',      label: `Zalo ${KHU_PHO.ma}`, icon: MessageSquareMore },
   { href: '/dang-ky',   label: 'Đăng ký',   icon: FileText          },
   { href: '/dan-cu',    label: 'Dân cư',    icon: Users             },
   { href: '/ban-do',    label: 'Bản đồ',    icon: Map               },
@@ -29,12 +30,12 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
             <div className="w-10 h-10 rounded-xl bg-primary-gradient flex items-center justify-center shadow-primary">
-              <span className="text-white font-bold text-sm">KP</span>
-              <span className="text-[#FCD34D] font-bold text-sm">25</span>
+              <span className="text-white font-bold text-sm">{KHU_PHO.logoChu}</span>
+              <span className="text-[#FCD34D] font-bold text-sm">{KHU_PHO.logoSo}</span>
             </div>
             <div className="hidden sm:block">
-              <div className="font-bold text-[#8B1A1A] leading-tight text-sm">KP25 Smart Community</div>
-              <div className="text-xs text-slate-500">Khu phố 25 · Long Trường · TP.HCM</div>
+              <div className="font-bold text-[#8B1A1A] leading-tight text-sm">{TEN_THUONG_HIEU}</div>
+              <div className="text-xs text-slate-500">{KHU_PHO.ten} · {KHU_PHO.phuong.replace(/^Phường\s+/, '')} · TP.HCM</div>
             </div>
           </Link>
 

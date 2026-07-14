@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Calendar, MapPin, Clock, Users, ChevronRight, CalendarDays, Star } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
+import { KHU_PHO } from '@/lib/khu-pho'
 import { formatDate, formatDateTime } from '@/lib/utils'
 
 export const metadata: Metadata = {
@@ -62,6 +63,7 @@ async function getSuKien(loaiFilter?: string): Promise<SuKien[]> {
       .from('su_kien')
       .select('*')
       .is('deleted_at', null)
+      .eq('don_vi_id', KHU_PHO.id)
       .neq('trang_thai', 'NHAP')
       .order('noiBat', { ascending: false })
       .order('ngay_bat_dau', { ascending: true })
