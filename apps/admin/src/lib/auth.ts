@@ -7,6 +7,16 @@ import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import type { CanBo } from './auth-config'
 
+// Ánh xạ vai trò can_bo → enum vai_tro của profiles (RLS dùng cột này).
+// AN_NINH / PHU_TRACH_NCT không có trong enum → coi là CAN_BO.
+const MAP_VAI_TRO_PROFILE: Record<string, string> = {
+  BI_THU:         'BI_THU',
+  TRUONG_KHU_PHO: 'TRUONG_KHU_PHO',
+  CONG_AN:        'CONG_AN',
+  AN_NINH:        'CAN_BO',
+  PHU_TRACH_NCT:  'CAN_BO',
+}
+
 // ─── Lấy thông tin cán bộ hiện tại ───────────────────────────
 
 export async function layCanBoHienTai(): Promise<CanBo | null> {
@@ -24,6 +34,22 @@ export async function layCanBoHienTai(): Promise<CanBo | null> {
       .single()
 
     if (error || !data) return null
+
+    // Đồng bộ profiles để RLS nhận diện đúng vai trò + khu phố của cán bộ.
+    // Nhờ vậy các truy vấn admin (cookie client) hoạt động dưới RLS đã siết,
+    // và tự động cách ly dữ liệu theo khu phố (co_quyen_don_vi).
+    try {
+      const canBo = data as CanBo & { don_vi_id?: string | null }
+      await svc.from('profiles')
+        .update({
+          vai_tro:   MAP_VAI_TRO_PROFILE[canBo.vai_tro] ?? 'CAN_BO',
+          don_vi_id: canBo.don_vi_id ?? '00000000-0000-4000-8000-000000000025',
+        })
+        .eq('id', user.id)
+    } catch {
+      // Không chặn đăng nhập nếu đồng bộ lỗi
+    }
+
     return data as CanBo
   } catch {
     return null

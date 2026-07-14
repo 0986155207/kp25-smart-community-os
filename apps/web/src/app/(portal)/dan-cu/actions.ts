@@ -1,6 +1,6 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/server'
 
 export interface KetQuaTraCuu {
   found: boolean
@@ -28,7 +28,9 @@ export async function traCuuHoDan(
   try {
     if (!hoTen.trim() || !diaChi.trim()) return { found: false }
 
-    const supabase = await createClient()
+    // ho_dan chứa PII → đọc bằng service role (server-side); yêu cầu khớp cả
+    // họ tên + địa chỉ nên không thể dò quét, chỉ trả thông tin cơ bản.
+    const supabase = createServiceClient()
 
     const { data } = await supabase
       .from('ho_dan')

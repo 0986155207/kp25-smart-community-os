@@ -1,6 +1,6 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 
 export interface PhanAnhMap {
   id: string
@@ -26,9 +26,11 @@ export async function layDuLieuBanDoPublic(): Promise<{
 }> {
   try {
     const supabase = await createClient()
+    // ho_dan chứa PII → đọc bằng service role (server-side), chỉ tính số tổng
+    const svc = createServiceClient()
 
     const [paRes, hdRes] = await Promise.all([
-      // Phản ánh có tọa độ GPS — hiển thị công khai
+      // Phản ánh có tọa độ GPS — hiển thị công khai (đọc anon được)
       supabase
         .from('phan_anh')
         .select('id, tieu_de, loai, muc_do, trang_thai, dia_chi_phan_anh, toa_do_lat, toa_do_lng')
@@ -40,7 +42,7 @@ export async function layDuLieuBanDoPublic(): Promise<{
         .limit(100),
 
       // Thống kê hộ dân — chỉ lấy số tổng, không lấy thông tin cá nhân
-      supabase
+      svc
         .from('ho_dan')
         .select('id, so_nhan_khau, trang_thai')
         .is('deleted_at', null),

@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 import HeroSection from '@/components/home/HeroSection'
 import QuickActions from '@/components/home/QuickActions'
 import StatsSection from '@/components/home/StatsSection'
@@ -59,9 +59,11 @@ async function getThongBaoMoiNhat(): Promise<ThongBao[]> {
 async function getDashboardStats() {
   try {
     const supabase = await createClient()
+    // ho_dan chứa PII → đọc bằng service role (server-side), chỉ tính số tổng
+    const svc = createServiceClient()
 
     const [hoDan, phanAnhDaXuLy, phanAnhDangXuLy] = await Promise.all([
-      supabase.from('ho_dan').select('id, so_nhan_khau').is('deleted_at', null),
+      svc.from('ho_dan').select('id, so_nhan_khau').is('deleted_at', null),
       supabase
         .from('phan_anh')
         .select('id', { count: 'exact' })

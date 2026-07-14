@@ -51,6 +51,30 @@ Nếu cần, lên kế hoạch riêng + kiểm thử trên nhánh trước. Tạ
 
 ---
 
+## 3b. RLS Policy Always True — ĐÃ XỬ LÝ (migration 047 + sync profiles)
+
+**Vấn đề nghiêm trọng phát hiện:** migration 033 tạo nhiều policy `USING(true)` không
+giới hạn vai trò → **anon đọc được toàn bộ `ho_dan` (SĐT, địa chỉ) và `nhan_khau` (CCCD)**
+qua REST API (khóa anon nằm công khai trong web bundle). Đồng thời làm vô hiệu các policy
+cách ly khu phố của migration 044.
+
+**Khắc phục (migration 047 + code):**
+- **Reroute portal:** các truy vấn `ho_dan` công khai (trang chủ, bản đồ, tra cứu) chuyển
+  sang **service role** (server-side) chỉ trả số tổng — không lộ PII ra client.
+- **Đồng bộ `can_bo → profiles`** (vai_tro + don_vi_id) trong `layCanBoHienTai` + một lần
+  trong migration → RLS `la_can_bo()` / `co_quyen_don_vi()` nhận diện đúng cán bộ.
+- **Khóa RLS:**
+  - `ho_dan`/`nhan_khau`: chỉ cán bộ **đúng khu phố** (policy 044) + service role. Anon KHÔNG đọc được.
+  - Bảng nội bộ (an sinh, cán bộ, tài liệu, push, workflow, zalo, tự khai…): chỉ `la_can_bo()` + service.
+  - `audit_logs`: chỉ cán bộ đọc, service ghi.
+  - Công khai có chủ đích (thông báo, sự kiện, phản ánh, đăng ký tạm trú/vắng): giữ đọc/nộp
+    công khai, siết ghi cho cán bộ.
+
+**Thứ tự triển khai (bắt buộc):** deploy **admin + web mới TRƯỚC**, rồi mới **chạy migration 047**.
+Nếu chạy migration trước khi deploy, portal (đọc anon cũ) và admin (chưa sync) sẽ lỗi.
+
+**Kết quả:** vá rò rỉ PII + cách ly đa khu phố hoạt động thật ở tầng RLS.
+
 ## 4. RLS (Row Level Security)
 
 - Tab **Errors = 0** → không có bảng public nào thiếu RLS nghiêm trọng.
