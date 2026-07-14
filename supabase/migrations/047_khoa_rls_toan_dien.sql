@@ -19,18 +19,25 @@
 -- PHẦN 0: ĐỒNG BỘ profiles ← can_bo (một lần cho cán bộ hiện có)
 --   Để cán bộ đang đăng nhập không mất quyền ngay khi siết RLS.
 -- ─────────────────────────────────────────────────────────────
-UPDATE public.profiles p
-SET
-  vai_tro = CASE cb.vai_tro
-              WHEN 'BI_THU'         THEN 'BI_THU'::vai_tro
-              WHEN 'TRUONG_KHU_PHO' THEN 'TRUONG_KHU_PHO'::vai_tro
-              WHEN 'CONG_AN'        THEN 'CONG_AN'::vai_tro
-              ELSE 'CAN_BO'::vai_tro
-            END,
-  don_vi_id = COALESCE(cb.don_vi_id, '00000000-0000-4000-8000-000000000025')
+-- UPSERT: tạo profiles nếu cán bộ chưa có dòng (tài khoản tạo trước trigger),
+-- cập nhật vai_tro + don_vi_id nếu đã có.
+INSERT INTO public.profiles (id, ho_ten, vai_tro, don_vi_id)
+SELECT
+  u.id,
+  cb.ho_ten,
+  CASE cb.vai_tro
+    WHEN 'BI_THU'         THEN 'BI_THU'::vai_tro
+    WHEN 'TRUONG_KHU_PHO' THEN 'TRUONG_KHU_PHO'::vai_tro
+    WHEN 'CONG_AN'        THEN 'CONG_AN'::vai_tro
+    ELSE 'CAN_BO'::vai_tro
+  END,
+  COALESCE(cb.don_vi_id, '00000000-0000-4000-8000-000000000025')
 FROM auth.users u
 JOIN public.can_bo cb ON lower(cb.email) = lower(u.email)
-WHERE p.id = u.id AND cb.hoat_dong = true;
+WHERE cb.hoat_dong = true
+ON CONFLICT (id) DO UPDATE
+  SET vai_tro = EXCLUDED.vai_tro,
+      don_vi_id = EXCLUDED.don_vi_id;
 
 -- ─────────────────────────────────────────────────────────────
 -- PHẦN 1: BẢNG NỘI BỘ → chỉ cán bộ + service_role

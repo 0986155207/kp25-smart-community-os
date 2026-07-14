@@ -40,12 +40,15 @@ export async function layCanBoHienTai(): Promise<CanBo | null> {
     // và tự động cách ly dữ liệu theo khu phố (co_quyen_don_vi).
     try {
       const canBo = data as CanBo & { don_vi_id?: string | null }
+      // UPSERT: tạo profiles nếu chưa có (tài khoản tạo trước khi có trigger),
+      // cập nhật vai_tro + don_vi_id nếu đã có.
       await svc.from('profiles')
-        .update({
+        .upsert({
+          id:        user.id,
+          ho_ten:    canBo.ho_ten,
           vai_tro:   MAP_VAI_TRO_PROFILE[canBo.vai_tro] ?? 'CAN_BO',
           don_vi_id: canBo.don_vi_id ?? '00000000-0000-4000-8000-000000000025',
-        })
-        .eq('id', user.id)
+        }, { onConflict: 'id' })
     } catch {
       // Không chặn đăng nhập nếu đồng bộ lỗi
     }
