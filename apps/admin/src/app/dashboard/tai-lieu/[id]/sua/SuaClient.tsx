@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -100,7 +101,7 @@ export default function SuaClient({ doc }: { doc: TaiLieu }) {
               <input
                 name="so_hieu"
                 defaultValue={doc.so_hieu ?? ''}
-                placeholder="01/NQ-KP25"
+                placeholder={`01/NQ-${KHU_PHO.ma}`}
                 className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5
                   text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#8B1A1A]/30 focus:border-[#8B1A1A] transition-all"
               />

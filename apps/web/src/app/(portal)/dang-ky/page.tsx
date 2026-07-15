@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import {
@@ -8,7 +9,7 @@ import {
 export const metadata: Metadata = {
   title: 'Đăng ký Tạm trú / Tạm vắng',
   description:
-    'Đăng ký tạm trú, khai báo tạm vắng trực tuyến tại Khu phố 25, Phường Long Trường, TP.HCM',
+    `Đăng ký tạm trú, khai báo tạm vắng trực tuyến tại ${KHU_PHO.ten}, Phường Long Trường, TP.HCM`,
 }
 
 // ─── Dữ liệu tĩnh ──────────────────────────────────────────────
@@ -18,7 +19,7 @@ const SERVICES = [
     href:    '/dang-ky/tam-tru',
     icon:    UserCheck,
     title:   'Đăng ký Tạm trú',
-    desc:    'Dành cho người từ nơi khác đến cư trú tại Khu phố 25 trong thời gian nhất định.',
+    desc:    `Dành cho người từ nơi khác đến cư trú tại ${KHU_PHO.ten} trong thời gian nhất định.`,
     color:   'bg-blue-600',
     border:  'border-blue-100',
     bg:      'hover:border-blue-300',
@@ -35,12 +36,12 @@ const SERVICES = [
     href:    '/dang-ky/tam-vang',
     icon:    UserMinus,
     title:   'Khai báo Tạm vắng',
-    desc:    'Dành cho cư dân KP25 rời khỏi địa phương từ 30 ngày trở lên (bắt buộc theo quy định).',
+    desc:    `Dành cho cư dân ${KHU_PHO.ma} rời khỏi địa phương từ 30 ngày trở lên (bắt buộc theo quy định).`,
     color:   'bg-orange-500',
     border:  'border-orange-100',
     bg:      'hover:border-orange-300',
     badge:   'bg-orange-50 text-orange-700',
-    badgeTxt:'Rời khỏi KP25',
+    badgeTxt:`Rời khỏi ${KHU_PHO.ma}`,
     steps: [
       'Nhập thông tin & số CCCD',
       'Nhập địa chỉ nơi đến',
@@ -72,7 +73,7 @@ export default function DangKyPage() {
           Đăng ký Tạm trú · Tạm vắng
         </h1>
         <p className="text-slate-500 max-w-xl mx-auto text-base leading-relaxed">
-          Khu phố 25, Phường Long Trường, TP.HCM. Nộp đơn trực tuyến 24/7 — không cần
+          {KHU_PHO.ten}, Phường Long Trường, TP.HCM. Nộp đơn trực tuyến 24/7 — không cần
           xếp hàng, không phiền hà thủ tục.
         </p>
       </div>
@@ -182,7 +183,7 @@ export default function DangKyPage() {
           </p>
           <p className="font-bold text-blue-900 text-lg">Trần Hữu Hùng</p>
           <p className="text-sm text-blue-700">
-            Công an khu vực — Khu phố 25, Phường Long Trường, TP.HCM
+            Công an khu vực — {KHU_PHO.ten}, Phường Long Trường, TP.HCM
           </p>
           <a
             href="tel:0988897709"
@@ -239,7 +240,7 @@ export default function DangKyPage() {
       <div className="text-center text-sm text-slate-500">
         Cần hỗ trợ?{' '}
         <Link href="/lien-he" className="text-[#8B1A1A] font-semibold hover:underline">
-          Liên hệ Ban quản lý Khu phố 25
+          Liên hệ Ban quản lý {KHU_PHO.ten}
         </Link>
         {' '}hoặc gọi <a href="tel:0773735317" className="text-[#8B1A1A] font-semibold hover:underline">0773 735 317</a>
       </div>

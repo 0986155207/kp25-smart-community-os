@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import { BookOpen } from 'lucide-react'
 import HuongDanClient from './HuongDanClient'
 
@@ -13,7 +14,7 @@ export default function HuongDanPage() {
           Hướng dẫn sử dụng hệ thống
         </h1>
         <p className="text-slate-500 text-sm mt-0.5">
-          Hướng dẫn chi tiết tất cả tính năng dành cho cán bộ Khu phố 25 · Phường Long Trường
+          Hướng dẫn chi tiết tất cả tính năng dành cho cán bộ {KHU_PHO.ten} · Phường Long Trường
         </p>
       </div>
 

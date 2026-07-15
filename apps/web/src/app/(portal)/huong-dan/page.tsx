@@ -1,11 +1,12 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import { BookOpen, Phone, MessageSquare } from 'lucide-react'
 import Link from 'next/link'
 import HuongDanClient from './HuongDanClient'
 
 export const metadata: Metadata = {
-  title: 'Hướng dẫn sử dụng — KP25',
-  description: 'Hướng dẫn chi tiết sử dụng cổng dịch vụ số Khu phố 25, Phường Long Trường, TP.HCM',
+  title: `Hướng dẫn sử dụng — ${KHU_PHO.ma}`,
+  description: `Hướng dẫn chi tiết sử dụng cổng dịch vụ số ${KHU_PHO.ten}, Phường Long Trường, TP.HCM`,
 }
 
 export default function HuongDanPage() {
@@ -18,8 +19,8 @@ export default function HuongDanPage() {
         </div>
         <h1 className="text-2xl font-bold text-slate-900">Hướng dẫn sử dụng</h1>
         <p className="text-slate-500 text-sm leading-relaxed">
-          Hướng dẫn chi tiết các dịch vụ trên cổng KP25 Smart Community<br />
-          Khu phố 25 · Phường Long Trường · TP.HCM
+          Hướng dẫn chi tiết các dịch vụ trên cổng {KHU_PHO.ma} Smart Community<br />
+          {KHU_PHO.ten} · Phường Long Trường · TP.HCM
         </p>
       </div>
 

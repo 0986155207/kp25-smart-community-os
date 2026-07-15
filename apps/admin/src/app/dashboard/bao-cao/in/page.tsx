@@ -1,8 +1,9 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import { layDuLieuBaoCao } from '../actions'
 import PrintTrigger from './PrintTrigger'
 
-export const metadata: Metadata = { title: 'In báo cáo — KP25' }
+export const metadata: Metadata = { title: `In báo cáo — ${KHU_PHO.ma}` }
 export const revalidate = 0
 
 export default async function InBaoCaoPage() {
@@ -175,7 +176,7 @@ export default async function InBaoCaoPage() {
 
         <h1>BÁO CÁO TỔNG HỢP</h1>
         <h2>Tình hình Dân cư, An sinh Xã hội và Phản ánh Hiện trường</h2>
-        <div className="subtitle">Khu phố 25 – Phường Long Trường – TP.HCM – Năm {nam}</div>
+        <div className="subtitle">{KHU_PHO.ten} – Phường Long Trường – TP.HCM – Năm {nam}</div>
         <div className="noi-lap">Long Trường, ngày {ngay}</div>
 
         <hr className="divider" />
@@ -335,7 +336,7 @@ export default async function InBaoCaoPage() {
         {/* ── Kết luận ─────────────────────────────────────── */}
         <h3>V. KẾT LUẬN</h3>
         <p style={{ textIndent: '1.5em', marginBottom: '6pt' }}>
-          Trên cơ sở tổng hợp dữ liệu từ Hệ thống KP25 Smart Community OS, Ban điều hành Khu phố 25
+          Trên cơ sở tổng hợp dữ liệu từ Hệ thống {KHU_PHO.ma} Smart Community OS, Ban điều hành {KHU_PHO.ten}
           đã nắm bắt đầy đủ tình hình dân cư, an sinh xã hội và xử lý kịp thời các phản ánh của người
           dân trong khu vực. Tỷ lệ xử lý phản ánh đạt <strong>{kpi.tyLeXuLyPA}%</strong>, thể hiện
           tinh thần trách nhiệm và hiệu quả trong công tác điều hành.
@@ -361,7 +362,7 @@ export default async function InBaoCaoPage() {
 
         {/* ── Footer ───────────────────────────────────────── */}
         <div className="footer">
-          KP25 Smart Community OS · Báo cáo tự động · {ngay} · Khu phố 25 – Phường Long Trường – TP.HCM
+          {KHU_PHO.ma} Smart Community OS · Báo cáo tự động · {ngay} · {KHU_PHO.ten} – Phường Long Trường – TP.HCM
         </div>
       </div>
     </>

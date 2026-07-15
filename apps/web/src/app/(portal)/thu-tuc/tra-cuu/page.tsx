@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useState } from 'react'
 import Link from 'next/link'
 import {
@@ -304,7 +305,7 @@ export default function TraCuuHoSoPage() {
             onChange={e => setQuery(e.target.value)}
             placeholder={
               mode === 'maHoSo'
-                ? 'Nhập mã hồ sơ — ví dụ: KP25-2026-001234'
+                ? `Nhập mã hồ sơ — ví dụ: ${KHU_PHO.ma}-2026-001234`
                 : 'Nhập 9 hoặc 12 số CCCD'
             }
             className="w-full pl-12 pr-4 py-4 rounded-2xl border-2 border-slate-200 focus:border-[#8B1A1A]
@@ -369,7 +370,7 @@ export default function TraCuuHoSoPage() {
               <div className="text-sm text-amber-800 space-y-1">
                 <p className="font-semibold">Kiểm tra lại:</p>
                 <ul className="space-y-1 text-xs">
-                  <li>• Mã hồ sơ có dạng <code className="bg-amber-100 px-1 rounded">KP25-YYYY-XXXXXX</code></li>
+                  <li>• Mã hồ sơ có dạng <code className="bg-amber-100 px-1 rounded">{KHU_PHO.ma}-YYYY-XXXXXX</code></li>
                   <li>• Hồ sơ nộp trực tiếp cần 1–2 ngày để cập nhật vào hệ thống</li>
                   <li>• Liên hệ <strong>028 3746 1111</strong> để kiểm tra thủ công</li>
                 </ul>
@@ -388,7 +389,7 @@ export default function TraCuuHoSoPage() {
               {
                 icon: '📋',
                 title: 'Tra cứu theo mã hồ sơ',
-                desc: 'Mã được cấp sau khi nộp hồ sơ trực tuyến. Có dạng KP25-YYYY-XXXXXX.',
+                desc: `Mã được cấp sau khi nộp hồ sơ trực tuyến. Có dạng ${KHU_PHO.ma}-YYYY-XXXXXX.`,
                 color: 'bg-blue-50 border-blue-100',
               },
               {

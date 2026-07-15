@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import { NextResponse } from 'next/server'
 import {
   AlignmentType,
@@ -212,7 +213,7 @@ export async function GET() {
           alignment: AlignmentType.CENTER,
           spacing:   { after: 100 },
           children: [new TextRun({
-            text: `Khu phố 25 – Phường Long Trường – TP.HCM – Năm ${namHienTai}`,
+            text: `${KHU_PHO.ten} – Phường Long Trường – TP.HCM – Năm ${namHienTai}`,
             size: 26, font: 'Times New Roman', italics: true,
           })],
         }),
@@ -386,7 +387,7 @@ export async function GET() {
         sectionTitle('V. KẾT LUẬN VÀ KIẾN NGHỊ'),
 
         para(
-          `Trên cơ sở tổng hợp dữ liệu từ Hệ thống KP25 Smart Community OS, Ban điều hành Khu phố 25 ` +
+          `Trên cơ sở tổng hợp dữ liệu từ Hệ thống ${KHU_PHO.ma} Smart Community OS, Ban điều hành ${KHU_PHO.ten} ` +
           `đã nắm bắt đầy đủ tình hình dân cư, an sinh xã hội và xử lý kịp thời các phản ánh của người dân ` +
           `trong khu vực. Tỷ lệ xử lý phản ánh đạt ${kpi.tyLeXuLyPA}%, thể hiện tinh thần trách nhiệm và ` +
           `hiệu quả trong công tác điều hành của Ban.`,
@@ -422,7 +423,7 @@ export async function GET() {
           alignment: AlignmentType.CENTER,
           spacing:   { before: 480 },
           children:  [new TextRun({
-            text: `KP25 Smart Community OS · Báo cáo tự động · ${ngayTao} · Phường Long Trường – TP.HCM`,
+            text: `${KHU_PHO.ma} Smart Community OS · Báo cáo tự động · ${ngayTao} · Phường Long Trường – TP.HCM`,
             size: 18, color: '94A3B8', font: 'Times New Roman',
           })],
         }),
@@ -437,7 +438,7 @@ export async function GET() {
     status: 200,
     headers: {
       'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'Content-Disposition': `attachment; filename*=UTF-8''Bao-cao-KP25-${date}.docx`,
+      'Content-Disposition': `attachment; filename*=UTF-8''Bao-cao-${KHU_PHO.ma}-${date}.docx`,
       'Cache-Control': 'no-store',
     },
   })

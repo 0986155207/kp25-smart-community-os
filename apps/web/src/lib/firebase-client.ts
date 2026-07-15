@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 // ─── Firebase Client SDK — Portal dân cư ──────────────────────
 // Chỉ dùng ở client components ('use client')
 
@@ -115,7 +116,7 @@ export function langNghePushForeground(
   const unsubscribe = onMessage(msg, (payload) => {
     const n = payload.notification ?? {}
     callback({
-      title: n.title ?? 'KP25 Khu phố 25',
+      title: n.title ?? `${KHU_PHO.ma} ${KHU_PHO.ten}`,
       body:  n.body  ?? '',
       url:   (payload.data?.['url'] as string | undefined) ?? '/',
     })

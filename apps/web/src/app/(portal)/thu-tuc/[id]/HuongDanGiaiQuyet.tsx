@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import Link from 'next/link'
 import {
   Globe, Building2, HandHelping, ExternalLink, MapPin, Clock, Phone,
@@ -32,7 +33,7 @@ export default function HuongDanGiaiQuyet({ tt }: { tt: ThuTuc }) {
           <h2 className="font-bold text-slate-900 text-base">Thủ tục này do UBND Phường giải quyết</h2>
           <p className="text-sm text-slate-500 mt-0.5 leading-relaxed">
             Theo mô hình hành chính 2 cấp, thủ tục thuộc thẩm quyền của <strong>{coQuan}</strong>.
-            Khu phố 25 là điểm tiếp nhận và hỗ trợ — bạn có <strong>3 cách</strong> để hoàn tất:
+            {KHU_PHO.ten} là điểm tiếp nhận và hỗ trợ — bạn có <strong>3 cách</strong> để hoàn tất:
           </p>
         </div>
       </div>
@@ -56,7 +57,7 @@ export default function HuongDanGiaiQuyet({ tt }: { tt: ThuTuc }) {
                 href={`#nop-ho-so`}
                 className="inline-flex items-center gap-1.5 px-3 py-2 bg-[#8B1A1A] text-white text-xs font-semibold rounded-lg hover:bg-[#6d1414] transition-colors"
               >
-                <Smartphone size={13} /> Nộp tại cổng KP25
+                <Smartphone size={13} /> Nộp tại cổng {KHU_PHO.ma}
               </Link>
             )}
             <a
@@ -109,10 +110,10 @@ export default function HuongDanGiaiQuyet({ tt }: { tt: ThuTuc }) {
           <div className="flex items-center gap-2 mb-2">
             <span className="w-6 h-6 rounded-full bg-[#8B1A1A] text-white text-xs font-bold flex items-center justify-center">3</span>
             <HandHelping size={15} className="text-[#8B1A1A]" />
-            <span className="font-bold text-slate-800 text-sm">Nhờ Khu phố 25 hỗ trợ</span>
+            <span className="font-bold text-slate-800 text-sm">Nhờ {KHU_PHO.ten} hỗ trợ</span>
           </div>
           <p className="text-xs text-slate-600 leading-relaxed mb-3">
-            Chưa rõ thủ tục hoặc cần giúp chuẩn bị hồ sơ? Ban quản lý Khu phố 25 hướng dẫn,
+            Chưa rõ thủ tục hoặc cần giúp chuẩn bị hồ sơ? Ban quản lý {KHU_PHO.ten} hướng dẫn,
             hỗ trợ chuẩn bị và chuyển hồ sơ lên UBND Phường giúp bạn.
           </p>
           <div className="flex flex-wrap gap-2">
@@ -120,7 +121,7 @@ export default function HuongDanGiaiQuyet({ tt }: { tt: ThuTuc }) {
               href="/lien-he"
               className="inline-flex items-center gap-1.5 px-3 py-2 bg-[#8B1A1A] text-white text-xs font-semibold rounded-lg hover:bg-[#6d1414] transition-colors"
             >
-              <Phone size={13} /> Liên hệ Ban quản lý KP25
+              <Phone size={13} /> Liên hệ Ban quản lý {KHU_PHO.ma}
             </Link>
             <Link
               href={`/chat?q=${encodeURIComponent(`Hướng dẫn thủ tục: ${tt.ten}`)}`}

@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import { MessageSquareMore, Users, Radio, Info } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
@@ -6,7 +7,7 @@ import GroupComposer        from './GroupComposer'
 import ZaloDashboardClient  from './ZaloDashboardClient'
 
 export const metadata: Metadata = {
-  title: 'Zalo — KP25 Admin',
+  title: `Zalo — ${KHU_PHO.ma} Admin`,
   description: 'Quản lý giao tiếp cộng đồng qua Zalo OA và Zalo Group',
 }
 
@@ -92,7 +93,7 @@ export default async function ZaloPage() {
           <div>
             <h1 className="text-2xl font-bold text-slate-900">Giao tiếp Zalo</h1>
             <p className="text-slate-500 text-sm">
-              OA + Group cộng đồng · Khu phố 25
+              OA + Group cộng đồng · {KHU_PHO.ten}
             </p>
           </div>
         </div>
@@ -125,7 +126,7 @@ export default async function ZaloPage() {
               <strong>Group Composer</strong> để soạn và chia sẻ tin nhắn vào Group cộng đồng.
             </p>
             <p className="text-xs text-blue-600 mt-2">
-              Tên OA đăng ký: <strong>{oaConfig?.oa_name ?? 'Khu phố 25 - Long Trường'}</strong>
+              Tên OA đăng ký: <strong>{oaConfig?.oa_name ?? `${KHU_PHO.ten} - Long Trường`}</strong>
               {oaConfig?.oa_id && oaConfig.oa_id !== 'pending_oa_id' && (
                 <> · OA ID: <strong>{oaConfig.oa_id}</strong></>
               )}
@@ -170,7 +171,7 @@ export default async function ZaloPage() {
             'Chọn loại tin nhắn và điền nội dung trong bảng "Soạn tin nhắn Group Zalo" bên trái.',
             'Nhấn "Xem trước" để kiểm tra định dạng trước khi gửi.',
             'Nhấn "Copy tin nhắn" — nội dung sẽ được copy vào clipboard và lưu vào lịch sử.',
-            'Mở ứng dụng Zalo → vào Group "KP25 – Long Trường" → dán và gửi.',
+            `Mở ứng dụng Zalo → vào Group "${KHU_PHO.ma} – Long Trường" → dán và gửi.`,
             'Hệ thống tự ghi nhận trạng thái "Đã copy Group" vào lịch sử.',
           ].map((step, i) => (
             <li key={i} className="flex items-start gap-2.5">

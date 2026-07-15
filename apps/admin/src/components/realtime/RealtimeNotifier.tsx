@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
@@ -66,7 +67,7 @@ function showToast(evt: RealtimeEvent) {
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5 mb-0.5">
             <span className="w-1.5 h-1.5 rounded-full bg-[#8B1A1A] animate-pulse" />
-            <p className="text-[10px] font-bold text-[#8B1A1A] uppercase tracking-wide">Realtime · KP25</p>
+            <p className="text-[10px] font-bold text-[#8B1A1A] uppercase tracking-wide">Realtime · {KHU_PHO.ma}</p>
           </div>
           <p className="text-sm font-semibold text-slate-800 leading-tight">{title}</p>
           <p className="text-xs text-slate-500 mt-0.5 line-clamp-2 leading-relaxed">{body}</p>
@@ -168,7 +169,7 @@ export default function RealtimeNotifier() {
       )
       .subscribe((status) => {
         if (status === 'SUBSCRIBED') {
-          console.log('[KP25 Realtime] Kết nối thành công')
+          console.log(`[${KHU_PHO.ma} Realtime] Kết nối thành công`)
         }
       })
 

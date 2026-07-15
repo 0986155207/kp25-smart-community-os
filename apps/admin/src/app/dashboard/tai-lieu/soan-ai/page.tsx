@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useState, useRef, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -23,8 +24,8 @@ const MAU_VAN_BAN = [
     mo_ta: 'Nghị quyết chi bộ, hội nghị, đại hội',
     truong: [
       { key: 'so_hieu',   label: 'Số hiệu',     placeholder: '01/NQ-CB',           required: true },
-      { key: 'don_vi',    label: 'Chi bộ/Đơn vị', placeholder: 'Chi bộ Khu phố 25', required: true },
-      { key: 'dia_diem',  label: 'Địa điểm',     placeholder: 'Nhà văn hoá KP25',   required: true },
+      { key: 'don_vi',    label: 'Chi bộ/Đơn vị', placeholder: `Chi bộ ${KHU_PHO.ten}`, required: true },
+      { key: 'dia_diem',  label: 'Địa điểm',     placeholder: `Nhà văn hoá ${KHU_PHO.ma}`,   required: true },
       { key: 'thoi_gian', label: 'Thời gian',    placeholder: '14g00, ngày 15/03/2026', required: true },
       { key: 'chu_tri',   label: 'Chủ trì',      placeholder: 'Phan Tấn Tài — Bí thư chi bộ', required: true },
       { key: 'thu_ky',    label: 'Thư ký',        placeholder: 'Nguyễn Thị Hồng Thủy', required: false },
@@ -43,8 +44,8 @@ const MAU_VAN_BAN = [
     mo_ta: 'Biên bản họp khu phố, hội nghị dân cư',
     truong: [
       { key: 'ten_cuoc_hop', label: 'Tên cuộc họp',    placeholder: 'Họp khu phố tháng 03/2026', required: true },
-      { key: 'so_hieu',      label: 'Số biên bản',     placeholder: '03/BB-KP25',               required: false },
-      { key: 'dia_diem',     label: 'Địa điểm',        placeholder: 'Nhà văn hoá Khu phố 25',   required: true },
+      { key: 'so_hieu',      label: 'Số biên bản',     placeholder: `03/BB-${KHU_PHO.ma}`,               required: false },
+      { key: 'dia_diem',     label: 'Địa điểm',        placeholder: `Nhà văn hoá ${KHU_PHO.ten}`,   required: true },
       { key: 'thoi_gian_bat_dau', label: 'Giờ bắt đầu', placeholder: '19g00, ngày 20/03/2026',  required: true },
       { key: 'thoi_gian_ket_thuc', label: 'Giờ kết thúc', placeholder: '21g00',                 required: false },
       { key: 'chu_tri',      label: 'Chủ trì',          placeholder: 'Nguyễn Thị Hồng Thủy',    required: true },
@@ -64,8 +65,8 @@ const MAU_VAN_BAN = [
     mo_ta: 'Báo cáo tổng kết, báo cáo định kỳ',
     truong: [
       { key: 'tieu_de',    label: 'Tên báo cáo',      placeholder: 'Báo cáo tổng kết công tác an ninh trật tự năm 2025', required: true },
-      { key: 'so_hieu',    label: 'Số hiệu',          placeholder: '05/BC-KP25',              required: false },
-      { key: 'don_vi',     label: 'Đơn vị báo cáo',  placeholder: 'Khu phố 25',              required: true },
+      { key: 'so_hieu',    label: 'Số hiệu',          placeholder: `05/BC-${KHU_PHO.ma}`,              required: false },
+      { key: 'don_vi',     label: 'Đơn vị báo cáo',  placeholder: `${KHU_PHO.ten}`,              required: true },
       { key: 'ky_bao_cao', label: 'Kỳ báo cáo',      placeholder: 'Năm 2025 / Quý I/2026',   required: true },
       { key: 'ket_qua',    label: 'Kết quả đạt được', placeholder: 'Nêu các thành tích, kết quả nổi bật...', required: true, textarea: true },
       { key: 'han_che',    label: 'Hạn chế, tồn tại', placeholder: 'Những khó khăn, tồn tại cần khắc phục...', required: false, textarea: true },
@@ -83,8 +84,8 @@ const MAU_VAN_BAN = [
     mo_ta: 'Thông báo triệu tập, thông báo sự kiện',
     truong: [
       { key: 'tieu_de',   label: 'Tiêu đề thông báo', placeholder: 'Thông báo triệu tập Hội nghị dân cư', required: true },
-      { key: 'so_hieu',   label: 'Số hiệu',           placeholder: '04/TB-KP25',             required: false },
-      { key: 'kinh_gui',  label: 'Kính gửi',          placeholder: 'Toàn thể hộ dân Khu phố 25', required: true },
+      { key: 'so_hieu',   label: 'Số hiệu',           placeholder: `04/TB-${KHU_PHO.ma}`,             required: false },
+      { key: 'kinh_gui',  label: 'Kính gửi',          placeholder: `Toàn thể hộ dân ${KHU_PHO.ten}`, required: true },
       { key: 'noi_dung',  label: 'Nội dung thông báo', placeholder: 'Nội dung cần thông báo đến người dân...', required: true, textarea: true },
       { key: 'thoi_han',  label: 'Thời hạn/Thời gian', placeholder: 'Trước ngày 20/03/2026 / 19g00 ngày 25/03/2026', required: false },
       { key: 'yeu_cau',   label: 'Yêu cầu thực hiện', placeholder: 'Đề nghị các hộ dân thực hiện...', required: false, textarea: true },
@@ -100,7 +101,7 @@ const MAU_VAN_BAN = [
     mo_ta: 'Hướng dẫn thủ tục, quy trình hành chính',
     truong: [
       { key: 'tieu_de',  label: 'Tiêu đề hướng dẫn', placeholder: 'Hướng dẫn đăng ký tạm trú cho người thuê nhà', required: true },
-      { key: 'so_hieu',  label: 'Số hiệu',           placeholder: '02/HD-KP25',              required: false },
+      { key: 'so_hieu',  label: 'Số hiệu',           placeholder: `02/HD-${KHU_PHO.ma}`,              required: false },
       { key: 'doi_tuong', label: 'Đối tượng áp dụng', placeholder: 'Hộ dân có người thuê trọ, người thuê nhà', required: true },
       { key: 'noi_dung', label: 'Nội dung thủ tục/quy trình', placeholder: 'Mô tả chi tiết quy trình, các bước thực hiện...', required: true, textarea: true },
       { key: 'ho_so',    label: 'Hồ sơ cần chuẩn bị', placeholder: 'CCCD, tờ khai CT02, hợp đồng thuê nhà...', required: false, textarea: true },
@@ -117,9 +118,9 @@ const MAU_VAN_BAN = [
     iconColor: 'text-emerald-600',
     mo_ta: 'Quy chế, nội quy hoạt động',
     truong: [
-      { key: 'tieu_de',   label: 'Tên quy chế',       placeholder: 'Quy chế hoạt động Ban quản lý Khu phố 25', required: true },
-      { key: 'so_hieu',   label: 'Số hiệu',           placeholder: '01/QC-KP25',              required: false },
-      { key: 'doi_tuong', label: 'Đối tượng áp dụng', placeholder: 'Ban quản lý và hộ dân Khu phố 25', required: true },
+      { key: 'tieu_de',   label: 'Tên quy chế',       placeholder: `Quy chế hoạt động Ban quản lý ${KHU_PHO.ten}`, required: true },
+      { key: 'so_hieu',   label: 'Số hiệu',           placeholder: `01/QC-${KHU_PHO.ma}`,              required: false },
+      { key: 'doi_tuong', label: 'Đối tượng áp dụng', placeholder: `Ban quản lý và hộ dân ${KHU_PHO.ten}`, required: true },
       { key: 'pham_vi',   label: 'Phạm vi điều chỉnh', placeholder: 'Tổ chức, hoạt động, quyền và nghĩa vụ...', required: false },
       { key: 'noi_dung',  label: 'Nội dung chính cần quy định', placeholder: 'Chức năng, nhiệm vụ, quyền hạn, trách nhiệm...', required: true, textarea: true },
       { key: 'so_chuong', label: 'Số chương/điều dự kiến', placeholder: '4 chương, 15 điều', required: false },

@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -73,7 +74,7 @@ export default function DangKyTamVangPage() {
       }
     }
     if (step === 1) {
-      if (!form.dia_chi_hien_tai.trim()) return 'Vui lòng nhập địa chỉ hiện tại tại KP25'
+      if (!form.dia_chi_hien_tai.trim()) return `Vui lòng nhập địa chỉ hiện tại tại ${KHU_PHO.ma}`
       if (!form.dia_chi_tam_vang.trim()) return 'Vui lòng nhập nơi đến'
     }
     if (step === 2) {
@@ -118,7 +119,7 @@ export default function DangKyTamVangPage() {
         </div>
         <h2 className="text-2xl font-bold text-slate-900">Khai báo thành công!</h2>
         <p className="text-slate-500 leading-relaxed">
-          Đơn khai báo tạm vắng đã được tiếp nhận và lưu vào hệ thống Khu phố 25.
+          Đơn khai báo tạm vắng đã được tiếp nhận và lưu vào hệ thống {KHU_PHO.ten}.
           Hãy liên hệ khi có thay đổi về thời gian hoặc địa điểm.
         </p>
         <div className="bg-slate-50 rounded-xl p-4 border border-slate-100 text-left space-y-2">
@@ -162,7 +163,7 @@ export default function DangKyTamVangPage() {
         </div>
         <div>
           <h1 className="text-xl font-bold text-slate-900">Khai báo Tạm vắng</h1>
-          <p className="text-sm text-slate-500">Khu phố 25 · Phường Long Trường</p>
+          <p className="text-sm text-slate-500">{KHU_PHO.ten} · Phường Long Trường</p>
         </div>
       </div>
 
@@ -249,11 +250,11 @@ export default function DangKyTamVangPage() {
           <div className="card space-y-4">
             <h2 className="font-semibold text-slate-800 flex items-center gap-2">
               <MapPin size={16} className="text-slate-500" />
-              Địa chỉ hiện tại tại KP25
+              Địa chỉ hiện tại tại {KHU_PHO.ma}
             </h2>
             <div>
-              <label className="label-form">Địa chỉ đang ở tại KP25 <span className="text-red-500">*</span></label>
-              <input className="input" placeholder="Số nhà, tên đường, Khu phố 25, Phường Long Trường"
+              <label className="label-form">Địa chỉ đang ở tại {KHU_PHO.ma} <span className="text-red-500">*</span></label>
+              <input className="input" placeholder={`Số nhà, tên đường, ${KHU_PHO.ten}, Phường Long Trường`}
                 value={form.dia_chi_hien_tai} onChange={e => set('dia_chi_hien_tai', e.target.value)} />
             </div>
           </div>
@@ -360,7 +361,7 @@ export default function DangKyTamVangPage() {
             <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-slate-600">
               <span className="text-slate-400">Họ tên:</span>      <span className="font-medium">{form.ho_ten}</span>
               <span className="text-slate-400">SĐT:</span>          <span>{form.sdt_lien_lac}</span>
-              <span className="text-slate-400">Địa chỉ KP25:</span> <span className="truncate">{form.dia_chi_hien_tai}</span>
+              <span className="text-slate-400">Địa chỉ {KHU_PHO.ma}:</span> <span className="truncate">{form.dia_chi_hien_tai}</span>
               <span className="text-slate-400">Nơi đến:</span>      <span className="truncate">{form.dia_chi_tam_vang}</span>
               <span className="text-slate-400">Ngày đi:</span>      <span>{form.ngay_di || '—'}</span>
               <span className="text-slate-400">Lý do:</span>        <span>{LY_DO.find(l => l.value === form.ly_do_tam_vang)?.label}</span>

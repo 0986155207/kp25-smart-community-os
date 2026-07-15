@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
@@ -143,7 +144,7 @@ export default async function ChiTietThongBaoPage({
             </span>
             <span className="flex items-center gap-1.5">
               <Bell size={14} />
-              Ban quản lý Khu phố 25
+              Ban quản lý {KHU_PHO.ten}
             </span>
           </div>
 
@@ -246,7 +247,7 @@ export default async function ChiTietThongBaoPage({
             <Bell size={20} className="text-white/60 mb-2" />
             <h3 className="font-bold mb-1">Cần hỗ trợ?</h3>
             <p className="text-white/70 text-sm mb-3">
-              Liên hệ trực tiếp với Ban quản lý Khu phố 25
+              Liên hệ trực tiếp với Ban quản lý {KHU_PHO.ten}
             </p>
             <Link
               href="/lien-he"

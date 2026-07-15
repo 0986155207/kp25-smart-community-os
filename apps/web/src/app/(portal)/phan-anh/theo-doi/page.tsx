@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useState } from 'react'
 import Link from 'next/link'
 import {
@@ -198,7 +199,7 @@ export default function TheoDoidPhanAnhPage() {
                 <>
                   <p className="font-bold text-slate-700">Không tìm thấy phản ánh nào</p>
                   <p className="text-xs text-slate-500">
-                    Số điện thoại này chưa có phản ánh nào tại KP25.
+                    Số điện thoại này chưa có phản ánh nào tại {KHU_PHO.ma}.
                   </p>
                 </>
               )}

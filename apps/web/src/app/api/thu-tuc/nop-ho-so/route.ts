@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getThuTucById } from '@/app/(portal)/thu-tuc/data'
@@ -6,7 +7,7 @@ import { getThuTucById } from '@/app/(portal)/thu-tuc/data'
 function genMaHoSo(): string {
   const year = new Date().getFullYear()
   const rand = Math.floor(100000 + Math.random() * 900000)
-  return `KP25-${year}-${rand}`
+  return `${KHU_PHO.ma}-${year}-${rand}`
 }
 
 // ─── POST /api/thu-tuc/nop-ho-so ────────────────────────────

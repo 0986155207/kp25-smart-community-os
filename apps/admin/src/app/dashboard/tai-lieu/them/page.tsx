@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -133,7 +134,7 @@ export default function ThemTaiLieuPage() {
             <Field
               label="Số hiệu văn bản"
               name="so_hieu"
-              placeholder="VD: 01/NQ-KP25"
+              placeholder={`VD: 01/NQ-${KHU_PHO.ma}`}
               helpText="Số hiệu định danh chính thức"
             >
               <div className="relative">
@@ -141,7 +142,7 @@ export default function ThemTaiLieuPage() {
                 <input
                   name="so_hieu"
                   type="text"
-                  placeholder="01/NQ-KP25"
+                  placeholder={`01/NQ-${KHU_PHO.ma}`}
                   className="w-full rounded-xl border border-slate-200 bg-white pl-9 pr-3.5 py-2.5
                     text-sm text-slate-800 placeholder-slate-400
                     focus:outline-none focus:ring-2 focus:ring-[#8B1A1A]/30 focus:border-[#8B1A1A]

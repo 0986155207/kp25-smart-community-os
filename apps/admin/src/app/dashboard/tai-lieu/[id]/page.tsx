@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import type { Metadata } from 'next'
@@ -14,7 +15,7 @@ type Props = { params: Promise<{ id: string }> }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params
   const doc = await layTaiLieuChiTiet(id)
-  return { title: doc ? `${doc.tieu_de} — KP25 Admin` : 'Tài liệu — KP25 Admin' }
+  return { title: doc ? `${doc.tieu_de} — ${KHU_PHO.ma} Admin` : `Tài liệu — ${KHU_PHO.ma} Admin` }
 }
 
 function MetaRow({ icon: Icon, label, value }: {

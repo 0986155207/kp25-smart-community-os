@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import {
@@ -139,7 +140,7 @@ export default async function DashboardPage() {
             Tổng quan điều hành
           </h1>
           <p className="text-slate-500 text-sm mt-0.5">
-            Khu phố 25 · Phường Long Trường · TP.HCM
+            {KHU_PHO.ten} · Phường Long Trường · TP.HCM
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -307,7 +308,7 @@ export default async function DashboardPage() {
       {/* ── Footer timestamp ─────────────────────────────────────── */}
       <div className="text-center py-2">
         <p className="text-[11px] text-slate-300">
-          KP25 Smart Community OS · Dữ liệu cập nhật realtime · Tự làm mới mỗi 60 giây
+          {KHU_PHO.ma} Smart Community OS · Dữ liệu cập nhật realtime · Tự làm mới mỗi 60 giây
         </p>
       </div>
 

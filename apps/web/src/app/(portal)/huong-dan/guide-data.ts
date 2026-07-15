@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 // Dữ liệu hướng dẫn sử dụng — Portal người dân KP25
 
 export interface GuideStep { title: string; detail: string }
@@ -16,7 +17,7 @@ export const GUIDE_SECTIONS: GuideSection[] = [
     id: 'tong-quan',
     icon: '🏘️',
     title: 'Giới thiệu chung',
-    desc: 'KP25 Smart Community là cổng dịch vụ số của Khu phố 25 — phục vụ người dân 24/7, không cần đến trụ sở.',
+    desc: `${KHU_PHO.ma} Smart Community là cổng dịch vụ số của ${KHU_PHO.ten} — phục vụ người dân 24/7, không cần đến trụ sở.`,
     steps: [
       { title: 'Truy cập mọi lúc, mọi nơi', detail: 'Mở bằng trình duyệt điện thoại hoặc máy tính tại smart-kp25-web.vercel.app. Không cần cài đặt.' },
       { title: 'Cài như ứng dụng (tùy chọn)', detail: 'Trên điện thoại, chọn "Thêm vào màn hình chính" để mở nhanh như một app riêng, dùng được cả khi mạng yếu.' },
@@ -61,7 +62,7 @@ export const GUIDE_SECTIONS: GuideSection[] = [
     desc: 'Khai báo cư trú trực tuyến theo Luật Cư trú 2020 — không cần xếp hàng.',
     href: '/dang-ky',
     steps: [
-      { title: 'Vào mục "Đăng ký"', detail: 'Chọn "Đăng ký Tạm trú" (từ nơi khác đến) hoặc "Khai báo Tạm vắng" (rời KP25 trên 30 ngày).' },
+      { title: 'Vào mục "Đăng ký"', detail: `Chọn "Đăng ký Tạm trú" (từ nơi khác đến) hoặc "Khai báo Tạm vắng" (rời ${KHU_PHO.ma} trên 30 ngày).` },
       { title: 'Điền thông tin cá nhân & CCCD', detail: 'Nhập đầy đủ họ tên, số CCCD, thông tin liên hệ.' },
       { title: 'Nhập địa chỉ & thời gian', detail: 'Địa chỉ tạm trú/nơi đến, lý do, ngày bắt đầu - kết thúc.' },
       { title: 'Gửi & chờ xác nhận', detail: 'Cán bộ xem xét trong 1-3 ngày làm việc và phản hồi qua điện thoại.' },

@@ -8,7 +8,7 @@ import { formatDate, formatDateTime } from '@/lib/utils'
 
 export const metadata: Metadata = {
   title: 'Sự kiện',
-  description: 'Lịch sự kiện, hoạt động cộng đồng Khu phố 25 – Phường Long Trường',
+  description: `Lịch sự kiện, hoạt động cộng đồng ${KHU_PHO.ten} – Phường Long Trường`,
 }
 
 export const revalidate = 60
@@ -185,7 +185,7 @@ function SuKienCard({ sk }: { sk: SuKien }) {
         {/* Footer */}
         <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-100">
           <span className="text-xs text-slate-400">
-            {sk.donViToChuc ?? 'Ban điều hành KP25'}
+            {sk.donViToChuc ?? `Ban điều hành ${KHU_PHO.ma}`}
           </span>
           {sk.canDangKy && sk.trangThai === 'SAP_DIEN_RA' && (
             <span className="text-xs font-semibold text-[#8B1A1A] bg-red-50
@@ -225,7 +225,7 @@ export default async function SuKienPage({
         </div>
         <div>
           <h1 className="text-3xl font-bold text-slate-900">Lịch sự kiện</h1>
-          <p className="text-slate-500">Khu phố 25 · Phường Long Trường</p>
+          <p className="text-slate-500">{KHU_PHO.ten} · Phường Long Trường</p>
         </div>
       </div>
 

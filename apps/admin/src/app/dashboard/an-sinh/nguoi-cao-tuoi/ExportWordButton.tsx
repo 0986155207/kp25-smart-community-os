@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useState } from 'react'
 import { FileText, Loader2, ChevronDown, Download } from 'lucide-react'
 
@@ -35,7 +36,7 @@ export default function ExportWordButton({ filter = 'all', totalCount }: Props) 
       // Lấy tên file từ header nếu có
       const cd = res.headers.get('content-disposition') ?? ''
       const match = cd.match(/filename\*?=(?:UTF-8'')?(.+)/i)
-      a.download = match ? decodeURIComponent(match[1]!.replace(/['"]/g, '')) : `DS_NCT_KP25.docx`
+      a.download = match ? decodeURIComponent(match[1]!.replace(/['"]/g, '')) : `DS_NCT_${KHU_PHO.ma}.docx`
 
       document.body.appendChild(a)
       a.click()

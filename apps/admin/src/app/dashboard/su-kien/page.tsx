@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import {
@@ -9,7 +10,7 @@ import { vi } from 'date-fns/locale'
 import { layDanhSachSuKien, layThongKeSuKien } from './actions'
 import { LOAI_SK_CFG, TRANG_THAI_SK_CFG, type LoaiSuKien, type TrangThaiSuKien } from './constants'
 
-export const metadata: Metadata = { title: 'Sự kiện — KP25' }
+export const metadata: Metadata = { title: `Sự kiện — ${KHU_PHO.ma}` }
 export const revalidate = 0
 
 // ─── Filter tabs ──────────────────────────────────────────────
@@ -55,7 +56,7 @@ export default async function SuKienPage({ searchParams }: Props) {
         <div>
           <div className="flex items-center gap-2">
             <CalendarDays size={22} className="text-[#8B1A1A]" />
-            <h1 className="text-2xl font-bold text-slate-900">Sự kiện Khu phố 25</h1>
+            <h1 className="text-2xl font-bold text-slate-900">Sự kiện {KHU_PHO.ten}</h1>
           </div>
           <p className="text-slate-500 text-sm mt-0.5">
             {thongKe.tong} sự kiện · {thongKe.dangDienRa} đang diễn ra · {thongKe.sapDienRa} sắp tới

@@ -283,7 +283,7 @@ export default function TaoPhanAnhSmartPage() {
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Gửi phản ánh hiện trường</h1>
           <div className="flex items-center gap-2 mt-0.5">
-            <span className="text-slate-500 text-sm">Khu phố 25 · Phường Long Trường</span>
+            <span className="text-slate-500 text-sm">{KHU_PHO.ten} · Phường Long Trường</span>
             <span className="inline-flex items-center gap-1 text-xs font-semibold bg-violet-100 text-violet-700 px-2 py-0.5 rounded-full">
               <Sparkles size={10} />
               AI Smart

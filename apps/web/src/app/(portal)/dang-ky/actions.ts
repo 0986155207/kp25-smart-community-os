@@ -1,5 +1,6 @@
 'use server'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { createClient } from '@/lib/supabase/server'
 
 // ─── Gửi đơn đăng ký tạm trú ────────────────────────────────────
@@ -77,7 +78,7 @@ export async function guiDangKyTamVang(
     const ngayDi = r('ngay_di')
 
     if (!hoTen)          return { success: false, message: 'Vui lòng nhập họ tên' }
-    if (!diaChiHienTai)  return { success: false, message: 'Vui lòng nhập địa chỉ tại KP25' }
+    if (!diaChiHienTai)  return { success: false, message: `Vui lòng nhập địa chỉ tại ${KHU_PHO.ma}` }
     if (!diaChiTamVang)  return { success: false, message: 'Vui lòng nhập nơi đến' }
     if (!ngayDi)         return { success: false, message: 'Vui lòng chọn ngày đi' }
 

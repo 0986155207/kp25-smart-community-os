@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
@@ -5,7 +6,7 @@ import { ArrowLeft, UserMinus, Save } from 'lucide-react'
 import { taoMoiTamVang } from '../actions'
 import { LY_DO_TAM_VANG_LABEL } from '../constants'
 
-export const metadata: Metadata = { title: 'Khai báo tạm vắng — KP25' }
+export const metadata: Metadata = { title: `Khai báo tạm vắng — ${KHU_PHO.ma}` }
 
 // ─── Server action wrapper ────────────────────────────────────
 async function handleSubmit(formData: FormData) {
@@ -145,12 +146,12 @@ export default async function ThemTamVangPage({ searchParams }: Props) {
           {/* Địa chỉ tại KP25 */}
           <div>
             <label className="block text-xs font-semibold text-slate-600 mb-1.5">
-              Địa chỉ hiện tại tại KP25 <span className="text-red-500">*</span>
+              Địa chỉ hiện tại tại {KHU_PHO.ma} <span className="text-red-500">*</span>
             </label>
             <input
               name="dia_chi_hien_tai"
               required
-              placeholder="123/45 Nguyễn Duy Trinh, KP25, Long Trường"
+              placeholder={`123/45 Nguyễn Duy Trinh, ${KHU_PHO.ma}, Long Trường`}
               className="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>

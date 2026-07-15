@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useState, useRef, useEffect, useCallback } from 'react'
 import {
   Send, Bot, User, Loader2, RefreshCw, Sparkles,
@@ -30,7 +31,7 @@ const STORAGE_KEY = 'kp25-chat-session'
 const WELCOME_MESSAGE: Message = {
   id:        'welcome',
   vaiTro:    'assistant',
-  noiDung:   'Xin chào! Tôi là Trợ lý AI của Khu phố 25, Phường Long Trường, TP.HCM.\n\nTôi có thể hỗ trợ bạn:\n1. Tra cứu thông tin hành chính\n2. Hướng dẫn thủ tục, quy trình\n3. Tiếp nhận phản ánh hiện trường\n4. Thông tin về các hoạt động khu phố\n\nBạn cần hỗ trợ gì ạ?',
+  noiDung:   `Xin chào! Tôi là Trợ lý AI của ${KHU_PHO.ten}, Phường Long Trường, TP.HCM.\n\nTôi có thể hỗ trợ bạn:\n1. Tra cứu thông tin hành chính\n2. Hướng dẫn thủ tục, quy trình\n3. Tiếp nhận phản ánh hiện trường\n4. Thông tin về các hoạt động khu phố\n\nBạn cần hỗ trợ gì ạ?`,
   createdAt: new Date().toISOString(),
 }
 
@@ -191,7 +192,7 @@ export default function ChatInterface() {
             <Sparkles size={20} className="text-[#FCD34D]" />
           </div>
           <div>
-            <div className="font-bold text-base">AI Trợ lý Khu phố 25</div>
+            <div className="font-bold text-base">AI Trợ lý {KHU_PHO.ten}</div>
             <div className="text-xs text-white/70 flex items-center gap-1.5">
               <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
               Trực tuyến · Gemini 2.5 Flash · Có nhớ ngữ cảnh

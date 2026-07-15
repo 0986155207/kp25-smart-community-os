@@ -1,10 +1,11 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
 import { layTrangThaiNhung } from '@/lib/rag'
 import RagClient from './RagClient'
 import type { TaiLieu } from '../../tai-lieu/actions'
 
-export const metadata: Metadata = { title: 'Nhúng văn bản RAG — KP25 AI' }
+export const metadata: Metadata = { title: `Nhúng văn bản RAG — ${KHU_PHO.ma} AI` }
 export const revalidate = 0
 
 async function getData() {

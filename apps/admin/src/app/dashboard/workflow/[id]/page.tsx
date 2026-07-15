@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
@@ -11,7 +12,7 @@ import { vi } from 'date-fns/locale'
 import { createClient } from '@/lib/supabase/server'
 import { layChiTietWorkflow } from '../actions'
 
-export const metadata: Metadata = { title: 'Chi tiết Workflow — KP25 Admin' }
+export const metadata: Metadata = { title: `Chi tiết Workflow — ${KHU_PHO.ma} Admin` }
 
 const TRANG_THAI_CFG: Record<string, { label: string; badge: string; dot: string }> = {
   CHO_PHAN_CONG: { label: 'Chờ phân công', badge: 'bg-amber-100 text-amber-700 border border-amber-200',  dot: 'bg-amber-400' },

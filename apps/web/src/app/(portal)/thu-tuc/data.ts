@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 /**
  * Dữ liệu thủ tục hành chính — Phường Long Trường, TP.HCM
  * Cập nhật theo quy định mới nhất 05/2026
@@ -599,7 +600,7 @@ export const DS_THU_TUC: ThuTuc[] = [
       { ten: 'Ảnh chụp hiện trường (nếu có)', soLuong: 'Theo thực tế' },
     ],
     trinhTu: [
-      'Báo cáo ngay cho Ban quản lý Khu phố 25 hoặc UBND Phường',
+      `Báo cáo ngay cho Ban quản lý ${KHU_PHO.ten} hoặc UBND Phường`,
       'Cán bộ xuống kiểm tra, lập biên bản xác nhận thiệt hại',
       'UBND Phường xem xét và quyết định mức hỗ trợ',
       'Trao hỗ trợ trực tiếp cho hộ gia đình',
@@ -608,7 +609,7 @@ export const DS_THU_TUC: ThuTuc[] = [
       'Nghị định 20/2021/NĐ-CP',
       'Quyết định 33/2021/QĐ-TTg về hỗ trợ nhà ở cho hộ nghèo',
     ],
-    diaDiemNop: 'UBND Phường Long Trường hoặc liên hệ trực tiếp Ban quản lý KP25',
+    diaDiemNop: `UBND Phường Long Trường hoặc liên hệ trực tiếp Ban quản lý ${KHU_PHO.ma}`,
     thoiGianLamViec: 'Thứ 2 – Thứ 7: 7h30 – 17h00 (Khẩn cấp: liên hệ hotline 24/7)',
     hotline: '0773 735 317',
     noiBat: false,
@@ -663,7 +664,7 @@ export const DS_THU_TUC: ThuTuc[] = [
     ten: 'Hòa giải tranh chấp tại cơ sở',
     linhVuc: 'TU_PHAP',
     mucDoTrucTuyen: 2,
-    coQuanGiaiQuyet: 'Tổ hòa giải Khu phố 25 – Phường Long Trường',
+    coQuanGiaiQuyet: `Tổ hòa giải ${KHU_PHO.ten} – Phường Long Trường`,
     doiTuong: 'Các bên có tranh chấp dân sự nhỏ tại cộng đồng: tranh chấp đất đai ranh giới, tài sản, mâu thuẫn hàng xóm',
     moTa: 'Hòa giải viên cơ sở hỗ trợ các bên tự nguyện giải quyết mâu thuẫn mà không cần khởi kiện ra tòa. Hoàn toàn miễn phí, bảo mật.',
     thoiHanGiaiQuyet: 'Tùy vụ việc (thường 1–3 buổi, mỗi buổi 2 giờ)',
@@ -676,16 +677,16 @@ export const DS_THU_TUC: ThuTuc[] = [
       { ten: 'Giấy tờ liên quan đến tranh chấp', soLuong: 'Theo vụ việc' },
     ],
     trinhTu: [
-      'Gửi đơn yêu cầu hòa giải đến Ban quản lý KP25 hoặc UBND Phường',
+      `Gửi đơn yêu cầu hòa giải đến Ban quản lý ${KHU_PHO.ma} hoặc UBND Phường`,
       'Tổ hòa giải liên hệ các bên sắp xếp thời gian',
-      'Tiến hành hòa giải tại Nhà văn hóa KP25 hoặc địa điểm phù hợp',
+      `Tiến hành hòa giải tại Nhà văn hóa ${KHU_PHO.ma} hoặc địa điểm phù hợp`,
       'Lập Biên bản hòa giải thành/không thành',
     ],
     canCuPhapLy: [
       'Luật Hòa giải ở cơ sở 2013 (số 35/2013/QH13)',
       'Nghị định 15/2014/NĐ-CP hướng dẫn Luật Hòa giải ở cơ sở',
     ],
-    diaDiemNop: 'Ban quản lý Khu phố 25 hoặc UBND Phường Long Trường',
+    diaDiemNop: `Ban quản lý ${KHU_PHO.ten} hoặc UBND Phường Long Trường`,
     thoiGianLamViec: 'Theo thỏa thuận với Tổ hòa giải',
     liuY: 'Hòa giải thành có thể yêu cầu Tòa án công nhận để có hiệu lực thi hành bắt buộc theo khoản 2 Điều 417 BLTTDS 2015.',
     hotline: '0773 735 317',
@@ -963,7 +964,7 @@ export const DS_THU_TUC: ThuTuc[] = [
     ],
     diaDiemNop: 'Bộ phận Một cửa UBND Phường Long Trường',
     thoiGianLamViec: 'Thứ 2 – Thứ 6: 7h30 – 11h30 & 13h00 – 17h00',
-    liuY: 'Khu phố 25 hỗ trợ rà soát và lập danh sách đối tượng. Liên hệ Ban quản lý khu phố nếu gia đình thuộc diện chính sách nhưng chưa được cấp thẻ.',
+    liuY: `${KHU_PHO.ten} hỗ trợ rà soát và lập danh sách đối tượng. Liên hệ Ban quản lý khu phố nếu gia đình thuộc diện chính sách nhưng chưa được cấp thẻ.`,
     hotline: '028 3746 1111',
     noiBat: false,
     tags: ['bhyt', 'hộ nghèo', 'cận nghèo', 'người có công', 'trẻ em', 'miễn phí bảo hiểm', 'chính sách', 'người cao tuổi'],
@@ -1007,7 +1008,7 @@ export const DS_THU_TUC: ThuTuc[] = [
     ],
     diaDiemNop: 'Trực tuyến: tuyensinhdaucap.hcm.edu.vn · Hỗ trợ trực tiếp tại trường / UBND Phường',
     thoiGianLamViec: 'Theo lịch tuyển sinh hằng năm (công bố trên cổng thông tin)',
-    liuY: 'Phân tuyến dựa trên NƠI CƯ TRÚ THỰC TẾ qua bản đồ GIS. Hãy đảm bảo thông tin cư trú của trẻ chính xác trong hệ thống. Khu phố 25 hỗ trợ phụ huynh chưa quen thao tác trực tuyến.',
+    liuY: `Phân tuyến dựa trên NƠI CƯ TRÚ THỰC TẾ qua bản đồ GIS. Hãy đảm bảo thông tin cư trú của trẻ chính xác trong hệ thống. ${KHU_PHO.ten} hỗ trợ phụ huynh chưa quen thao tác trực tuyến.`,
     hotline: '028 3746 1111',
     noiBat: true,
     tags: ['tuyển sinh', 'lớp 1', 'lớp 6', 'mầm non', 'đầu cấp', 'nhập học', 'trường học', 'giáo dục', 'học sinh'],
@@ -1067,7 +1068,7 @@ export const DS_THU_TUC: ThuTuc[] = [
       { ten: 'CCCD/CMND của cha mẹ và giấy khai sinh của học sinh', soLuong: '01 bản photo' },
     ],
     trinhTu: [
-      'Nộp hồ sơ tại UBND Phường Long Trường (hoặc nhờ Khu phố 25 hỗ trợ)',
+      `Nộp hồ sơ tại UBND Phường Long Trường (hoặc nhờ ${KHU_PHO.ten} hỗ trợ)`,
       'UBND Phường xác nhận đối tượng chính sách',
       'Chuyển Phòng GD&ĐT / nhà trường thẩm định, ra quyết định hỗ trợ',
       'Nhận hỗ trợ theo quy định (chuyển khoản hoặc qua nhà trường)',
@@ -1079,7 +1080,7 @@ export const DS_THU_TUC: ThuTuc[] = [
     ],
     diaDiemNop: 'Bộ phận Một cửa UBND Phường Long Trường',
     thoiGianLamViec: 'Thứ 2 – Thứ 6: 7h30 – 11h30 & 13h00 – 17h00',
-    liuY: 'Hồ sơ thường nộp vào đầu năm học. Khu phố 25 hỗ trợ rà soát, lập danh sách học sinh thuộc diện chính sách trên địa bàn.',
+    liuY: `Hồ sơ thường nộp vào đầu năm học. ${KHU_PHO.ten} hỗ trợ rà soát, lập danh sách học sinh thuộc diện chính sách trên địa bàn.`,
     hotline: '028 3746 1111',
     noiBat: false,
     tags: ['hỗ trợ học tập', 'chi phí học tập', 'hộ nghèo', 'học sinh chính sách', 'miễn giảm', 'khuyết tật', 'con thương binh', 'giáo dục'],

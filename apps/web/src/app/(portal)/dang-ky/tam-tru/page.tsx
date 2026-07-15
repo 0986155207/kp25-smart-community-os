@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -77,7 +78,7 @@ export default function DangKyTamTruPage() {
     }
     if (step === 1) {
       if (!form.dia_chi_thuong_tru.trim()) return 'Vui lòng nhập địa chỉ thường trú'
-      if (!form.dia_chi_tam_tru.trim()) return 'Vui lòng nhập địa chỉ tạm trú tại KP25'
+      if (!form.dia_chi_tam_tru.trim()) return `Vui lòng nhập địa chỉ tạm trú tại ${KHU_PHO.ma}`
     }
     if (step === 2) {
       if (!form.ngay_bat_dau) return 'Vui lòng chọn ngày bắt đầu tạm trú'
@@ -122,7 +123,7 @@ export default function DangKyTamTruPage() {
         </div>
         <h2 className="text-2xl font-bold text-slate-900">Đăng ký thành công!</h2>
         <p className="text-slate-500 leading-relaxed">
-          Đơn đăng ký tạm trú của bạn đã được tiếp nhận. Ban quản lý Khu phố 25 sẽ
+          Đơn đăng ký tạm trú của bạn đã được tiếp nhận. Ban quản lý {KHU_PHO.ten} sẽ
           liên hệ xác nhận trong <strong>1–3 ngày làm việc</strong>.
         </p>
         <div className="bg-slate-50 rounded-xl p-4 border border-slate-100 text-left space-y-2">
@@ -166,7 +167,7 @@ export default function DangKyTamTruPage() {
         </div>
         <div>
           <h1 className="text-xl font-bold text-slate-900">Đăng ký Tạm trú</h1>
-          <p className="text-sm text-slate-500">Khu phố 25 · Phường Long Trường</p>
+          <p className="text-sm text-slate-500">{KHU_PHO.ten} · Phường Long Trường</p>
         </div>
       </div>
 
@@ -268,11 +269,11 @@ export default function DangKyTamTruPage() {
           <div className="card space-y-4">
             <h2 className="font-semibold text-slate-800 flex items-center gap-2">
               <MapPin size={16} className="text-blue-500" />
-              Địa chỉ tạm trú tại KP25
+              Địa chỉ tạm trú tại {KHU_PHO.ma}
             </h2>
             <div>
               <label className="label-form">Địa chỉ đầy đủ <span className="text-red-500">*</span></label>
-              <input className="input" placeholder="Số nhà, tên đường, Khu phố 25, Phường Long Trường"
+              <input className="input" placeholder={`Số nhà, tên đường, ${KHU_PHO.ten}, Phường Long Trường`}
                 value={form.dia_chi_tam_tru} onChange={e => set('dia_chi_tam_tru', e.target.value)} />
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -378,7 +379,7 @@ export default function DangKyTamTruPage() {
             <div className="flex-1">
               <p className="text-xs font-bold text-blue-600 uppercase tracking-wide">Công an khu vực xét duyệt</p>
               <p className="font-bold text-blue-900">Trần Hữu Hùng</p>
-              <p className="text-xs text-blue-600">Khu phố 25 · Phường Long Trường · Xét duyệt: 1–5 ngày làm việc</p>
+              <p className="text-xs text-blue-600">{KHU_PHO.ten} · Phường Long Trường · Xét duyệt: 1–5 ngày làm việc</p>
             </div>
             <a
               href="tel:0988897709"

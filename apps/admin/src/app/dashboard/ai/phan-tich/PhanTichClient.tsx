@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useState } from 'react'
 import {
   Sparkles, Loader2, RefreshCw, Copy, Check,
@@ -120,7 +121,7 @@ export default function PhanTichClient() {
               <FileText size={16} className="text-[#1E3A5F]" />
             </div>
             <div>
-              <p className="font-bold text-slate-900 text-sm">Báo cáo tổng hợp tình hình Khu phố 25</p>
+              <p className="font-bold text-slate-900 text-sm">Báo cáo tổng hợp tình hình {KHU_PHO.ten}</p>
               <p className="text-xs text-slate-400">Được tạo tự động bởi AI · Gemini 2.5 Flash</p>
             </div>
             <button

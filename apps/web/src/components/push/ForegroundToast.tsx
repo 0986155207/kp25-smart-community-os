@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { Bell, ExternalLink } from 'lucide-react'
 import { usePushNotification } from '@/hooks/usePushNotification'
 
@@ -27,7 +28,7 @@ export default function ForegroundToast() {
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-[10px] font-bold text-[#8B1A1A] uppercase tracking-wide mb-0.5">
-            KP25 · Thông báo mới
+            {KHU_PHO.ma} · Thông báo mới
           </p>
           <p className="text-sm font-semibold text-slate-800 line-clamp-1">
             {thongBaoMoi.title}

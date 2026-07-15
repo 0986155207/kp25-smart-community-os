@@ -42,9 +42,9 @@ export default async function BanDoPage() {
               <MapPin className="text-white" size={22} />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-slate-900">Bản đồ Khu phố 25</h1>
+              <h1 className="text-2xl font-bold text-slate-900">Bản đồ {KHU_PHO.ten}</h1>
               <p className="text-slate-500 mt-1 text-sm max-w-xl">
-                Bản đồ GIS trực quan khu vực Khu phố 25 – Phường Long Trường – TP.HCM.
+                Bản đồ GIS trực quan khu vực {KHU_PHO.ten} – Phường Long Trường – TP.HCM.
                 Theo dõi phản ánh hiện trường và ranh giới khu phố.
               </p>
             </div>
@@ -108,7 +108,7 @@ export default async function BanDoPage() {
               <BanDoMapClient phanAnh={phanAnh} ranhGioi={ranhGioi} tam={tam} zoom={zoom} />
             </div>
             <p className="mt-2 text-xs text-slate-400 text-center">
-              © OpenStreetMap · © CARTO · Ranh giới KP25 từ Google Maps
+              © OpenStreetMap · © CARTO · Ranh giới {KHU_PHO.ma} từ Google Maps
             </p>
           </div>
 
@@ -124,7 +124,7 @@ export default async function BanDoPage() {
                 {/* Ranh giới */}
                 <div className="flex items-center gap-2.5">
                   <div className="w-8 h-4 rounded border-2 border-dashed border-[#8B1A1A] bg-[#8B1A1A]/5 shrink-0" />
-                  <span className="text-sm text-slate-600">Ranh giới KP25</span>
+                  <span className="text-sm text-slate-600">Ranh giới {KHU_PHO.ma}</span>
                 </div>
                 <div className="border-t border-slate-50 pt-2">
                   <p className="text-xs text-slate-400 mb-2">Phản ánh theo mức độ</p>

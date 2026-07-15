@@ -1,7 +1,8 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import AIChatClient from './AIChatClient'
 
-export const metadata: Metadata = { title: 'Trợ lý AI — KP25' }
+export const metadata: Metadata = { title: `Trợ lý AI — ${KHU_PHO.ma}` }
 
 export default function AIPage() {
   return (

@@ -1,10 +1,11 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ChevronRight, FileText, Printer, Search } from 'lucide-react'
 import { DS_MAU_DON } from './data'
 
 export const metadata: Metadata = {
-  title: 'Mẫu đơn hành chính — Khu phố 25',
+  title: `Mẫu đơn hành chính — ${KHU_PHO.ten}`,
   description: 'Tải và in các mẫu đơn hành chính chính thức tại UBND Phường Long Trường, TP.HCM.',
 }
 

@@ -1,5 +1,6 @@
 'use server'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
@@ -77,7 +78,7 @@ export async function aiPhanLoai(
   }
   try {
     const model = taoModel(
-      'Bạn là hệ thống phân loại phản ánh của Khu phố 25. Chỉ trả về JSON, không thêm văn bản nào khác.'
+      `Bạn là hệ thống phân loại phản ánh của ${KHU_PHO.ten}. Chỉ trả về JSON, không thêm văn bản nào khác.`
     )
     const prompt = `Phân loại phản ánh sau:
 Tiêu đề: ${tieuDe}
@@ -120,7 +121,7 @@ export async function aiTuVanXuLy(
     const MUC_DO_MAP: Record<string, string> = {
       KHAN_CAP: 'Khẩn cấp', CAO: 'Cao', TRUNG_BINH: 'Trung bình', THAP: 'Thấp',
     }
-    const prompt = `Phân tích và tư vấn xử lý phản ánh sau tại Khu phố 25, Phường Long Trường, TP.HCM:
+    const prompt = `Phân tích và tư vấn xử lý phản ánh sau tại ${KHU_PHO.ten}, Phường Long Trường, TP.HCM:
 
 Tiêu đề: ${tieuDe}
 Mô tả: ${moTa}

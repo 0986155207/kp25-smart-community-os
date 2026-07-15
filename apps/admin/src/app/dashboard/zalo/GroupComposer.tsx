@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useState, useTransition } from 'react'
 import {
   Users, Copy, CheckCheck, Send, RefreshCw, Sparkles,
@@ -15,14 +16,14 @@ function trunc(s: string, max: number) {
   return s.length <= max ? s : s.slice(0, max - 3) + '...'
 }
 function formatThongBaoGroup(tieuDe: string, noiDung: string) {
-  return `📢 ${tieuDe}\n\n${trunc(noiDung, 400)}\n\n-- KP25 Long Trường (${fmtDate()})`
+  return `📢 ${tieuDe}\n\n${trunc(noiDung, 400)}\n\n-- ${KHU_PHO.ma} Long Trường (${fmtDate()})`
 }
 function formatSuKienGroup(tieuDe: string, moTa: string, thoiGian: string, diaDiem: string) {
-  return `📅 ${tieuDe}\n\nThoi gian: ${thoiGian}\nDia diem : ${diaDiem}\n\n${trunc(moTa, 300)}\n\n-- KP25 Long Trường`
+  return `📅 ${tieuDe}\n\nThoi gian: ${thoiGian}\nDia diem : ${diaDiem}\n\n${trunc(moTa, 300)}\n\n-- ${KHU_PHO.ma} Long Trường`
 }
 function formatTuyenTruyenGroup(tieuDe: string, noidung: string, tags: string[]) {
   const tagStr = tags.map(h => `#${h}`).join(' ')
-  return `📣 ${tieuDe}\n\n${trunc(noidung, 500)}${tagStr ? `\n${tagStr}` : ''}\n\n-- KP25 Long Trường (${fmtDate()})`
+  return `📣 ${tieuDe}\n\n${trunc(noidung, 500)}${tagStr ? `\n${tagStr}` : ''}\n\n-- ${KHU_PHO.ma} Long Trường (${fmtDate()})`
 }
 import { taoBroadcast, danhDauDaCopy } from './actions'
 
@@ -143,7 +144,7 @@ export default function GroupComposer() {
         <div className="flex-1">
           <h3 className="font-bold text-slate-800 text-sm">Soạn tin nhắn Group Zalo</h3>
           <p className="text-xs text-slate-500">
-            Soạn → copy → dán vào Group cộng đồng KP25
+            Soạn → copy → dán vào Group cộng đồng {KHU_PHO.ma}
           </p>
         </div>
         <span className="text-[10px] font-bold bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full">
@@ -207,7 +208,7 @@ export default function GroupComposer() {
               <input
                 value={diaDiem}
                 onChange={e => setDiaDiem(e.target.value)}
-                placeholder="Vd: Nhà văn hóa KP25"
+                placeholder={`Vd: Nhà văn hóa ${KHU_PHO.ma}`}
                 className="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm
                            focus:outline-none focus:ring-2 focus:ring-emerald-400"
               />
@@ -224,7 +225,7 @@ export default function GroupComposer() {
             <input
               value={hashtag}
               onChange={e => setHashtag(e.target.value)}
-              placeholder="KP25, LongTruong, AnToanGiaoThong"
+              placeholder={`${KHU_PHO.ma}, LongTruong, AnToanGiaoThong`}
               className="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm
                          focus:outline-none focus:ring-2 focus:ring-emerald-400"
             />
@@ -289,7 +290,7 @@ export default function GroupComposer() {
         <div className="flex items-center gap-2 p-3 bg-amber-50 border border-amber-100 rounded-xl">
           <Info size={14} className="text-amber-600 shrink-0" />
           <p className="text-xs text-amber-700 leading-relaxed">
-            Sau khi copy, mở ứng dụng Zalo và dán vào Group <strong>KP25 – Long Trường</strong>
+            Sau khi copy, mở ứng dụng Zalo và dán vào Group <strong>{KHU_PHO.ma} – Long Trường</strong>
           </p>
         </div>
 

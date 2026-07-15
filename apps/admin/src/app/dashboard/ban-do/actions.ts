@@ -159,7 +159,7 @@ export async function layDuLieuBanDo(): Promise<{
 
 // ─── Nominatim geocoding (OpenStreetMap, miễn phí) ──────────
 // Vùng KP25: lat 10.797–10.804, lng 106.809–106.814
-const NOMINATIM_UA = 'KP25-Smart-Community-OS/1.0 (taip2704@gmail.com)'
+const NOMINATIM_UA = `${KHU_PHO.ma}-Smart-Community-OS/1.0 (taip2704@gmail.com)`
 
 async function nominatimGeocode(
   diaChi: string,

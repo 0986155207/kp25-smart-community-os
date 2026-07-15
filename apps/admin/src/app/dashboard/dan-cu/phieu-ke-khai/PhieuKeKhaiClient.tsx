@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { Printer, QrCode, FileText, Download, ExternalLink, Info } from 'lucide-react'
 import toast from 'react-hot-toast'
 
@@ -14,7 +15,7 @@ export default function PhieuKeKhaiClient() {
       const blob = await res.blob()
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
-      a.href = url; a.download = 'QR-ke-khai-ho-dan-KP25.png'; a.click()
+      a.href = url; a.download = `QR-ke-khai-ho-dan-${KHU_PHO.ma}.png`; a.click()
       URL.revokeObjectURL(url)
     } catch { toast.error('Không tải được QR') }
   }
@@ -94,7 +95,7 @@ export default function PhieuKeKhaiClient() {
 
 // ─── HTML in A4 ──────────────────────────────────────────────
 const PRINT_HTML = `<!DOCTYPE html><html lang="vi"><head><meta charset="utf-8"/>
-<title>Phiếu kê khai hộ dân — Khu phố 25</title>
+<title>Phiếu kê khai hộ dân — ${KHU_PHO.ten}</title>
 <style>
   @page { size: A4; margin: 18mm 16mm; }
   * { margin:0; padding:0; box-sizing:border-box; }
@@ -135,7 +136,7 @@ const PRINT_HTML = `<!DOCTYPE html><html lang="vi"><head><meta charset="utf-8"/>
   <table style="border:none; width:100%; margin-bottom:8px;">
     <tr style="border:none;">
       <td style="border:none; width:45%; text-align:center; vertical-align:top;">
-        <div class="bold" style="text-transform:uppercase;">Ban quản lý Khu phố 25</div>
+        <div class="bold" style="text-transform:uppercase;">Ban quản lý ${KHU_PHO.ten}</div>
         <div>Phường Long Trường</div>
         <hr class="dim" style="width:120px;"/>
       </td>
@@ -148,11 +149,11 @@ const PRINT_HTML = `<!DOCTYPE html><html lang="vi"><head><meta charset="utf-8"/>
   </table>
 
   <h1>Thư ngỏ</h1>
-  <div class="sub">V/v cập nhật, hoàn thiện dữ liệu dân cư số Khu phố 25</div>
+  <div class="sub">V/v cập nhật, hoàn thiện dữ liệu dân cư số ${KHU_PHO.ten}</div>
 
-  <p><b>Kính gửi:</b> Quý hộ gia đình đang cư trú tại Khu phố 25, Phường Long Trường, TP. Hồ Chí Minh.</p>
+  <p><b>Kính gửi:</b> Quý hộ gia đình đang cư trú tại ${KHU_PHO.ten}, Phường Long Trường, TP. Hồ Chí Minh.</p>
 
-  <p>Nhằm xây dựng hệ thống dữ liệu dân cư số chính xác, phục vụ tốt hơn công tác an sinh xã hội, thông báo khẩn cấp và các dịch vụ hành chính cho bà con, Ban quản lý Khu phố 25 trân trọng kính mời quý hộ gia đình phối hợp <b>kê khai, cập nhật thông tin hộ và các thành viên</b>.</p>
+  <p>Nhằm xây dựng hệ thống dữ liệu dân cư số chính xác, phục vụ tốt hơn công tác an sinh xã hội, thông báo khẩn cấp và các dịch vụ hành chính cho bà con, Ban quản lý ${KHU_PHO.ten} trân trọng kính mời quý hộ gia đình phối hợp <b>kê khai, cập nhật thông tin hộ và các thành viên</b>.</p>
 
   <p style="background:#f5f5f5; border:1px solid #999; padding:7px 10px;"><b>Phiếu này dành cho TẤT CẢ các hộ gia đình:</b> dù quý hộ <b>đã có thông tin trong hệ thống</b> (kê khai để bổ sung, cập nhật phần còn thiếu) hay là <b>hộ mới chuyển đến</b> chưa có hồ sơ. Cán bộ sẽ tự động đối chiếu và gộp dữ liệu, <b>không tạo trùng lặp</b>.</p>
 
@@ -172,7 +173,7 @@ const PRINT_HTML = `<!DOCTYPE html><html lang="vi"><head><meta charset="utf-8"/>
 
   <p>Rất mong nhận được sự hợp tác của quý hộ gia đình. Mọi thắc mắc xin liên hệ Trưởng khu phố: <b>0773 735 317</b>.</p>
 
-  <p class="right" style="font-style:italic; margin-top:14px;">Khu phố 25, ngày ...... tháng ...... năm 20......</p>
+  <p class="right" style="font-style:italic; margin-top:14px;">${KHU_PHO.ten}, ngày ...... tháng ...... năm 20......</p>
 
   <div class="sign">
     <div class="box">
@@ -186,7 +187,7 @@ const PRINT_HTML = `<!DOCTYPE html><html lang="vi"><head><meta charset="utf-8"/>
 <!-- TRANG 2: PHIẾU KÊ KHAI -->
 <div class="page">
   <h1 style="margin-top:0;">Phiếu kê khai thông tin hộ dân</h1>
-  <div class="sub">Khu phố 25 - Phường Long Trường - TP. Hồ Chí Minh</div>
+  <div class="sub">${KHU_PHO.ten} - Phường Long Trường - TP. Hồ Chí Minh</div>
 
   <div style="border:1px solid #000; padding:8px; margin-bottom:10px;">
     <div class="bold" style="margin-bottom:4px;">A. THÔNG TIN HỘ</div>

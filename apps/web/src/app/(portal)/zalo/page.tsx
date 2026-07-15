@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import {
@@ -7,8 +8,8 @@ import {
 import { createClient } from '@/lib/supabase/server'
 
 export const metadata: Metadata = {
-  title: 'Kênh Zalo — Khu phố 25',
-  description: 'Theo dõi Zalo OA và tham gia Group Zalo cộng đồng Khu phố 25 – Long Trường – TP.HCM',
+  title: `Kênh Zalo — ${KHU_PHO.ten}`,
+  description: `Theo dõi Zalo OA và tham gia Group Zalo cộng đồng ${KHU_PHO.ten} – Long Trường – TP.HCM`,
 }
 
 export const revalidate = 3600
@@ -56,7 +57,7 @@ const TINH_NANG = [
 // ─── Bước tham gia ────────────────────────────────────────────
 const BUOC_THAM_GIA_GROUP = [
   { step: 1, text: 'Mở ứng dụng Zalo trên điện thoại' },
-  { step: 2, text: 'Quét mã QR bên dưới hoặc tìm kiếm "KP25 Long Trường"' },
+  { step: 2, text: `Quét mã QR bên dưới hoặc tìm kiếm "${KHU_PHO.ma} Long Trường"` },
   { step: 3, text: 'Nhấn "Tham gia nhóm" và chờ quản trị viên duyệt' },
   { step: 4, text: 'Đã vào nhóm — bạn sẽ nhận được thông báo từ khu phố' },
 ]
@@ -77,7 +78,7 @@ export default async function ZaloPage() {
         <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center mx-auto mb-4 shadow-lg">
           <MessageCircle size={36} className="text-white" />
         </div>
-        <h1 className="text-2xl font-bold text-slate-900">Kênh Zalo Khu phố 25</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Kênh Zalo {KHU_PHO.ten}</h1>
         <p className="text-slate-500 text-sm mt-1.5">
           Phường Long Trường · TP.HCM
         </p>
@@ -104,7 +105,7 @@ export default async function ZaloPage() {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
               <h2 className="font-bold text-slate-800 text-base">
-                {oaInfo?.oa_name ?? 'Khu phố 25 – Long Trường'}
+                {oaInfo?.oa_name ?? `${KHU_PHO.ten} – Long Trường`}
               </h2>
               {oaActive ? (
                 <span className="text-[10px] font-bold bg-green-100 text-green-700 px-2 py-0.5 rounded-full flex items-center gap-1">
@@ -118,7 +119,7 @@ export default async function ZaloPage() {
               )}
             </div>
             <p className="text-sm text-slate-600 mt-1">
-              Trang chính thức của Ban quản lý Khu phố 25 trên Zalo
+              Trang chính thức của Ban quản lý {KHU_PHO.ten} trên Zalo
             </p>
             {oaInfo?.follower_count ? (
               <p className="text-xs text-slate-500 mt-1">
@@ -174,7 +175,7 @@ export default async function ZaloPage() {
           </div>
           <div>
             <h2 className="font-bold text-slate-800">Group Zalo Cộng đồng</h2>
-            <p className="text-xs text-slate-500">Nhóm trò chuyện trực tiếp của KP25</p>
+            <p className="text-xs text-slate-500">Nhóm trò chuyện trực tiếp của {KHU_PHO.ma}</p>
           </div>
         </div>
 
@@ -183,7 +184,7 @@ export default async function ZaloPage() {
           <div className="flex flex-col items-center gap-3 mb-5 p-4 bg-slate-50 rounded-xl">
             <img
               src={groupQRUrl}
-              alt="QR Code Group Zalo KP25"
+              alt={`QR Code Group Zalo ${KHU_PHO.ma}`}
               className="w-40 h-40 rounded-xl"
             />
             <p className="text-xs text-slate-500">Quét mã để vào Group</p>
@@ -230,7 +231,7 @@ export default async function ZaloPage() {
         </h2>
         <div className="space-y-2">
           <div className="flex items-center justify-between py-2.5 border-b border-slate-100">
-            <span className="text-sm text-slate-600">Đường dây nóng KP25</span>
+            <span className="text-sm text-slate-600">Đường dây nóng {KHU_PHO.ma}</span>
             <a href={`tel:${hotline.replace(/\s/g, '')}`}
                className="text-sm font-bold text-blue-600 hover:underline">
               {hotline}
@@ -255,7 +256,7 @@ export default async function ZaloPage() {
 
       {/* Footer note */}
       <p className="text-center text-xs text-slate-400 pb-4">
-        Khu phố 25 · Phường Long Trường · TP.HCM
+        {KHU_PHO.ten} · Phường Long Trường · TP.HCM
       </p>
 
     </div>

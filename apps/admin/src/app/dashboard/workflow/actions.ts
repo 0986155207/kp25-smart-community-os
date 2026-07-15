@@ -1,5 +1,6 @@
 'use server'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { coGeminiKey, taoModel } from '@/lib/gemini'
@@ -59,12 +60,12 @@ const SLA_MAP: Record<string, Record<string, number>> = {
 }
 
 const DON_VI_MAP: Record<string, string> = {
-  AN_NINH:    'Công an Khu phố 25',
+  AN_NINH:    `Công an ${KHU_PHO.ten}`,
   MOI_TRUONG: 'Tổ vệ sinh môi trường',
   HA_TANG:    'Tổ hạ tầng kỹ thuật',
   AN_SINH:    'Tổ an sinh xã hội',
   GIAO_THONG: 'Tổ giao thông trật tự đô thị',
-  KHAC:       'Ban Quản lý Khu phố 25',
+  KHAC:       `Ban Quản lý ${KHU_PHO.ten}`,
 }
 
 // ─── AI Phân tích & tạo workflow ──────────────────────────────
@@ -115,7 +116,7 @@ export async function aiPhanTichVaTaoWorkflow(
     if (coGeminiKey()) {
       try {
         const model = taoModel(
-          'Bạn là hệ thống phân công workflow của Khu phố 25. Chỉ trả về JSON hợp lệ, không kèm markdown hoặc giải thích.'
+          `Bạn là hệ thống phân công workflow của ${KHU_PHO.ten}. Chỉ trả về JSON hợp lệ, không kèm markdown hoặc giải thích.`
         )
         const prompt = `Phân tích phản ánh sau và trả về JSON:
 
@@ -123,7 +124,7 @@ Tiêu đề: ${pa.tieu_de}
 Mô tả: ${pa.mo_ta}
 Loại: ${pa.loai}
 Mức độ: ${pa.muc_do}
-Địa chỉ: ${pa.dia_chi_phan_anh ?? 'Khu phố 25'}
+Địa chỉ: ${pa.dia_chi_phan_anh ?? '{KHU_PHO.ten}'}
 
 Trả về JSON:
 {

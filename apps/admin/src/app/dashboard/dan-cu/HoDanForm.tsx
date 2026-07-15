@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -38,7 +39,7 @@ function sinhMaHoClient(): string {
   const yy = now.getFullYear().toString().slice(-2)
   const mm = String(now.getMonth() + 1).padStart(2, '0')
   const rand = Math.floor(Math.random() * 9999).toString().padStart(4, '0')
-  return `KP25-${yy}${mm}-${rand}`
+  return `${KHU_PHO.ma}-${yy}${mm}-${rand}`
 }
 
 export default function HoDanForm({ mode, id, defaultValues }: Props) {
@@ -115,7 +116,7 @@ export default function HoDanForm({ mode, id, defaultValues }: Props) {
           <h1 className="text-2xl font-bold text-slate-900">
             {mode === 'create' ? 'Thêm hộ dân mới' : 'Chỉnh sửa hộ dân'}
           </h1>
-          <p className="text-slate-500 text-sm mt-1">Khu phố 25 · Long Trường · TP.HCM</p>
+          <p className="text-slate-500 text-sm mt-1">{KHU_PHO.ten} · Long Trường · TP.HCM</p>
         </div>
       </div>
 
@@ -137,7 +138,7 @@ export default function HoDanForm({ mode, id, defaultValues }: Props) {
               value={maHo}
               onChange={(e) => setMaHo(e.target.value)}
               className="input font-mono text-sm"
-              placeholder="KP25-YYMM-XXXX"
+              placeholder={`${KHU_PHO.ma}-YYMM-XXXX`}
               disabled={mode === 'edit'}
             />
             {mode === 'create' && (
@@ -245,7 +246,7 @@ export default function HoDanForm({ mode, id, defaultValues }: Props) {
             value={diaChiDay}
             onChange={(e) => { setDiaChiDay(e.target.value); if (errors['diaChiDay']) setErrors((p) => ({ ...p, diaChiDay: '' })) }}
             className={`input ${errors['diaChiDay'] ? 'border-red-400 focus:border-red-400 focus:ring-red-400/20' : ''}`}
-            placeholder="63/15 Đường số 1, Khu phố 25, Long Trường, TP.HCM"
+            placeholder={`63/15 Đường số 1, ${KHU_PHO.ten}, Long Trường, TP.HCM`}
           />
           {errors['diaChiDay'] && <p className="text-red-500 text-xs mt-1">{errors['diaChiDay']}</p>}
           <p className="text-xs text-slate-400 mt-1">Nhập đầy đủ để tiện tra cứu và in QR</p>

@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
@@ -219,7 +220,7 @@ export default function ThongBaoForm({ mode, defaultValues, id }: Props) {
               {...register('noiDung')}
               rows={12}
               className="input resize-y min-h-[200px] leading-relaxed"
-              placeholder="Nhập nội dung thông báo đầy đủ, rõ ràng...&#10;&#10;Ví dụ:&#10;Kính gửi toàn thể bà con Khu phố 25,&#10;&#10;Ban quản lý khu phố xin thông báo..."
+              placeholder={`Nhập nội dung thông báo đầy đủ, rõ ràng...&#10;&#10;Ví dụ:&#10;Kính gửi toàn thể bà con ${KHU_PHO.ten},&#10;&#10;Ban quản lý khu phố xin thông báo...`}
             />
             {errors.noiDung && (
               <p className="text-red-500 text-xs mt-1">{errors.noiDung.message}</p>

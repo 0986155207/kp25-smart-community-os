@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import { NextRequest, NextResponse } from 'next/server'
 import {
   Document, Packer, Paragraph, Table, TableRow, TableCell,
@@ -196,7 +197,7 @@ export async function GET(req: NextRequest) {
             spacing: { after: 0 },
             children: [
               new TextRun({
-                text: 'Khu phố 25 – Phường Long Trường – TP.HCM',
+                text: `${KHU_PHO.ten} – Phường Long Trường – TP.HCM`,
                 bold: true, size: 22,
                 font: 'Times New Roman',
                 color: '1E3A5F',
@@ -426,7 +427,7 @@ export async function GET(req: NextRequest) {
     const now = new Date()
     const datePart = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}`
     const filterPart = filter === 'all' ? '' : `_${filter}`
-    const filename = `DS_NCT_KP25${filterPart}_${datePart}.docx`
+    const filename = `DS_NCT_${KHU_PHO.ma}${filterPart}_${datePart}.docx`
 
     return new NextResponse(uint8, {
       status: 200,

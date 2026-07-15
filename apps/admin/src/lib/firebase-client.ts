@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 // ─── Firebase Client SDK ────────────────────────────────────────
 // Chỉ dùng ở client components ('use client')
 
@@ -120,7 +121,7 @@ export function langNghePushForeground(
   const unsubscribe = onMessage(msg, (payload) => {
     const n = payload.notification ?? {}
     callback({
-      title: n.title ?? 'KP25',
+      title: n.title ?? `${KHU_PHO.ma}`,
       body:  n.body  ?? '',
       url:   (payload.data?.['url'] as string | undefined) ?? '/dashboard',
     })

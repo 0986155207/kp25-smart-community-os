@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useState, useTransition, useEffect } from 'react'
 import {
   Shield, User, Phone, Mail, Edit3, Key, CheckCircle2,
@@ -56,7 +57,7 @@ function ModalTaoTK({ canBo, onClose }: { canBo: CanBo; onClose: () => void }) {
   const [pending, start] = useTransition()
   const [result, setResult] = useState<{ success: boolean; message: string } | null>(null)
   const [showPass, setShowPass] = useState(false)
-  const [matKhau, setMatKhau]   = useState('KP25@2026!')
+  const [matKhau, setMatKhau]   = useState(`${KHU_PHO.ma}@2026!`)
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
@@ -241,7 +242,7 @@ function ModalThemMoi({ onClose, onDone }: { onClose: () => void; onDone: () => 
   const [showPass, setShowPass] = useState(false)
   const [form, setForm] = useState({
     ho_ten: '', email: '', vai_tro: 'TRUONG_KHU_PHO' as VaiTro,
-    chuc_vu: '', so_dien_thoai: '', mat_khau: 'KP25@2026!',
+    chuc_vu: '', so_dien_thoai: '', mat_khau: `${KHU_PHO.ma}@2026!`,
   })
 
   function handleSubmit() {
@@ -689,7 +690,7 @@ export default function PhanQuyenClient({
               <li>Nhấn <strong>+ Tạo tài khoản</strong> nếu cán bộ chưa có tài khoản đăng nhập (<Lock size={10} className="inline" /> hiển thị)</li>
               <li>Nhấn <strong>🔑 Đặt lại mật khẩu</strong> khi cán bộ quên mật khẩu</li>
               <li>Nhấn <strong>+ Thêm cán bộ mới</strong> để thêm người mới (sẽ tạo cả tài khoản đăng nhập)</li>
-              <li>Mật khẩu mặc định: <code className="bg-blue-100 px-1.5 py-0.5 rounded font-mono">KP25@2026!</code></li>
+              <li>Mật khẩu mặc định: <code className="bg-blue-100 px-1.5 py-0.5 rounded font-mono">{KHU_PHO.ma}@2026!</code></li>
             </ul>
           </div>
         </div>

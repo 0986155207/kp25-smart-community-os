@@ -1,5 +1,6 @@
 'use server'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import type { SuKien, LoaiSuKien, TrangThaiSuKien } from './constants'
@@ -119,7 +120,7 @@ export async function taoMoiSuKien(
     so_luong_du_kien: num('so_luong_du_kien'),
     can_dang_ky:      bool('can_dang_ky'),
     han_dang_ky:      str('han_dang_ky'),
-    don_vi_to_chuc:   str('don_vi_to_chuc') ?? 'Ban điều hành KP25',
+    don_vi_to_chuc:   str('don_vi_to_chuc') ?? `Ban điều hành ${KHU_PHO.ma}`,
     nguoi_phu_trach:  str('nguoi_phu_trach'),
     sdt_lien_he:      str('sdt_lien_he'),
     noi_bat:          bool('noi_bat'),
@@ -172,7 +173,7 @@ export async function capNhatSuKien(
     so_luong_thuc_te: num('so_luong_thuc_te'),
     can_dang_ky:      bool('can_dang_ky'),
     han_dang_ky:      str('han_dang_ky'),
-    don_vi_to_chuc:   str('don_vi_to_chuc') ?? 'Ban điều hành KP25',
+    don_vi_to_chuc:   str('don_vi_to_chuc') ?? `Ban điều hành ${KHU_PHO.ma}`,
     nguoi_phu_trach:  str('nguoi_phu_trach'),
     sdt_lien_he:      str('sdt_lien_he'),
     noi_bat:          bool('noi_bat'),

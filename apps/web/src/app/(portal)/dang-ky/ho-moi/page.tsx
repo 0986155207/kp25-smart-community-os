@@ -1,11 +1,12 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowLeft, HomeIcon, Info } from 'lucide-react'
 import HoMoiForm from './HoMoiForm'
 
 export const metadata: Metadata = {
-  title: 'Kê khai thông tin hộ dân — KP25',
-  description: 'Kê khai, cập nhật thông tin hộ dân Khu phố 25, Phường Long Trường, TP.HCM — dành cho cả hộ đã có và hộ mới',
+  title: `Kê khai thông tin hộ dân — ${KHU_PHO.ma}`,
+  description: `Kê khai, cập nhật thông tin hộ dân ${KHU_PHO.ten}, Phường Long Trường, TP.HCM — dành cho cả hộ đã có và hộ mới`,
 }
 
 export default function DangKyHoMoiPage() {

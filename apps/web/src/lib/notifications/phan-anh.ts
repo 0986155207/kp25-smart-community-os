@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 // ─── Orchestration: Thông báo phản ánh mới đến cán bộ & admin ─
 import { createServiceClient } from '@/lib/supabase/server'
 import { guiEmail }            from './email'
@@ -115,7 +116,7 @@ function taoHtmlEmailPhanAnhMoi(pa: PhanAnhRow, canBoList: CanBoRow[]): string {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>Phản ánh mới – KP25</title>
+  <title>Phản ánh mới – ${KHU_PHO.ma}</title>
 </head>
 <body style="margin:0;padding:0;background:#f1f5f9;font-family:Arial,Helvetica,sans-serif;">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#f1f5f9;">
@@ -137,7 +138,7 @@ function taoHtmlEmailPhanAnhMoi(pa: PhanAnhRow, canBoList: CanBoRow[]): string {
         </tr>
       </table>
       <p style="color:#fff;margin:0;font-size:18px;font-weight:700;line-height:1.4;">
-        Khu phố 25 – Phường Long Trường
+        ${KHU_PHO.ten} – Phường Long Trường
       </p>
       <p style="color:#93c5fd;margin:6px 0 0;font-size:13px;">
         Hệ thống thông báo tự động · TP.HCM
@@ -209,8 +210,8 @@ function taoHtmlEmailPhanAnhMoi(pa: PhanAnhRow, canBoList: CanBoRow[]): string {
     <td style="background:#f8fafc;border-top:1px solid #e2e8f0;
                padding:18px 24px;text-align:center;">
       <p style="margin:0;font-size:12px;color:#94a3b8;line-height:1.7;">
-        <strong style="color:#64748b;">KP25 Smart Community OS</strong><br>
-        Khu phố 25, Phường Long Trường, TP.HCM<br>
+        <strong style="color:#64748b;">${KHU_PHO.ma} Smart Community OS</strong><br>
+        ${KHU_PHO.ten}, Phường Long Trường, TP.HCM<br>
         Email tự động — Vui lòng không phản hồi email này
       </p>
     </td>
@@ -268,7 +269,7 @@ export async function thongBaoPhanAnhMoi(phanAnhId: string): Promise<void> {
   if (emailList.length > 0) {
     await guiEmail({
       to:      emailList,
-      subject: `[KP25] Phan anh moi: ${pa.tieu_de}`,
+      subject: `[${KHU_PHO.ma}] Phan anh moi: ${pa.tieu_de}`,
       html:    taoHtmlEmailPhanAnhMoi(pa as PhanAnhRow, danhSachCanBo),
     })
   }
@@ -282,7 +283,7 @@ export async function thongBaoPhanAnhMoi(phanAnhId: string): Promise<void> {
     const diaChi = (pa.dia_chi_phan_anh ?? 'Khong ro').slice(0, 40)
     const tieuDe = pa.tieu_de.slice(0, 40)
 
-    const smsTxt = `[KP25] ${mucDo}: ${tieuDe}. Loai: ${loai}. Dia chi: ${diaChi}. Nguoi gui: ${ten}${sdt}`.slice(0, 155)
+    const smsTxt = `[${KHU_PHO.ma}] ${mucDo}: ${tieuDe}. Loai: ${loai}. Dia chi: ${diaChi}. Nguoi gui: ${ten}${sdt}`.slice(0, 155)
     await guiSmsNhieu(sdtList, smsTxt)
   }
 

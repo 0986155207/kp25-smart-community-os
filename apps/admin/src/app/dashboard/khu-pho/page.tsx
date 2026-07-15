@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import { Building2 } from 'lucide-react'
 import { layDanhSachDonVi } from './actions'
 import KhuPhoClient from './KhuPhoClient'
@@ -23,7 +24,7 @@ export default async function KhuPhoPage() {
 
       {/* Hướng dẫn ngắn */}
       <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4 text-sm text-blue-800 leading-relaxed">
-        <p className="font-semibold mb-1">Nhân rộng mô hình KP25 ra toàn phường</p>
+        <p className="font-semibold mb-1">Nhân rộng mô hình {KHU_PHO.ma} ra toàn phường</p>
         <p className="text-blue-700/90">
           Thêm từng khu phố tại đây, sau đó gán cán bộ phụ trách cho mỗi khu phố ở mục
           {' '}<strong>Phân quyền</strong>. Cán bộ chỉ thấy dữ liệu khu phố mình phụ trách;

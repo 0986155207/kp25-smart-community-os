@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ShieldCheck, ArrowLeft, Plus, AlertTriangle, Clock, CheckCircle2, XCircle, Search } from 'lucide-react'
@@ -6,7 +7,7 @@ import { DOI_TUONG_LABEL, TRANG_THAI_BHYT } from './constants'
 import { format } from 'date-fns'
 import { vi } from 'date-fns/locale'
 
-export const metadata: Metadata = { title: 'Bảo hiểm Y tế — An sinh KP25' }
+export const metadata: Metadata = { title: `Bảo hiểm Y tế — An sinh ${KHU_PHO.ma}` }
 export const revalidate = 60
 
 const TRANG_THAI_ICON = {
@@ -57,7 +58,7 @@ export default async function BhytPage({ searchParams }: Props) {
             <h1 className="text-xl font-bold text-slate-900">Bảo hiểm Y tế (BHYT)</h1>
           </div>
           <p className="text-sm text-slate-500 mt-0.5">
-            Theo dõi thẻ BHYT toàn bộ nhân khẩu KP25 — Nghị định 146/2018, cập nhật 2026
+            Theo dõi thẻ BHYT toàn bộ nhân khẩu {KHU_PHO.ma} — Nghị định 146/2018, cập nhật 2026
           </p>
         </div>
         <Link

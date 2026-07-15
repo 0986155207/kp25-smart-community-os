@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useState } from 'react'
 import { CheckCircle2, Loader2, User, Phone, Users } from 'lucide-react'
 
@@ -186,7 +187,7 @@ export default function DangKyForm({ suKienId, tenSuKien }: Props) {
       </button>
 
       <p className="text-xs text-slate-400 text-center">
-        Thông tin sẽ được Ban điều hành Khu phố 25 liên hệ xác nhận
+        Thông tin sẽ được Ban điều hành {KHU_PHO.ten} liên hệ xác nhận
       </p>
     </form>
   )

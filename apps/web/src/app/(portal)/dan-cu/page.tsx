@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import {
@@ -8,8 +9,8 @@ import {
 import TraCuuForm from './TraCuuForm'
 
 export const metadata: Metadata = {
-  title: 'Dân cư — KP25 Smart Community',
-  description: 'Tra cứu hộ khẩu, hướng dẫn thủ tục đăng ký thường trú, tạm trú, tạm vắng tại Khu phố 25 – Phường Long Trường.',
+  title: `Dân cư — ${KHU_PHO.ma} Smart Community`,
+  description: `Tra cứu hộ khẩu, hướng dẫn thủ tục đăng ký thường trú, tạm trú, tạm vắng tại ${KHU_PHO.ten} – Phường Long Trường.`,
 }
 
 // ─── Các thủ tục hành chính thường gặp ───────────────────────
@@ -19,7 +20,7 @@ const THU_TUC = [
     title: 'Đăng ký thường trú',
     color: 'bg-emerald-50 text-emerald-700 border-emerald-100',
     iconBg: 'bg-emerald-100',
-    moTa:  'Dành cho công dân muốn đăng ký hộ khẩu thường trú tại Khu phố 25.',
+    moTa:  `Dành cho công dân muốn đăng ký hộ khẩu thường trú tại ${KHU_PHO.ten}.`,
     giayTo: [
       'Phiếu báo thay đổi hộ khẩu, nhân khẩu (theo mẫu)',
       'CMND/CCCD còn hiệu lực',
@@ -34,7 +35,7 @@ const THU_TUC = [
     title: 'Khai báo tạm trú',
     color: 'bg-blue-50 text-blue-700 border-blue-100',
     iconBg: 'bg-blue-100',
-    moTa:  'Dành cho người từ nơi khác đến sinh sống tại Khu phố 25 từ 30 ngày trở lên.',
+    moTa:  `Dành cho người từ nơi khác đến sinh sống tại ${KHU_PHO.ten} từ 30 ngày trở lên.`,
     giayTo: [
       'Tờ khai đăng ký tạm trú (theo mẫu CT01)',
       'CMND/CCCD hoặc hộ chiếu còn hiệu lực',
@@ -71,7 +72,7 @@ export default function DanCuPage() {
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Thông tin Dân cư</h1>
           <p className="text-slate-500 text-sm mt-1">
-            Tra cứu hộ khẩu · Thủ tục đăng ký · Hướng dẫn khai báo — Khu phố 25, Phường Long Trường
+            Tra cứu hộ khẩu · Thủ tục đăng ký · Hướng dẫn khai báo — {KHU_PHO.ten}, Phường Long Trường
           </p>
         </div>
       </div>

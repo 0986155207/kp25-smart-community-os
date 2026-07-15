@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
@@ -12,7 +13,7 @@ import {
   type TrangThaiTamVang,
 } from '../../constants'
 
-export const metadata: Metadata = { title: 'Chi tiết tạm vắng — KP25' }
+export const metadata: Metadata = { title: `Chi tiết tạm vắng — ${KHU_PHO.ma}` }
 
 // ─── Actions ──────────────────────────────────────────────────
 async function handleCapNhatTrangThai(formData: FormData) {
@@ -104,7 +105,7 @@ export default async function ChiTietTamVangPage({ params }: Props) {
         </h2>
         <div className="space-y-3 text-sm">
           <div>
-            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wide block mb-0.5">Địa chỉ tại KP25</span>
+            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wide block mb-0.5">Địa chỉ tại {KHU_PHO.ma}</span>
             <span className="text-slate-700 font-medium">{record.dia_chi_hien_tai}</span>
           </div>
           <div className="border-t border-slate-100 pt-3">

@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import { NextResponse } from 'next/server'
 import * as XLSX from 'xlsx'
 import { layDuLieuBaoCao } from '@/app/dashboard/bao-cao/actions'
@@ -157,7 +158,7 @@ export async function GET() {
     status: 200,
     headers: {
       'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'Content-Disposition': `attachment; filename*=UTF-8''Bao-cao-KP25-${date}.xlsx`,
+      'Content-Disposition': `attachment; filename*=UTF-8''Bao-cao-${KHU_PHO.ma}-${date}.xlsx`,
       'Cache-Control': 'no-store',
     },
   })

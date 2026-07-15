@@ -1,5 +1,6 @@
 'use server'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { createServiceClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import type { CanBo } from '@/lib/auth-config'
@@ -149,7 +150,7 @@ export async function themMoiCanBo(
 export async function taoTaiKhoanCanBo(
   canBoId:    string,
   email:      string,
-  matKhauTam: string = 'KP25@2026!'
+  matKhauTam: string = `${KHU_PHO.ma}@2026!`
 ): Promise<{ success: boolean; message: string }> {
   try {
     const supabase = svc()

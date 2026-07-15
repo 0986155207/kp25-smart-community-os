@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
@@ -12,7 +13,7 @@ import {
 } from '../actions'
 import { LOAI_SK_CFG, TRANG_THAI_SK_CFG, type TrangThaiSuKien } from '../constants'
 
-export const metadata: Metadata = { title: 'Chi tiết sự kiện — KP25' }
+export const metadata: Metadata = { title: `Chi tiết sự kiện — ${KHU_PHO.ma}` }
 
 // ─── Server actions ────────────────────────────────────────────
 async function handleCapNhatTrangThai(formData: FormData) {

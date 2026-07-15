@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 // ─── Orchestration: Thông báo kết quả xử lý đến người dân & admin ──
 import { createServiceClient } from '@/lib/supabase/server'
 import { guiEmail }            from './email'
@@ -57,7 +58,7 @@ function taoHtmlKetQua(opts: {
           </td>
         </tr>
       </table>
-      <p style="color:#fff;margin:0;font-size:17px;font-weight:700;">Khu phố 25 – Phường Long Trường</p>
+      <p style="color:#fff;margin:0;font-size:17px;font-weight:700;">${KHU_PHO.ten} – Phường Long Trường</p>
     </td>
   </tr>
 
@@ -113,7 +114,7 @@ function taoHtmlKetQua(opts: {
   <tr>
     <td style="background:#f8fafc;border-top:1px solid #e2e8f0;padding:16px;text-align:center;">
       <p style="margin:0;font-size:12px;color:#94a3b8;">
-        KP25 Smart Community OS · Khu phố 25, Phường Long Trường, TP.HCM<br>
+        ${KHU_PHO.ma} Smart Community OS · ${KHU_PHO.ten}, Phường Long Trường, TP.HCM<br>
         Email tự động — Vui lòng không phản hồi email này
       </p>
     </td>
@@ -154,7 +155,7 @@ export async function thongBaoKetQuaXuLy(
 
   // ── 1. Gửi SMS đến người dân ─────────────────────────────────
   if (pa.nguoi_gui_sdt) {
-    const smsTxt = `[KP25] Phan anh "${tieuDe30}..." cua ban da duoc xu ly. ${ketQua50}... Cam on ban da phan anh den Khu Pho 25!`.slice(0, 155)
+    const smsTxt = `[${KHU_PHO.ma}] Phan anh "${tieuDe30}..." cua ban da duoc xu ly. ${ketQua50}... Cam on ban da phan anh den Khu Pho 25!`.slice(0, 155)
     await guiSms(pa.nguoi_gui_sdt, smsTxt)
   }
 
@@ -166,7 +167,7 @@ export async function thongBaoKetQuaXuLy(
     const label = TRANG_THAI_LABEL[trangThai] ?? trangThai
     await guiEmail({
       to:      extraEmails,
-      subject: `[KP25] ${label}: ${pa.tieu_de}`,
+      subject: `[${KHU_PHO.ma}] ${label}: ${pa.tieu_de}`,
       html:    taoHtmlKetQua({
         tieuDe:    pa.tieu_de,
         trangThai,

@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Home, ArrowLeft, Plus, CheckCircle2, XCircle, Clock, Search } from 'lucide-react'
@@ -6,7 +7,7 @@ import { LOAI_HO_NGHEO, TRANG_THAI_HN } from './constants'
 import { format } from 'date-fns'
 import { vi } from 'date-fns/locale'
 
-export const metadata: Metadata = { title: 'Hộ nghèo & Cận nghèo — An sinh KP25' }
+export const metadata: Metadata = { title: `Hộ nghèo & Cận nghèo — An sinh ${KHU_PHO.ma}` }
 export const revalidate = 60
 
 const COLOR_MAP: Record<string, string> = {

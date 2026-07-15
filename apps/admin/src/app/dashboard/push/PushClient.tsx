@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useState, useTransition } from 'react'
 import {
   Bell, Send, Users, CheckCircle2, XCircle, Clock,
@@ -21,7 +22,7 @@ const MAU_THONG_BAO = [
     color: 'text-blue-600',
     bg:    'bg-blue-50',
     title: 'Thông báo họp khu phố',
-    body:  'Khu phố 25 tổ chức họp định kỳ tháng này. Đề nghị bà con sắp xếp tham dự đầy đủ.',
+    body:  `${KHU_PHO.ten} tổ chức họp định kỳ tháng này. Đề nghị bà con sắp xếp tham dự đầy đủ.`,
   },
   {
     icon:  Shield,
@@ -42,7 +43,7 @@ const MAU_THONG_BAO = [
     color: 'text-purple-600',
     bg:    'bg-purple-50',
     title: 'Sự kiện cộng đồng',
-    body:  'Khu phố 25 tổ chức ngày hội văn hoá thể thao. Đăng ký tham gia tại Ban quản lý khu phố.',
+    body:  `${KHU_PHO.ten} tổ chức ngày hội văn hoá thể thao. Đăng ký tham gia tại Ban quản lý khu phố.`,
   },
 ]
 

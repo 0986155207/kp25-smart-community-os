@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import {
@@ -14,7 +15,7 @@ import {
   type TrangThaiTamTru, type TrangThaiTamVang,
 } from './constants'
 
-export const metadata: Metadata = { title: 'Tạm trú / Tạm vắng — Dân cư KP25' }
+export const metadata: Metadata = { title: `Tạm trú / Tạm vắng — Dân cư ${KHU_PHO.ma}` }
 export const revalidate = 0
 
 // ─── Màu sắc trạng thái ────────────────────────────────────────
@@ -162,7 +163,7 @@ export default async function TamTruTamVangPage({ searchParams }: Props) {
           {
             title: 'CA khu vực xét duyệt',
             value: 'Trần Hữu Hùng',
-            sub: '📞 0988 897 709 · CA KP25 Long Trường',
+            sub: `📞 0988 897 709 · CA ${KHU_PHO.ma} Long Trường`,
             color: 'border-violet-200 bg-violet-50',
           },
         ].map(r => (
@@ -420,7 +421,7 @@ export default async function TamTruTamVangPage({ searchParams }: Props) {
                 <thead>
                   <tr className="bg-slate-50 border-b border-slate-100">
                     <th className="text-left px-4 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Họ tên / CCCD</th>
-                    <th className="text-left px-4 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Địa chỉ tại KP25</th>
+                    <th className="text-left px-4 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Địa chỉ tại {KHU_PHO.ma}</th>
                     <th className="text-left px-4 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Nơi đến</th>
                     <th className="text-left px-4 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Lý do</th>
                     <th className="text-left px-4 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Thời gian</th>

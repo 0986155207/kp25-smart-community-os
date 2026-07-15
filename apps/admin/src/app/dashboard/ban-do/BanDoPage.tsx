@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
 import {
@@ -872,7 +873,7 @@ export default function BanDoPage({ hoDan, phanAnh, ranhGioi, tam, zoom }: Props
                   )} />
                 </div>
                 <span className={cn('text-sm font-semibold', isDarkMap ? 'text-slate-200' : 'text-slate-700')}>
-                  Ranh giới KP25
+                  Ranh giới {KHU_PHO.ma}
                 </span>
               </div>
 

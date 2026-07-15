@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useState } from 'react'
 import {
   X, Download, FileSpreadsheet, FileText, Printer,
@@ -106,7 +107,7 @@ export default function ExportModal() {
       const a     = document.createElement('a')
       const date  = new Date().toISOString().split('T')[0]
       a.href      = href
-      a.download  = `Bao-cao-KP25-${date}.${fmt === 'excel' ? 'xlsx' : 'docx'}`
+      a.download  = `Bao-cao-${KHU_PHO.ma}-${date}.${fmt === 'excel' ? 'xlsx' : 'docx'}`
       document.body.appendChild(a)
       a.click()
       document.body.removeChild(a)
@@ -154,7 +155,7 @@ export default function ExportModal() {
               <div>
                 <h2 className="font-bold text-slate-900 text-base">Xuất Báo cáo</h2>
                 <p className="text-xs text-slate-400 mt-0.5">
-                  Khu phố 25 · Phường Long Trường · TP.HCM
+                  {KHU_PHO.ten} · Phường Long Trường · TP.HCM
                 </p>
               </div>
               <button
@@ -243,7 +244,7 @@ export default function ExportModal() {
             {/* Footer */}
             <div className="px-6 pb-5">
               <p className="text-[11px] text-slate-400 text-center leading-relaxed">
-                Dữ liệu được tổng hợp realtime từ hệ thống KP25.<br />
+                Dữ liệu được tổng hợp realtime từ hệ thống {KHU_PHO.ma}.<br />
                 Báo cáo phản ánh tình hình tại thời điểm xuất.
               </p>
             </div>

@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useEffect, useRef, useState } from 'react'
 import { Download, RefreshCw, X, Smartphone, Wifi } from 'lucide-react'
 
@@ -206,7 +207,7 @@ export default function PWAManager() {
                 <div className="w-7 h-7 bg-[#8B1A1A] rounded-lg flex items-center justify-center">
                   <span className="text-white text-[10px] font-black">KP</span>
                 </div>
-                <span className="text-white text-sm font-bold">KP25 Admin</span>
+                <span className="text-white text-sm font-bold">{KHU_PHO.ma} Admin</span>
               </div>
               <button onClick={dismissInstall} className="text-white/60 hover:text-white p-1">
                 <X size={14} />

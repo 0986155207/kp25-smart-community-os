@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import {
@@ -84,7 +85,7 @@ function SmsTab({ thongKe }: { thongKe: ThongKeChienDich }) {
         <div>
           <p className="font-bold text-slate-800 text-sm mb-1">Nội dung SMS gửi đến từng hộ</p>
           <div className="bg-slate-50 border border-slate-100 rounded-xl p-3 text-xs text-slate-600 font-mono leading-relaxed">
-            KP25 Long Truong: Cap nhat thong tin ho dan tai <span className="text-[#1E3A5F]">[link riêng từng hộ]</span> - chi 2 phut, mien phi.
+            {KHU_PHO.ma} Long Truong: Cap nhat thong tin ho dan tai <span className="text-[#1E3A5F]">[link riêng từng hộ]</span> - chi 2 phut, mien phi.
           </div>
           <p className="text-[11px] text-slate-400 mt-1.5">
             Mỗi hộ nhận đường link cá nhân hóa (mã QR riêng) → bấm vào điền thông tin của hộ mình.
@@ -162,7 +163,7 @@ function ZaloTab() {
   async function copy() {
     await navigator.clipboard.writeText(text)
     setCopied(true)
-    toast.success('Đã sao chép — dán vào nhóm Zalo Cộng đồng KP25')
+    toast.success(`Đã sao chép — dán vào nhóm Zalo Cộng đồng ${KHU_PHO.ma}`)
     setTimeout(() => setCopied(false), 2500)
   }
 
@@ -171,7 +172,7 @@ function ZaloTab() {
       <div className="flex items-start gap-2 p-3 bg-blue-50 border border-blue-100 rounded-xl">
         <Sparkles size={14} className="text-blue-500 shrink-0 mt-0.5" />
         <p className="text-xs text-blue-700 leading-relaxed">
-          Tạo thông báo phát động chiến dịch → sao chép → dán vào nhóm <strong>Zalo Cộng đồng Khu phố 25</strong>.
+          Tạo thông báo phát động chiến dịch → sao chép → dán vào nhóm <strong>Zalo Cộng đồng {KHU_PHO.ten}</strong>.
           Thông báo này nâng cao nhận thức; link cá nhân hóa sẽ gửi riêng qua SMS (tab bên cạnh).
         </p>
       </div>

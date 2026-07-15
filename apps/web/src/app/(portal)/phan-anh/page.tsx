@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils'
 
 export const metadata: Metadata = {
   title: 'Phản ánh hiện trường',
-  description: 'Gửi và theo dõi phản ánh hiện trường Khu phố 25',
+  description: `Gửi và theo dõi phản ánh hiện trường ${KHU_PHO.ten}`,
 }
 
 export const revalidate = 30
@@ -94,7 +94,7 @@ export default async function PhanAnhPage() {
                 <Sparkles size={10} />AI Smart
               </span>
             </div>
-            <p className="text-slate-500 text-sm">Khu phố 25 · Phường Long Trường</p>
+            <p className="text-slate-500 text-sm">{KHU_PHO.ten} · Phường Long Trường</p>
           </div>
         </div>
         <Link href="/phan-anh/tao" className="btn-primary">

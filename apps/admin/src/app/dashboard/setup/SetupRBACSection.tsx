@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useState, useTransition } from 'react'
 import {
   Shield, CheckCircle2, XCircle, RefreshCw, Plus,
@@ -143,7 +144,7 @@ export default function SetupRBACSection() {
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 flex gap-2 mb-3">
             <AlertTriangle size={14} className="text-amber-600 shrink-0 mt-0.5" />
             <p className="text-xs text-amber-700">
-              Mật khẩu mặc định: <code className="font-mono font-bold">KP25@2026!</code> — Thông báo cho cán bộ đổi mật khẩu sau lần đăng nhập đầu.
+              Mật khẩu mặc định: <code className="font-mono font-bold">{KHU_PHO.ma}@2026!</code> — Thông báo cho cán bộ đổi mật khẩu sau lần đăng nhập đầu.
             </p>
           </div>
 

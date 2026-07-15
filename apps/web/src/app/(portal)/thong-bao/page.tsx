@@ -8,7 +8,7 @@ import type { ThongBao } from '@kp25/types'
 
 export const metadata: Metadata = {
   title: 'Thông báo',
-  description: 'Thông báo và tin tức từ Ban quản lý Khu phố 25',
+  description: `Thông báo và tin tức từ Ban quản lý ${KHU_PHO.ten}`,
 }
 
 export const revalidate = 30
@@ -52,7 +52,7 @@ export default async function ThongBaoPage() {
         </div>
         <div>
           <h1 className="text-3xl font-bold text-slate-900">Thông báo</h1>
-          <p className="text-slate-500">Khu phố 25 · Phường Long Trường</p>
+          <p className="text-slate-500">{KHU_PHO.ten} · Phường Long Trường</p>
         </div>
       </div>
 

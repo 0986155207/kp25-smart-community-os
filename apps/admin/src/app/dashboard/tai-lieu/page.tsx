@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { FileText, Plus, Search, Download, ExternalLink, Calendar, Sparkles } from 'lucide-react'
@@ -6,7 +7,7 @@ import { layDanhSachTaiLieu, layThongKeTaiLieu } from './actions'
 import type { TaiLieu } from './actions'
 import { LOAI_CFG } from './config'
 
-export const metadata: Metadata = { title: 'Tài liệu — KP25 Admin' }
+export const metadata: Metadata = { title: `Tài liệu — ${KHU_PHO.ma} Admin` }
 export const revalidate = 0
 
 const TABS = [

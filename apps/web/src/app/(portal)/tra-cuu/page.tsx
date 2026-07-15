@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -71,7 +72,7 @@ export default function TraCuuPage() {
         <h1 className="text-2xl font-bold text-slate-900">Tra cứu thông tin</h1>
         <p className="text-slate-500 text-sm leading-relaxed">
           Tra cứu hồ sơ hành chính, tạm trú, tạm vắng và phản ánh<br />
-          tại Khu phố 25 · Phường Long Trường · TP.HCM
+          tại {KHU_PHO.ten} · Phường Long Trường · TP.HCM
         </p>
       </div>
 
@@ -82,7 +83,7 @@ export default function TraCuuPage() {
           type="text"
           value={query}
           onChange={e => setQuery(e.target.value)}
-          placeholder="Nhập mã hồ sơ (KP25-2026-...) hoặc số CCCD..."
+          placeholder={`Nhập mã hồ sơ (${KHU_PHO.ma}-2026-...) hoặc số CCCD...`}
           className="w-full pl-12 pr-32 py-4 rounded-2xl border-2 border-slate-200
                      focus:border-[#8B1A1A] focus:outline-none focus:ring-4 focus:ring-[#8B1A1A]/10
                      text-slate-800 placeholder:text-slate-400 text-sm bg-white shadow-sm
@@ -182,7 +183,7 @@ export default function TraCuuPage() {
           </a>
           {' '}(giờ hành chính) hoặc đến{' '}
           <Link href="/lien-he" className="font-medium text-slate-700 hover:text-[#8B1A1A] hover:underline transition-colors">
-            trụ sở Khu phố 25
+            trụ sở {KHU_PHO.ten}
           </Link>
         </p>
       </div>

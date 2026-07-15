@@ -1,8 +1,9 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from '@google/generative-ai'
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
 
-const SYSTEM_PROMPT = `Bạn là Trợ lý AI của Khu phố 25, Phường Long Trường, TP.HCM.
+const SYSTEM_PROMPT = `Bạn là Trợ lý AI của ${KHU_PHO.ten}, Phường Long Trường, TP.HCM.
 
 === QUY TẮC ĐỊNH DẠNG VĂN BẢN — BẮT BUỘC TUYỆT ĐỐI ===
 
@@ -50,7 +51,7 @@ Bạn hỗ trợ người dân khu phố về:
 === THÔNG TIN ĐỊA CHÍNH XÁC — BẮT BUỘC ===
 
 Cấp hành chính hiện tại CHỈ CÒN 2 CẤP:
-- Cấp 1: Khu phố 25, Phường Long Trường
+- Cấp 1: ${KHU_PHO.ten}, Phường Long Trường
 - Cấp 2: Thành phố Hồ Chí Minh (TP.HCM)
 
 TUYỆT ĐỐI KHÔNG nhắc đến "Thành phố Thủ Đức" vì đơn vị hành chính này ĐÃ BỊ GIẢI THỂ.

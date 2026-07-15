@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
 import {
@@ -10,7 +11,7 @@ import {
 import WorkflowBoard from './WorkflowBoard'
 
 export const dynamic = 'force-dynamic'
-export const metadata: Metadata = { title: 'Workflow AI — KP25 Admin' }
+export const metadata: Metadata = { title: `Workflow AI — ${KHU_PHO.ma} Admin` }
 
 // ─── Stats card ───────────────────────────────────────────────
 function StatCard({

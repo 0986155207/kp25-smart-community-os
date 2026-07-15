@@ -1,5 +1,6 @@
 'use server'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { createClient } from '@/lib/supabase/server'
 import { coGeminiKey, SYSTEM_PROMPT, taoModel } from '@/lib/gemini'
 
@@ -49,7 +50,7 @@ export async function layNguCanhAI(): Promise<string> {
     })
 
     return `Ngày hiện tại: ${ngay}
-Đơn vị: Khu phố 25, Phường Long Trường, TP. Hồ Chí Minh
+Đơn vị: ${KHU_PHO.ten}, Phường Long Trường, TP. Hồ Chí Minh
 Tổng hộ dân: ${tongHo} hộ
 Tổng nhân khẩu: ${tongNk} người
 Người cao tuổi (từ 60 tuổi trở lên): ${caoTuoi.count ?? 0} người
@@ -57,7 +58,7 @@ Phản ánh mới chưa xử lý: ${phanAnhMoi.count ?? 0} vụ
 Phản ánh đang xử lý: ${phanAnhDangXuLy.count ?? 0} vụ
 Phản ánh đã xử lý: ${phanAnhDaXuLy.count ?? 0} vụ`
   } catch {
-    return `Ngày: ${new Date().toLocaleDateString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })}\nKhu phố: Khu phố 25, Phường Long Trường, TP.HCM`
+    return `Ngày: ${new Date().toLocaleDateString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })}\nKhu phố: ${KHU_PHO.ten}, Phường Long Trường, TP.HCM`
   }
 }
 

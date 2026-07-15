@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import {
   GoogleGenerativeAI,
   HarmBlockThreshold,
@@ -14,7 +15,7 @@ function getGenAI(): GoogleGenerativeAI {
 export const GEMINI_MODEL = 'gemini-2.5-flash'
 
 // ─── System Prompt ─────────────────────────────────────────
-export const SYSTEM_PROMPT = `Bạn là TRỢ LÝ AI của Khu phố 25, Phường Long Trường, Thành phố Hồ Chí Minh.
+export const SYSTEM_PROMPT = `Bạn là TRỢ LÝ AI của ${KHU_PHO.ten}, Phường Long Trường, Thành phố Hồ Chí Minh.
 
 VAI TRÒ: Hỗ trợ cán bộ khu phố và người dân trong công việc hành chính, quản lý khu phố, phân tích tình hình cộng đồng.
 

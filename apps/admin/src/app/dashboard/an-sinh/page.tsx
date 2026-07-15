@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import {
@@ -6,7 +7,7 @@ import {
 } from 'lucide-react'
 import { layThongKeAnSinh, kiemTraBangAnSinh } from './actions'
 
-export const metadata: Metadata = { title: 'An sinh Xã hội số — KP25' }
+export const metadata: Metadata = { title: `An sinh Xã hội số — ${KHU_PHO.ma}` }
 export const revalidate = 0
 
 // ── Chính sách hiện hành (tháng 05/2026) ─────────────────────
@@ -95,7 +96,7 @@ export default async function AnSinhPage() {
           <div>
             <h1 className="text-2xl font-bold text-slate-900">An sinh Xã hội số</h1>
             <p className="text-slate-500 text-sm mt-0.5">
-              Quản lý BHYT · Hộ nghèo / cận nghèo · Người cao tuổi — KP25, Phường Long Trường
+              Quản lý BHYT · Hộ nghèo / cận nghèo · Người cao tuổi — {KHU_PHO.ma}, Phường Long Trường
             </p>
           </div>
         </div>

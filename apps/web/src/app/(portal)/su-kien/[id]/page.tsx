@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -106,7 +107,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   if (!sk) return { title: 'Sự kiện không tồn tại' }
   return {
     title: sk.tieuDe,
-    description: sk.moTa ?? `Sự kiện tại ${sk.diaDiem} – Khu phố 25`,
+    description: sk.moTa ?? `Sự kiện tại ${sk.diaDiem} – ${KHU_PHO.ten}`,
     openGraph: {
       title: sk.tieuDe,
       description: sk.moTa ?? '',

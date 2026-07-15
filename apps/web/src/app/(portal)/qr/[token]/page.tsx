@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
@@ -23,10 +24,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     .is('deleted_at', null)
     .single()
 
-  if (!data) return { title: 'Không tìm thấy — KP25' }
+  if (!data) return { title: `Không tìm thấy — ${KHU_PHO.ma}` }
   return {
-    title: `Hộ dân: ${data.chu_ho} — KP25`,
-    description: `Thông tin hộ dân điện tử Khu phố 25. Mã hộ: ${data.ma_ho}`,
+    title: `Hộ dân: ${data.chu_ho} — ${KHU_PHO.ma}`,
+    description: `Thông tin hộ dân điện tử ${KHU_PHO.ten}. Mã hộ: ${data.ma_ho}`,
   }
 }
 
@@ -62,7 +63,7 @@ export default async function QRScanPage({ params }: Props) {
   const ttCfg = TRANG_THAI_LABEL[ho.trang_thai ?? 'THUONG_TRU'] ?? TRANG_THAI_LABEL['THUONG_TRU']!
 
   const diaChi = ho.dia_chi_day
-    || [ho.so_nha, ho.duong, 'Khu phố 25, Phường Long Trường, TP.HCM'].filter(Boolean).join(', ')
+    || [ho.so_nha, ho.duong, `${KHU_PHO.ten}, Phường Long Trường, TP.HCM`].filter(Boolean).join(', ')
 
   const ngayLap = ho.created_at
     ? new Date(ho.created_at).toLocaleDateString('vi-VN', { year: 'numeric', month: '2-digit', day: '2-digit' })
@@ -90,7 +91,7 @@ export default async function QRScanPage({ params }: Props) {
                   <span className="text-xs text-blue-200 font-medium uppercase tracking-wide">Phiếu hộ dân điện tử</span>
                 </div>
                 <h1 className="text-xl font-bold leading-tight">{ho.chu_ho}</h1>
-                <p className="text-blue-200 text-sm mt-0.5">Chủ hộ · Khu phố 25</p>
+                <p className="text-blue-200 text-sm mt-0.5">Chủ hộ · {KHU_PHO.ten}</p>
               </div>
               <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full ${ttCfg.color}`}>
                 {ttCfg.label}
@@ -175,7 +176,7 @@ export default async function QRScanPage({ params }: Props) {
             <div className="flex items-center gap-2 bg-blue-50 border border-blue-100 rounded-xl px-3 py-2">
               <Shield size={13} className="text-blue-500 shrink-0" />
               <p className="text-[11px] text-blue-600 leading-relaxed">
-                Thông tin chính thức từ hệ thống KP25 Smart Community OS · Phường Long Trường, TP.HCM
+                Thông tin chính thức từ hệ thống {KHU_PHO.ma} Smart Community OS · Phường Long Trường, TP.HCM
               </p>
             </div>
           </div>
@@ -254,7 +255,7 @@ export default async function QRScanPage({ params }: Props) {
         {/* ── Footer stamp ────────────────────────────────── */}
         <div className="text-center py-2">
           <p className="text-xs text-slate-400">
-            KP25 Smart Community OS · Khu phố 25 · Phường Long Trường · TP.HCM
+            {KHU_PHO.ma} Smart Community OS · {KHU_PHO.ten} · Phường Long Trường · TP.HCM
           </p>
           <p className="text-[10px] text-slate-300 mt-0.5">
             Hệ thống chuyển đổi số cộng đồng dân cư — 2026

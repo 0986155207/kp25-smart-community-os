@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useState, useTransition, useRef } from 'react'
 import {
   User, Lock, Building2, Info,
@@ -14,9 +15,9 @@ import { usePushNotification } from '@/hooks/usePushNotification'
 
 // ── Thông tin hệ thống ────────────────────────────────────────
 const THONG_TIN_HE_THONG = {
-  tenHeThong:   'KP25 Smart Community OS',
+  tenHeThong:   `${KHU_PHO.ma} Smart Community OS`,
   phienBan:     'v1.0.0 — Production',
-  khuPho:       'Khu phố 25',
+  khuPho:       `${KHU_PHO.ten}`,
   phuong:       'Phường Long Trường',
   thanhPho:     'TP. Hồ Chí Minh',
   adminUrl:     'http://localhost:3001',
@@ -324,7 +325,7 @@ function ThongTinHeThong() {
       </div>
       <div className="mt-4 rounded-xl bg-slate-50 border border-slate-200 px-4 py-3">
         <p className="text-xs text-slate-500 text-center">
-          Hệ điều hành số cộng đồng — Khu phố 25 · Long Trường · TP.HCM
+          Hệ điều hành số cộng đồng — {KHU_PHO.ten} · Long Trường · TP.HCM
         </p>
       </div>
     </Section>

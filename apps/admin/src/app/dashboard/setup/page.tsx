@@ -1,8 +1,9 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import { Settings } from 'lucide-react'
 import SetupClient from './SetupClient'
 import SetupRBACSection from './SetupRBACSection'
 
-export const metadata = { title: 'Thiết lập hệ thống — KP25 Admin' }
+export const metadata = { title: `Thiết lập hệ thống — ${KHU_PHO.ma} Admin` }
 
 export default function SetupPage() {
   return (

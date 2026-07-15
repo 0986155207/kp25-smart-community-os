@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useRef } from 'react'
 import {
   BarChart, Bar, PieChart, Pie, Cell, LineChart, Line,
@@ -110,7 +111,7 @@ export default function BaoCaoCharts({ data }: { data: BaoCaoData }) {
             <h1 className="text-2xl font-bold text-slate-900">Báo cáo & KPI</h1>
           </div>
           <p className="text-slate-500 text-sm">
-            Khu phố 25 · Phường Long Trường · TP.HCM — Cập nhật: {ngayTao}
+            {KHU_PHO.ten} · Phường Long Trường · TP.HCM — Cập nhật: {ngayTao}
           </p>
         </div>
 
@@ -424,10 +425,10 @@ export default function BaoCaoCharts({ data }: { data: BaoCaoData }) {
       {/* ── Footer stamp ──────────────────────────────────────── */}
       <div className="text-center py-3 border-t border-slate-100">
         <p className="text-xs text-slate-400">
-          KP25 Smart Community OS · Báo cáo tự động · {ngayTao}
+          {KHU_PHO.ma} Smart Community OS · Báo cáo tự động · {ngayTao}
         </p>
         <p className="text-[10px] text-slate-300 mt-0.5">
-          Khu phố 25 · Phường Long Trường · TP.HCM
+          {KHU_PHO.ten} · Phường Long Trường · TP.HCM
         </p>
       </div>
 

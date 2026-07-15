@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import {
@@ -123,7 +124,7 @@ export default async function DanCuPage({
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Quản lý dân cư</h1>
           <p className="text-slate-500 text-sm mt-0.5">
-            Hộ dân và nhân khẩu — Khu phố 25, Long Trường
+            Hộ dân và nhân khẩu — {KHU_PHO.ten}, Long Trường
           </p>
         </div>
         <div className="flex items-center gap-2 flex-wrap justify-end">

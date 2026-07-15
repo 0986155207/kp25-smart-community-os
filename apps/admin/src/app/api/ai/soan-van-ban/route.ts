@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import { NextRequest } from 'next/server'
 import { taoModel, coGeminiKey } from '@/lib/gemini'
 
@@ -10,9 +11,9 @@ const TEMPLATE_PROMPT: Record<string, (data: Record<string, string>) => string> 
 
   NGHI_QUYET: (d) => `Soạn NGHỊ QUYẾT HỘI NGHỊ CHI BỘ / KHU PHỐ với thông tin sau:
 
-Tên chi bộ/đơn vị: ${d.don_vi ?? 'Chi bộ Khu phố 25'}
+Tên chi bộ/đơn vị: ${d.don_vi ?? 'Chi bộ {KHU_PHO.ten}'}
 Số hiệu nghị quyết: ${d.so_hieu ?? ''}
-Địa điểm: ${d.dia_diem ?? 'Nhà văn hoá Khu phố 25'}
+Địa điểm: ${d.dia_diem ?? 'Nhà văn hoá {KHU_PHO.ten}'}
 Thời gian: ${d.thoi_gian ?? ''}
 Chủ trì: ${d.chu_tri ?? ''}
 Thư ký: ${d.thu_ky ?? ''}
@@ -26,7 +27,7 @@ ${d.quyet_nghi ?? ''}`,
 
 Tên cuộc họp: ${d.ten_cuoc_hop ?? 'Họp khu phố định kỳ'}
 Số biên bản: ${d.so_hieu ?? ''}
-Địa điểm: ${d.dia_diem ?? 'Nhà văn hoá Khu phố 25'}
+Địa điểm: ${d.dia_diem ?? 'Nhà văn hoá {KHU_PHO.ten}'}
 Thời gian bắt đầu: ${d.thoi_gian_bat_dau ?? ''}
 Thời gian kết thúc: ${d.thoi_gian_ket_thuc ?? ''}
 Chủ trì: ${d.chu_tri ?? ''}
@@ -42,7 +43,7 @@ ${d.ket_luan ?? ''}`,
 Tên báo cáo: ${d.tieu_de ?? 'Báo cáo công tác khu phố'}
 Số hiệu: ${d.so_hieu ?? ''}
 Kỳ báo cáo: ${d.ky_bao_cao ?? ''}
-Đơn vị báo cáo: ${d.don_vi ?? 'Khu phố 25, Phường Long Trường'}
+Đơn vị báo cáo: ${d.don_vi ?? '{KHU_PHO.ten}, Phường Long Trường'}
 Kết quả đạt được:
 ${d.ket_qua ?? ''}
 Hạn chế, tồn tại:
@@ -56,7 +57,7 @@ ${d.kien_nghi ?? ''}`,
 
 Tiêu đề thông báo: ${d.tieu_de ?? ''}
 Số hiệu: ${d.so_hieu ?? ''}
-Kính gửi / Đối tượng nhận: ${d.kinh_gui ?? 'Toàn thể hộ dân Khu phố 25'}
+Kính gửi / Đối tượng nhận: ${d.kinh_gui ?? 'Toàn thể hộ dân {KHU_PHO.ten}'}
 Nội dung cần thông báo:
 ${d.noi_dung ?? ''}
 Thời hạn thực hiện (nếu có): ${d.thoi_han ?? ''}
@@ -66,7 +67,7 @@ Yêu cầu cụ thể: ${d.yeu_cau ?? ''}`,
 
 Tên quy chế: ${d.tieu_de ?? ''}
 Số hiệu: ${d.so_hieu ?? ''}
-Đối tượng áp dụng: ${d.doi_tuong ?? 'Ban quản lý và toàn thể hộ dân Khu phố 25'}
+Đối tượng áp dụng: ${d.doi_tuong ?? 'Ban quản lý và toàn thể hộ dân {KHU_PHO.ten}'}
 Phạm vi điều chỉnh: ${d.pham_vi ?? ''}
 Nội dung chính cần quy định:
 ${d.noi_dung ?? ''}
@@ -76,7 +77,7 @@ Số chương/điều dự kiến: ${d.so_chuong ?? '4 chương, 12 điều'}`,
 
 Tiêu đề hướng dẫn: ${d.tieu_de ?? ''}
 Số hiệu: ${d.so_hieu ?? ''}
-Đối tượng thực hiện: ${d.doi_tuong ?? 'Hộ dân Khu phố 25'}
+Đối tượng thực hiện: ${d.doi_tuong ?? 'Hộ dân {KHU_PHO.ten}'}
 Thủ tục/Quy trình cần hướng dẫn:
 ${d.noi_dung ?? ''}
 Hồ sơ cần chuẩn bị: ${d.ho_so ?? ''}
@@ -87,7 +88,7 @@ Cơ quan tiếp nhận: ${d.co_quan ?? ''}`,
 
 Tiêu đề: ${d.tieu_de ?? ''}
 Số hiệu: ${d.so_hieu ?? ''}
-Đơn vị: ${d.don_vi ?? 'Khu phố 25, Phường Long Trường, TP.HCM'}
+Đơn vị: ${d.don_vi ?? '{KHU_PHO.ten}, Phường Long Trường, TP.HCM'}
 Nội dung chính:
 ${d.noi_dung ?? ''}`,
 }
@@ -107,7 +108,7 @@ CẤU TRÚC VĂN BẢN:
 - Phần nội dung: đầy đủ, chi tiết, logic
 - Phần kết: nơi nhận, ký tên, chức danh
 
-ĐƠN VỊ: Khu phố 25, Phường Long Trường, Thành phố Hồ Chí Minh`
+ĐƠN VỊ: ${KHU_PHO.ten}, Phường Long Trường, Thành phố Hồ Chí Minh`
 
 export async function POST(req: NextRequest) {
   if (!coGeminiKey()) {

@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
@@ -5,7 +6,7 @@ import { ArrowLeft, UserCheck, Save } from 'lucide-react'
 import { taoMoiTamTru } from '../actions'
 import { LY_DO_TAM_TRU_LABEL } from '../constants'
 
-export const metadata: Metadata = { title: 'Đăng ký tạm trú — KP25' }
+export const metadata: Metadata = { title: `Đăng ký tạm trú — ${KHU_PHO.ma}` }
 
 // ─── Server action wrapper ────────────────────────────────────
 async function handleSubmit(formData: FormData) {
@@ -179,7 +180,7 @@ export default async function ThemTamTruPage({ searchParams }: Props) {
           {/* Địa chỉ tạm trú tại KP25 */}
           <div className="border-t border-slate-100 pt-4">
             <div className="bg-blue-50 rounded-xl px-3 py-2 mb-3 text-xs text-blue-700 font-medium">
-              📍 Địa chỉ tạm trú tại Khu phố 25 — Long Trường
+              📍 Địa chỉ tạm trú tại {KHU_PHO.ten} — Long Trường
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
@@ -205,7 +206,7 @@ export default async function ThemTamTruPage({ searchParams }: Props) {
                 <input
                   name="dia_chi_tam_tru"
                   required
-                  placeholder="1106/23 Nguyễn Duy Trinh, KP25, Long Trường"
+                  placeholder={`1106/23 Nguyễn Duy Trinh, ${KHU_PHO.ma}, Long Trường`}
                   className="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>

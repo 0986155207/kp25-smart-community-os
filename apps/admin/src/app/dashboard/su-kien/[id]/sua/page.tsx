@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
@@ -5,7 +6,7 @@ import { ArrowLeft, Pencil } from 'lucide-react'
 import { laySuKienById, capNhatSuKien } from '../../actions'
 import SuKienForm from '../../SuKienForm'
 
-export const metadata: Metadata = { title: 'Chỉnh sửa sự kiện — KP25' }
+export const metadata: Metadata = { title: `Chỉnh sửa sự kiện — ${KHU_PHO.ma}` }
 
 interface Props { params: Promise<{ id: string }> }
 

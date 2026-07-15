@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Users, ArrowLeft, Plus, Heart, AlertTriangle, CheckCircle2, Clock, Pencil } from 'lucide-react'
@@ -6,7 +7,7 @@ import { SK_LABEL } from './constants'
 import { format } from 'date-fns'
 import ExportWordButton from './ExportWordButton'
 
-export const metadata: Metadata = { title: 'Người cao tuổi — An sinh KP25' }
+export const metadata: Metadata = { title: `Người cao tuổi — An sinh ${KHU_PHO.ma}` }
 export const revalidate = 0
 
 const COLOR_MAP: Record<string, string> = {

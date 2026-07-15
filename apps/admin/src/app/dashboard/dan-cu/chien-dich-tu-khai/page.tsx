@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import Link from 'next/link'
 import { ArrowLeft, Megaphone, Inbox } from 'lucide-react'
 import { layThongKeChienDich } from './actions'
@@ -20,7 +21,7 @@ export default async function ChienDichTuKhaiPage() {
           Chiến dịch mời người dân tự khai
         </h1>
         <p className="text-slate-500 text-sm mt-0.5">
-          Gửi link tự khai cá nhân hóa qua SMS đến từng hộ + thông báo phát động qua nhóm Zalo Cộng đồng KP25
+          Gửi link tự khai cá nhân hóa qua SMS đến từng hộ + thông báo phát động qua nhóm Zalo Cộng đồng {KHU_PHO.ma}
         </p>
       </div>
 

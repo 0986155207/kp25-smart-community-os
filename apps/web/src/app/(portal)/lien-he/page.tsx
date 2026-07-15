@@ -1,10 +1,11 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import { Phone, MapPin, Clock, Mail, AlertCircle, Shield, User } from 'lucide-react'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Liên hệ — KP25 Smart Community',
-  description: 'Thông tin liên hệ Ban quản lý Khu phố 25, Phường Long Trường, TP.HCM',
+  title: `Liên hệ — ${KHU_PHO.ma} Smart Community`,
+  description: `Thông tin liên hệ Ban quản lý ${KHU_PHO.ten}, Phường Long Trường, TP.HCM`,
 }
 
 const contacts = [
@@ -61,7 +62,7 @@ export default function LienHePage() {
       {/* ── Tiêu đề ──────────────────────────────────────── */}
       <div className="text-center mb-10">
         <h1 className="text-3xl font-bold text-slate-900 mb-2">Liên hệ Ban quản lý</h1>
-        <p className="text-slate-500">Khu phố 25 · Phường Long Trường · TP.HCM</p>
+        <p className="text-slate-500">{KHU_PHO.ten} · Phường Long Trường · TP.HCM</p>
       </div>
 
       {/* ── Khẩn cấp ─────────────────────────────────────── */}
@@ -172,7 +173,7 @@ export default function LienHePage() {
       <div className="bg-slate-50 rounded-2xl border border-slate-100 p-5 mb-8">
         <div className="flex items-center gap-2 mb-3">
           <MapPin size={16} className="text-slate-500" />
-          <h2 className="font-bold text-slate-700">Khu phố 25</h2>
+          <h2 className="font-bold text-slate-700">{KHU_PHO.ten}</h2>
         </div>
         <p className="text-sm text-slate-600">
           Thuộc Phường Long Trường – TP.HCM (hành chính 2 cấp, không còn cấp Thủ Đức).

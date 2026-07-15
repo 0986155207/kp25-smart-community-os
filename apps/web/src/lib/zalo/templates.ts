@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 // ─── Zalo Message Templates ───────────────────────────────────
 // Format tin nhắn cho cả Zalo OA (API) và Zalo Group (clipboard copy)
 // Tất cả văn bản dùng plain text, không Markdown, chuẩn hành chính Việt Nam.
@@ -54,7 +55,7 @@ ${LINE}
 ${data.noiDung}
 
 ${data.url ? `Xem thêm: ${data.url}\n` : ''}${LINE}
-Khu phố 25 — Phường Long Trường — TP.HCM
+${KHU_PHO.ten} — Phường Long Trường — TP.HCM
 Thời gian: ${formatDateTime()}`
 }
 
@@ -69,7 +70,7 @@ export function formatThongBaoGroup(data: TemplateThongBao): string {
 ${truncate(data.noiDung, 400)}
 ${data.url ? `\nXem thêm: ${data.url}` : ''}
 
--- KP25 Long Trường (${formatDate()})`
+-- ${KHU_PHO.ma} Long Trường (${formatDate()})`
 }
 
 // ─── 2. Sự kiện ──────────────────────────────────────────────
@@ -93,7 +94,7 @@ Thời gian : ${data.thoiGian}
 ${data.moTa}
 
 ${data.url ? `Chi tiết : ${data.url}\n` : ''}${LINE}
-Khu phố 25 — Phường Long Trường — TP.HCM`
+${KHU_PHO.ten} — Phường Long Trường — TP.HCM`
 }
 
 export function formatSuKienGroup(data: TemplateSuKien): string {
@@ -105,7 +106,7 @@ Dia diem : ${data.diaDiem}
 ${truncate(data.moTa, 300)}
 ${data.url ? `\nXem chi tiet: ${data.url}` : ''}
 
--- KP25 Long Truong`
+-- ${KHU_PHO.ma} Long Truong`
 }
 
 // ─── 3. Phản ánh mới (thông báo đến group cán bộ) ─────────────
@@ -152,7 +153,7 @@ ${data.tomTat ? `Tóm tắt AI: ${data.tomTat}\n` : ''}
 Xử lý ngay: ${data.adminUrl}/dashboard/phan-anh/${data.id}
 
 ${LINE}
-KP25 Smart Community OS — ${formatDateTime()}`
+${KHU_PHO.ma} Smart Community OS — ${formatDateTime()}`
 }
 
 export function formatPhanAnhGroup(data: TemplatePhanAnh): string {
@@ -183,7 +184,7 @@ export function formatTuyenTruyenGroup(data: TemplateTuyenTruyen): string {
 ${truncate(data.noidung, 500)}
 ${tags ? `\n${tags}` : ''}
 
--- KP25 Long Truong (${formatDate()})`
+-- ${KHU_PHO.ma} Long Truong (${formatDate()})`
 }
 
 // ─── 5. Tin nhắn trả lời CS (hỗ trợ cá nhân) ─────────────────
@@ -198,8 +199,8 @@ export function formatCSReply(data: TemplateCSReply): string {
     ? `Kính gửi ${data.hoTenNguoiDan},\n\n`
     : ''
   const footer = data.canBoKy
-    ? `\n\n${LINE}\nTrân trọng,\n${data.canBoKy}\nBan quản lý Khu phố 25 — Long Trường`
-    : `\n\n${LINE}\nBan quản lý Khu phố 25 — Long Trường`
+    ? `\n\n${LINE}\nTrân trọng,\n${data.canBoKy}\nBan quản lý ${KHU_PHO.ten} — Long Trường`
+    : `\n\n${LINE}\nBan quản lý ${KHU_PHO.ten} — Long Trường`
 
   return `${kinh}${data.noidung}${footer}`
 }

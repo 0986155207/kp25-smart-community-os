@@ -1,10 +1,11 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import ChatInterface from '@/components/chat/ChatInterface'
 import { Sparkles } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'AI Trợ lý',
-  description: 'Trò chuyện với AI Trợ lý Khu phố 25 - Hỗ trợ thông tin hành chính 24/7',
+  description: `Trò chuyện với AI Trợ lý ${KHU_PHO.ten} - Hỗ trợ thông tin hành chính 24/7`,
 }
 
 export default function ChatPage() {
@@ -15,7 +16,7 @@ export default function ChatPage() {
           <Sparkles size={16} />
           Powered by Gemini 2.5 Flash
         </div>
-        <h1 className="text-3xl font-bold text-slate-900 mb-2">AI Trợ lý Khu phố 25</h1>
+        <h1 className="text-3xl font-bold text-slate-900 mb-2">AI Trợ lý {KHU_PHO.ten}</h1>
         <p className="text-slate-500">
           Hỏi đáp thông tin hành chính, hướng dẫn thủ tục, tiếp nhận phản ánh — 24/7
         </p>

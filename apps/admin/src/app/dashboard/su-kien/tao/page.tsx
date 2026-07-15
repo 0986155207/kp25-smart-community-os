@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
@@ -5,7 +6,7 @@ import { ArrowLeft, CalendarDays } from 'lucide-react'
 import { taoMoiSuKien } from '../actions'
 import SuKienForm from '../SuKienForm'
 
-export const metadata: Metadata = { title: 'Tạo sự kiện — KP25' }
+export const metadata: Metadata = { title: `Tạo sự kiện — ${KHU_PHO.ma}` }
 
 export default function TaoSuKienPage() {
   async function handleSubmit(formData: FormData) {

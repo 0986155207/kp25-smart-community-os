@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useState } from 'react'
 import { Save, Star, Loader2 } from 'lucide-react'
 import { LOAI_SK_CFG, TRANG_THAI_SK_CFG, type SuKien } from './constants'
@@ -52,7 +53,7 @@ export default function SuKienForm({ defaultValues: dv, submitLabel = 'Lưu sự
             name="tieu_de"
             required
             defaultValue={dv?.tieu_de}
-            placeholder="Ví dụ: Hội thi thể thao Khu phố 25 mừng Tết Nguyên Đán 2026"
+            placeholder={`Ví dụ: Hội thi thể thao ${KHU_PHO.ten} mừng Tết Nguyên Đán 2026`}
             className="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#8B1A1A]"
           />
         </div>
@@ -156,7 +157,7 @@ export default function SuKienForm({ defaultValues: dv, submitLabel = 'Lưu sự
               name="dia_diem"
               required
               defaultValue={dv?.dia_diem}
-              placeholder="Nhà văn hoá KP25, Sân vận động..."
+              placeholder={`Nhà văn hoá ${KHU_PHO.ma}, Sân vận động...`}
               className="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#8B1A1A]"
             />
           </div>
@@ -246,7 +247,7 @@ export default function SuKienForm({ defaultValues: dv, submitLabel = 'Lưu sự
             <label className="block text-xs font-semibold text-slate-600 mb-1.5">Đơn vị tổ chức</label>
             <input
               name="don_vi_to_chuc"
-              defaultValue={dv?.don_vi_to_chuc ?? 'Ban điều hành KP25'}
+              defaultValue={dv?.don_vi_to_chuc ?? `Ban điều hành ${KHU_PHO.ma}`}
               className="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#8B1A1A]"
             />
           </div>

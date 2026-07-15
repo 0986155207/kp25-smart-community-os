@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useState } from 'react'
 import Link from 'next/link'
 import {
@@ -151,7 +152,7 @@ export default function HoMoiForm() {
 
         <div>
           <label className="block text-xs font-semibold text-slate-700 mb-1.5">Địa chỉ đầy đủ <span className="text-red-500">*</span></label>
-          <input value={diaChi} onChange={e => setDiaChi(e.target.value)} className={inp} placeholder="63/15 Đường số 1, Khu phố 25, Phường Long Trường" />
+          <input value={diaChi} onChange={e => setDiaChi(e.target.value)} className={inp} placeholder={`63/15 Đường số 1, ${KHU_PHO.ten}, Phường Long Trường`} />
         </div>
 
         <div>

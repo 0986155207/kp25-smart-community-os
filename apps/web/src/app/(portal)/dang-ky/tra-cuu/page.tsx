@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useState, useTransition, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import {
@@ -160,7 +161,7 @@ export default function TraCuuPage() {
         </div>
         <div>
           <h1 className="text-xl font-bold text-slate-900">Tra cứu hồ sơ</h1>
-          <p className="text-sm text-slate-500">Tạm trú · Tạm vắng — Khu phố 25</p>
+          <p className="text-sm text-slate-500">Tạm trú · Tạm vắng — {KHU_PHO.ten}</p>
         </div>
       </div>
 
@@ -216,7 +217,7 @@ export default function TraCuuPage() {
                 <>
                   <p className="font-bold text-slate-700">Không tìm thấy hồ sơ nào</p>
                   <p className="text-xs text-slate-500">
-                    CCCD <span className="font-mono font-semibold">{cccd}</span> chưa có hồ sơ đăng ký tại KP25.
+                    CCCD <span className="font-mono font-semibold">{cccd}</span> chưa có hồ sơ đăng ký tại {KHU_PHO.ma}.
                   </p>
                 </>
               )}

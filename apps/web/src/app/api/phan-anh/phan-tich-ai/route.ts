@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 /**
  * POST /api/phan-anh/phan-tich-ai
  * Phân tích ảnh phản ánh hiện trường bằng Gemini 2.5 Flash Vision
@@ -24,7 +25,7 @@ export interface AIPhanTichResult {
 }
 
 // ─── Prompt phân tích ───────────────────────────────────────
-const PHAN_TICH_PROMPT = `Bạn là AI hỗ trợ Ban quản lý Khu phố 25, Phường Long Trường, TP.HCM.
+const PHAN_TICH_PROMPT = `Bạn là AI hỗ trợ Ban quản lý ${KHU_PHO.ten}, Phường Long Trường, TP.HCM.
 
 Nhiệm vụ: Phân tích hình ảnh hiện trường (và/hoặc mô tả kèm theo) để tự động phân loại và đánh giá vấn đề.
 

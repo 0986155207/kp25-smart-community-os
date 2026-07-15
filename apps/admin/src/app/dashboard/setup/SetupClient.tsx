@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import {
@@ -8,7 +9,7 @@ import {
 } from 'lucide-react'
 
 const SQL_MIGRATION = `-- =============================================================
--- KP25 — An sinh Xã hội số — Migration v1
+-- ${KHU_PHO.ma} — An sinh Xã hội số — Migration v1
 -- Dán toàn bộ đoạn SQL này vào Supabase Studio rồi bấm RUN
 -- =============================================================
 
@@ -410,7 +411,7 @@ export default function SetupClient() {
               <div className="flex-1">
                 <p className="font-medium text-gray-800">Mở Supabase Studio — SQL Editor</p>
                 <p className="text-sm text-gray-500 mt-1">
-                  Nhấn nút bên dưới để mở trang chạy SQL của dự án KP25
+                  Nhấn nút bên dưới để mở trang chạy SQL của dự án {KHU_PHO.ma}
                 </p>
                 <a
                   href="https://supabase.com/dashboard/project/pnyjrneqxqckclxehaqv/sql/new"

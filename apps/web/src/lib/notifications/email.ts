@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 // ─── Gửi email qua Resend API ────────────────────────────────
 // Docs: https://resend.com/docs/api-reference/emails/send-email
 
@@ -35,7 +36,7 @@ export async function guiEmail(payload: EmailPayload): Promise<void> {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from:    process.env.EMAIL_FROM ?? 'KP25 Smart Community <noreply@kp25.longtruong.vn>',
+        from:    process.env.EMAIL_FROM ?? `${KHU_PHO.ma} Smart Community <noreply@kp25.longtruong.vn>`,
         to:      valid,
         subject: payload.subject,
         html:    payload.html,

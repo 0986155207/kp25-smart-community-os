@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useState, useEffect } from 'react'
 import { Bell, X, Loader2, AlertCircle, BellOff } from 'lucide-react'
 import { usePushNotification } from '@/hooks/usePushNotification'
@@ -110,7 +111,7 @@ export default function PushPermissionBanner() {
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-sm font-semibold text-slate-800">
-            Bật thông báo để không bỏ lỡ tin tức Khu phố 25
+            Bật thông báo để không bỏ lỡ tin tức {KHU_PHO.ten}
           </p>
           <p className="text-xs text-slate-500 mt-0.5">
             Nhận cảnh báo an ninh, thông báo họp, sự kiện cộng đồng ngay trên trình duyệt.

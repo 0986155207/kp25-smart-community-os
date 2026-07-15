@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import Link from 'next/link'
 import { CalendarDays, MapPin, Clock, ArrowRight, Star } from 'lucide-react'
 import { formatDate, formatDateTime } from '@/lib/utils'
@@ -52,7 +53,7 @@ export default function EventsSection({ items }: { items: SuKienTomTat[] }) {
             </div>
             <div>
               <h2 className="text-xl font-bold text-slate-900">Sự kiện sắp tới</h2>
-              <p className="text-xs text-slate-400">Khu phố 25</p>
+              <p className="text-xs text-slate-400">{KHU_PHO.ten}</p>
             </div>
           </div>
           <Link

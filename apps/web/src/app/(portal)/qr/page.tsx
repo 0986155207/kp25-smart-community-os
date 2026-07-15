@@ -1,17 +1,18 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { QrCode, Home, MessageSquare, Phone, AlertCircle, ChevronRight, Shield, Scan } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'QR Hộ dân — KP25 Smart Community',
-  description: 'Tra cứu thông tin hộ dân nhanh bằng mã QR. Hướng dẫn sử dụng QR hộ dân điện tử Khu phố 25.',
+  title: `QR Hộ dân — ${KHU_PHO.ma} Smart Community`,
+  description: `Tra cứu thông tin hộ dân nhanh bằng mã QR. Hướng dẫn sử dụng QR hộ dân điện tử ${KHU_PHO.ten}.`,
 }
 
 const HUONG_DAN = [
   {
     step: '1',
     title: 'Nhận phiếu QR',
-    desc: 'Cán bộ Khu phố 25 cấp phiếu QR Hộ dân điện tử khi đăng ký hộ khẩu.',
+    desc: `Cán bộ ${KHU_PHO.ten} cấp phiếu QR Hộ dân điện tử khi đăng ký hộ khẩu.`,
     color: 'bg-blue-50 border-blue-100',
     numColor: 'bg-blue-600 text-white',
   },
@@ -49,7 +50,7 @@ export default function QRHubPage() {
         </div>
         <h1 className="text-2xl font-bold text-slate-900">QR Hộ dân điện tử</h1>
         <p className="text-slate-500 text-sm leading-relaxed max-w-md mx-auto">
-          Mỗi hộ dân tại Khu phố 25 có một mã QR riêng để tra cứu nhanh thông tin,
+          Mỗi hộ dân tại {KHU_PHO.ten} có một mã QR riêng để tra cứu nhanh thông tin,
           liên hệ cán bộ và thực hiện các thủ tục hành chính.
         </p>
       </div>
@@ -108,7 +109,7 @@ export default function QRHubPage() {
         <div>
           <p className="text-sm font-semibold text-emerald-800">Bảo mật thông tin</p>
           <p className="text-xs text-emerald-700 mt-1 leading-relaxed">
-            Mỗi mã QR là duy nhất, được quản lý bởi hệ thống KP25. Thông tin hiển thị
+            Mỗi mã QR là duy nhất, được quản lý bởi hệ thống {KHU_PHO.ma}. Thông tin hiển thị
             chỉ bao gồm dữ liệu cơ bản cần thiết, không lộ thông tin nhạy cảm.
           </p>
         </div>

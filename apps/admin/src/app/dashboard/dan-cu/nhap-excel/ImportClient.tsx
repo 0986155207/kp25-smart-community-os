@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useState, useRef, useTransition } from 'react'
 import * as XLSX from 'xlsx'
 import {
@@ -225,11 +226,11 @@ function taiFileMau() {
     'Tình trạng cư trú', 'Ghi chú',
   ]
   const examples = [
-    ['Nguyễn Văn An', '12', 'Đường số 5', 'Tổ 1', '12 Đường số 5, KP25, Long Trường', '0901234567', 'Thường trú', 'Nguyễn Văn An', '15/03/1980', 'Nam', '012345678901', 'Chủ hộ', 'Kinh doanh', 'Thường trú', ''],
-    ['Nguyễn Văn An', '', '', '', '12 Đường số 5, KP25, Long Trường', '', '', 'Trần Thị Bình', '20/07/1985', 'Nữ', '012345678902', 'Vợ', 'Giáo viên', 'Thường trú', ''],
-    ['Nguyễn Văn An', '', '', '', '12 Đường số 5, KP25, Long Trường', '', '', 'Nguyễn Thị Cẩm', '10/01/2010', 'Nữ', '', 'Con', 'Học sinh', 'Thường trú', ''],
-    ['Lê Văn Dũng', '8', 'Hẻm 10', 'Tổ 2', '8 Hẻm 10, KP25, Long Trường', '0912345678', 'Tạm trú', 'Lê Văn Dũng', '05/06/1975', 'Nam', '098765432101', 'Chủ hộ', 'Thợ hồ', 'Tạm trú', ''],
-    ['Lê Văn Dũng', '', '', '', '8 Hẻm 10, KP25, Long Trường', '', '', 'Phạm Thị Em', '12/12/1980', 'Nữ', '098765432102', 'Vợ', 'Nội trợ', 'Tạm trú', ''],
+    ['Nguyễn Văn An', '12', 'Đường số 5', 'Tổ 1', `12 Đường số 5, ${KHU_PHO.ma}, Long Trường`, '0901234567', 'Thường trú', 'Nguyễn Văn An', '15/03/1980', 'Nam', '012345678901', 'Chủ hộ', 'Kinh doanh', 'Thường trú', ''],
+    ['Nguyễn Văn An', '', '', '', `12 Đường số 5, ${KHU_PHO.ma}, Long Trường`, '', '', 'Trần Thị Bình', '20/07/1985', 'Nữ', '012345678902', 'Vợ', 'Giáo viên', 'Thường trú', ''],
+    ['Nguyễn Văn An', '', '', '', `12 Đường số 5, ${KHU_PHO.ma}, Long Trường`, '', '', 'Nguyễn Thị Cẩm', '10/01/2010', 'Nữ', '', 'Con', 'Học sinh', 'Thường trú', ''],
+    ['Lê Văn Dũng', '8', 'Hẻm 10', 'Tổ 2', `8 Hẻm 10, ${KHU_PHO.ma}, Long Trường`, '0912345678', 'Tạm trú', 'Lê Văn Dũng', '05/06/1975', 'Nam', '098765432101', 'Chủ hộ', 'Thợ hồ', 'Tạm trú', ''],
+    ['Lê Văn Dũng', '', '', '', `8 Hẻm 10, ${KHU_PHO.ma}, Long Trường`, '', '', 'Phạm Thị Em', '12/12/1980', 'Nữ', '098765432102', 'Vợ', 'Nội trợ', 'Tạm trú', ''],
   ]
   const ws = XLSX.utils.aoa_to_sheet([headers, ...examples])
   ws['!cols'] = [
@@ -239,7 +240,7 @@ function taiFileMau() {
   const noteHeaders = ['Cột', 'Bắt buộc', 'Ghi chú']
   const notes = [
     ['Họ tên chủ hộ', 'Có', 'Dùng để nhận biết hộ. Các dòng cùng chủ hộ + địa chỉ sẽ ghép vào 1 hộ.'],
-    ['Địa chỉ đầy đủ', 'Có', 'VD: 12 Đường số 5, Khu phố 25, Long Trường, TP.HCM'],
+    ['Địa chỉ đầy đủ', 'Có', `VD: 12 Đường số 5, ${KHU_PHO.ten}, Long Trường, TP.HCM`],
     ['Tình trạng hộ', 'Không', 'Thường trú / Tạm trú / Tạm vắng — mặc định: Thường trú'],
     ['Họ tên nhân khẩu', 'Có', 'Tên thành viên trong hộ'],
     ['Ngày sinh', 'Không', 'DD/MM/YYYY hoặc YYYY-MM-DD'],
@@ -252,7 +253,7 @@ function taiFileMau() {
   wsNote['!cols'] = [{wch:22},{wch:10},{wch:70}]
   XLSX.utils.book_append_sheet(wb, ws, 'Dữ liệu dân cư')
   XLSX.utils.book_append_sheet(wb, wsNote, 'Hướng dẫn')
-  XLSX.writeFile(wb, 'mau-nhap-dan-cu-KP25.xlsx')
+  XLSX.writeFile(wb, `mau-nhap-dan-cu-${KHU_PHO.ma}.xlsx`)
 }
 
 // ─── Types ───────────────────────────────────────────────────

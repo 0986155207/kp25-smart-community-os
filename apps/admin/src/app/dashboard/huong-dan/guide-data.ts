@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 // Dữ liệu hướng dẫn sử dụng — Dashboard điều hành KP25 (cán bộ)
 
 export interface GuideStep { title: string; detail: string }
@@ -21,7 +22,7 @@ export const GUIDE_SECTIONS: GuideSection[] = [
   {
     id: 'tong-quan', nhom: 'Bắt đầu', icon: '🎛️',
     title: 'Tổng quan hệ thống',
-    desc: 'KP25 Admin là hệ điều hành số quản lý toàn diện Khu phố 25 — dân cư, phản ánh, an sinh, AI.',
+    desc: `${KHU_PHO.ma} Admin là hệ điều hành số quản lý toàn diện ${KHU_PHO.ten} — dân cư, phản ánh, an sinh, AI.`,
     steps: [
       { title: 'Đăng nhập', detail: 'Truy cập smart-kp25-admin.vercel.app, đăng nhập bằng email cán bộ đã được cấp.' },
       { title: 'Phân quyền theo vai trò', detail: 'Mỗi vai trò (Bí thư, Trưởng KP, Công an, An ninh, Phụ trách NCT) thấy các menu phù hợp với nhiệm vụ.' },
@@ -189,7 +190,7 @@ export const GUIDE_SECTIONS: GuideSection[] = [
     steps: [
       { title: 'Gửi SMS hàng loạt', detail: 'Mỗi hộ nhận link QR riêng qua SMS. Gửi theo batch, chống trùng, có thanh tiến trình.' },
       { title: 'Kiểm tra chi phí', detail: 'Xem số SMS sẽ gửi + nhắc kiểm tra số dư ESMS trước khi gửi.' },
-      { title: 'Tin nhắn Zalo Group', detail: 'Tạo sẵn thông báo phát động → sao chép → dán vào nhóm Zalo Cộng đồng KP25.' },
+      { title: 'Tin nhắn Zalo Group', detail: `Tạo sẵn thông báo phát động → sao chép → dán vào nhóm Zalo Cộng đồng ${KHU_PHO.ma}.` },
       { title: 'Theo dõi phản hồi', detail: 'Banner hiện số yêu cầu chờ duyệt → liên kết sang trang Duyệt tự khai.' },
     ],
   },

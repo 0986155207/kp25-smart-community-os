@@ -1,5 +1,6 @@
 'use client'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   Bot, Send, Plus, Copy, Check, Loader2, AlertCircle,
@@ -182,7 +183,7 @@ export default function AIChatClient() {
             <Bot size={20} className="text-white" />
           </div>
           <div>
-            <h1 className="font-bold text-slate-900">Trợ lý AI KP25</h1>
+            <h1 className="font-bold text-slate-900">Trợ lý AI {KHU_PHO.ma}</h1>
             <div className="flex items-center gap-1.5 text-xs">
               {dangTaiNgC ? (
                 <span className="text-slate-400 flex items-center gap-1">
@@ -239,7 +240,7 @@ export default function AIChatClient() {
             </div>
             <h2 className="text-2xl font-bold text-slate-900 mb-2">Xin chào! Tôi là Trợ lý AI</h2>
             <p className="text-slate-500 max-w-md mb-8 leading-relaxed">
-              Hỗ trợ cán bộ Khu phố 25 trong công tác hành chính, phân tích dữ liệu, soạn thảo văn bản và giải đáp quy định.
+              Hỗ trợ cán bộ {KHU_PHO.ten} trong công tác hành chính, phân tích dữ liệu, soạn thảo văn bản và giải đáp quy định.
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 w-full max-w-2xl">
               {GOI_Y.map((g) => (
