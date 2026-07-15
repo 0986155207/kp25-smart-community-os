@@ -17,7 +17,7 @@ const CHINH_SACH = [
     label:   'Hiệu lực',
     labelCl: 'bg-emerald-100 text-emerald-700',
     items: [
-      'Mức đóng: 4,5% lương cơ sở (lương CS 2026: 2.340.000 đ)',
+      'Mức đóng: 4,5% lương cơ sở (lương CS từ 01/07/2026: 2.530.000 đ)',
       'Hộ nghèo: Nhà nước đóng 100% — Cận nghèo: hỗ trợ 70%',
       'Từ 80 tuổi không lương hưu: BHYT miễn phí 100%',
       'Trẻ em dưới 6 tuổi: BHYT miễn phí 100%',

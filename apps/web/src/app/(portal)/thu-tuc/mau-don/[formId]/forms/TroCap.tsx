@@ -133,7 +133,7 @@ export default function FormTroCap() {
       </div>
 
       <div className="text-xs text-gray-500 border-t pt-2 mt-4">
-        <p>– Mức trợ cấp chuẩn 2026: từ 360.000đ – 1.800.000đ/tháng (theo lương cơ sở 2.340.000đ).</p>
+        <p>– Mức trợ cấp chuẩn 2026: từ 360.000đ – 1.800.000đ/tháng (theo lương cơ sở 2.530.000đ, áp dụng từ 01/07/2026).</p>
         <p>– Nộp kèm: Giấy tờ chứng minh đối tượng, giấy tờ nhân thân, sổ hộ nghèo (nếu có).</p>
       </div>
     </div>

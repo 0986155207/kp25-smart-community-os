@@ -328,7 +328,7 @@ export default async function ThuTucPage({ searchParams }: Props) {
                 🔴 <strong>Luật Đất đai 2024 (Hiệu lực 01/01/2025):</strong> Nhiều thay đổi về trình tự, thủ tục chuyển nhượng, cấp GCNQSDĐ. Liên hệ UBND Phường để được tư vấn.
               </li>
               <li>
-                🟡 <strong>Mức lương cơ sở 2024–2026:</strong> 2.340.000đ/tháng. Các mức phí, lệ phí và trợ cấp xã hội được điều chỉnh theo.
+                🟡 <strong>Mức lương cơ sở từ 01/07/2026:</strong> 2.530.000đ/tháng (thay cho 2.340.000đ). Các mức phí, lệ phí và trợ cấp xã hội được điều chỉnh theo.
               </li>
             </ul>
           </div>

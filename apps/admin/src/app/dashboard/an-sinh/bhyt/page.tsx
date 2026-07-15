@@ -100,7 +100,7 @@ export default async function BhytPage({ searchParams }: Props) {
       {/* Thông tin chính sách BHYT */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          { label: 'Mức đóng 2026',    value: '4,5% lương CS',    sub: 'Lương CS: 2.340.000 đ'  },
+          { label: 'Mức đóng 2026',    value: '4,5% lương CS',    sub: 'Lương CS: 2.530.000 đ'  },
           { label: 'Hộ nghèo',         value: 'Miễn 100%',        sub: 'Nhà nước đóng toàn bộ'  },
           { label: 'Cận nghèo',        value: 'Hỗ trợ 70%',       sub: 'Tự đóng 30%'            },
           { label: 'Từ 80 tuổi',       value: 'Miễn phí',         sub: 'Không lương hưu/TC'      },

@@ -513,7 +513,7 @@ export const DS_THU_TUC: ThuTuc[] = [
     mucDoTrucTuyen: 3,
     coQuanGiaiQuyet: 'UBND Phường Long Trường → Phòng LĐ-TB&XH TP.HCM',
     doiTuong: 'Người cao tuổi cô đơn; Người khuyết tật nặng/đặc biệt nặng; Trẻ em dưới 16 tuổi không nơi nương tựa; Hộ nghèo không có khả năng lao động',
-    moTa: 'Hỗ trợ trợ cấp xã hội hàng tháng từ ngân sách nhà nước theo Nghị định 20/2021/NĐ-CP. Mức trợ cấp chuẩn: 360.000đ – 1.800.000đ/tháng tùy đối tượng (năm 2026 điều chỉnh theo lương cơ sở mới).',
+    moTa: 'Hỗ trợ trợ cấp xã hội hàng tháng từ ngân sách nhà nước theo Nghị định 20/2021/NĐ-CP. Mức trợ cấp chuẩn: 360.000đ – 1.800.000đ/tháng tùy đối tượng (điều chỉnh theo lương cơ sở 2.530.000đ áp dụng từ 01/07/2026).',
     thoiHanGiaiQuyet: '15 ngày làm việc (kể từ khi hồ sơ đầy đủ)',
     lePhi: 'Không thu',
     phiDichVu: 'Không',
@@ -539,7 +539,7 @@ export const DS_THU_TUC: ThuTuc[] = [
     ],
     diaDiemNop: 'Bộ phận Một cửa UBND Phường Long Trường',
     thoiGianLamViec: 'Thứ 2 – Thứ 6: 7h30 – 11h30 & 13h00 – 17h00',
-    liuY: 'Mức trợ cấp năm 2026 được tính theo lương cơ sở 2.340.000đ/tháng (điều chỉnh từ 01/7/2024). Liên hệ cán bộ phụ trách để được tư vấn cụ thể.',
+    liuY: 'Mức trợ cấp được tính theo lương cơ sở 2.530.000đ/tháng (áp dụng từ 01/07/2026, thay cho mức cũ 2.340.000đ). Liên hệ cán bộ phụ trách để được tư vấn cụ thể.',
     hotline: '028 3746 1111',
     noiBat: true,
     tags: ['trợ cấp xã hội', 'hộ nghèo', 'người khuyết tật', 'người cao tuổi', 'an sinh'],
@@ -854,7 +854,7 @@ export const DS_THU_TUC: ThuTuc[] = [
   // ══════════════════════════════════════════════
   //  LĨNH VỰC Y TẾ – BẢO HIỂM Y TẾ (BHYT)
   //  Cập nhật theo Luật BHYT sửa đổi 2024 (51/2024/QH15),
-  //  hiệu lực 01/07/2025 · Lương cơ sở 2.340.000đ
+  //  hiệu lực 01/07/2025 · Lương cơ sở 2.530.000đ (từ 01/07/2026)
   // ══════════════════════════════════════════════
 
   {
@@ -867,7 +867,7 @@ export const DS_THU_TUC: ThuTuc[] = [
     doiTuong: 'Người dân chưa tham gia BHYT theo nhóm khác (không phải người lao động, HSSV, hộ nghèo...).',
     moTa: 'Đăng ký tham gia Bảo hiểm Y tế theo hộ gia đình. Từ 01/07/2025, áp dụng Luật BHYT sửa đổi 2024: mở rộng quyền lợi, thông tuyến khám chữa bệnh, dùng CCCD gắn chip / ứng dụng VssID thay thẻ giấy.',
     thoiHanGiaiQuyet: '5 ngày làm việc (thẻ có giá trị sau khi đóng tiền)',
-    lePhi: 'Mức đóng người thứ 1: 4,5% lương cơ sở = 105.300đ/tháng. Người thứ 2 đóng 70%, người 3 đóng 60%, người 4 đóng 50%, từ người 5 đóng 40% mức người thứ 1.',
+    lePhi: 'Mức đóng người thứ 1: 4,5% lương cơ sở = 113.850đ/tháng (lương cơ sở 2.530.000đ từ 01/07/2026). Người thứ 2 đóng 70%, người 3 đóng 60%, người 4 đóng 50%, từ người 5 đóng 40% mức người thứ 1.',
     phiDichVu: 'Không',
     ketQua: 'Thẻ BHYT (bản điện tử trên VssID hoặc thẻ giấy)',
     thanhPhanHoSo: [
