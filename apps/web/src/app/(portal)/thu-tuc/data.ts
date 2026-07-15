@@ -611,7 +611,7 @@ export const DS_THU_TUC: ThuTuc[] = [
     ],
     diaDiemNop: `UBND Phường Long Trường hoặc liên hệ trực tiếp Ban quản lý ${KHU_PHO.ma}`,
     thoiGianLamViec: 'Thứ 2 – Thứ 7: 7h30 – 17h00 (Khẩn cấp: liên hệ hotline 24/7)',
-    hotline: '0773 735 317',
+    hotline: undefined,   // dùng SĐT Trưởng KP của khu phố (lấy từ CSDL ở trang chi tiết)
     noiBat: false,
     tags: ['hỗ trợ khẩn cấp', 'thiên tai', 'hỏa hoạn', 'tai nạn', 'cứu trợ'],
   },
@@ -689,7 +689,7 @@ export const DS_THU_TUC: ThuTuc[] = [
     diaDiemNop: `Ban quản lý ${KHU_PHO.ten} hoặc UBND Phường Long Trường`,
     thoiGianLamViec: 'Theo thỏa thuận với Tổ hòa giải',
     liuY: 'Hòa giải thành có thể yêu cầu Tòa án công nhận để có hiệu lực thi hành bắt buộc theo khoản 2 Điều 417 BLTTDS 2015.',
-    hotline: '0773 735 317',
+    hotline: undefined,   // dùng SĐT Trưởng KP của khu phố (lấy từ CSDL ở trang chi tiết)
     noiBat: false,
     tags: ['hòa giải', 'tranh chấp', 'mâu thuẫn', 'ranh giới', 'đất đai'],
   },

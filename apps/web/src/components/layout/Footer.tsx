@@ -1,9 +1,11 @@
 import Link from 'next/link'
 import { Phone, Mail, MapPin, Facebook, MessageCircle } from 'lucide-react'
 import { KHU_PHO } from '@/lib/khu-pho'
+import { layThongTinKhuPho, dinhDangSdt } from '@/lib/khu-pho-data'
 import LogoKhuPho from './LogoKhuPho'
 
-export default function Footer() {
+export default async function Footer() {
+  const tt = await layThongTinKhuPho()
   return (
     <footer className="bg-[#1E3A5F] text-white mt-auto">
       <div className="max-w-7xl mx-auto px-4 py-10">
@@ -56,32 +58,40 @@ export default function Footer() {
           <div>
             <h3 className="font-semibold text-white mb-4">Liên hệ Ban quản lý</h3>
             <ul className="space-y-3">
-              <li className="flex items-start gap-3">
-                <MapPin size={16} className="text-blue-300 mt-0.5 shrink-0" />
-                <span className="text-blue-200 text-sm">
-                  1341 Nguyễn Duy Trinh – Phường Long Trường – TP.HCM
-                </span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Phone size={16} className="text-blue-300 shrink-0" />
-                <div className="flex flex-col gap-0.5">
-                  <a href="tel:0773735317" className="text-blue-200 hover:text-white text-sm transition-colors">
-                    Trưởng KP: <span className="font-semibold text-white">0773 735 317</span>
+              {tt.diaChiUbnd && (
+                <li className="flex items-start gap-3">
+                  <MapPin size={16} className="text-blue-300 mt-0.5 shrink-0" />
+                  <span className="text-blue-200 text-sm">{tt.diaChiUbnd}</span>
+                </li>
+              )}
+              {(tt.truongKpSdt || tt.hotlineUbnd) && (
+                <li className="flex items-center gap-3">
+                  <Phone size={16} className="text-blue-300 shrink-0" />
+                  <div className="flex flex-col gap-0.5">
+                    {tt.truongKpSdt && (
+                      <a href={`tel:${tt.truongKpSdt}`} className="text-blue-200 hover:text-white text-sm transition-colors">
+                        Trưởng KP: <span className="font-semibold text-white">{dinhDangSdt(tt.truongKpSdt)}</span>
+                      </a>
+                    )}
+                    {tt.hotlineUbnd && (
+                      <a href={`tel:${tt.hotlineUbnd}`} className="text-blue-200 hover:text-white text-sm transition-colors">
+                        UBND Phường: <span className="font-semibold text-white">{dinhDangSdt(tt.hotlineUbnd)}</span>
+                      </a>
+                    )}
+                  </div>
+                </li>
+              )}
+              {tt.email && (
+                <li className="flex items-center gap-3">
+                  <Mail size={16} className="text-blue-300 shrink-0" />
+                  <a
+                    href={`mailto:${tt.email}`}
+                    className="text-blue-200 hover:text-white text-sm transition-colors"
+                  >
+                    {tt.email}
                   </a>
-                  <a href="tel:02837461111" className="text-blue-200 hover:text-white text-sm transition-colors">
-                    UBND Phường: <span className="font-semibold text-white">028 3746 1111</span>
-                  </a>
-                </div>
-              </li>
-              <li className="flex items-center gap-3">
-                <Mail size={16} className="text-blue-300 shrink-0" />
-                <a
-                  href="mailto:taip2704@gmail.com"
-                  className="text-blue-200 hover:text-white text-sm transition-colors"
-                >
-                  taip2704@gmail.com
-                </a>
-              </li>
+                </li>
+              )}
             </ul>
 
             <div className="flex gap-3 mt-5">

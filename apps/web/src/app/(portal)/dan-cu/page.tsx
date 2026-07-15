@@ -1,4 +1,5 @@
 import { KHU_PHO } from '@/lib/khu-pho'
+import { layThongTinKhuPho, dinhDangSdt } from '@/lib/khu-pho-data'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import {
@@ -60,7 +61,8 @@ const THU_TUC = [
   },
 ]
 
-export default function DanCuPage() {
+export default async function DanCuPage() {
+  const tt = await layThongTinKhuPho()
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
 
@@ -112,7 +114,7 @@ export default function DanCuPage() {
               href:    '/lien-he',
               icon:    Phone,
               label:   'Liên hệ cán bộ',
-              desc:    'Trưởng KP: 0773 735 317',
+              desc:    tt.truongKpSdt ? `Trưởng KP: ${dinhDangSdt(tt.truongKpSdt)}` : 'Danh bạ cán bộ khu phố',
               color:   'text-[#1E3A5F]',
               bg:      'bg-blue-50 hover:bg-blue-100',
             },
@@ -136,7 +138,7 @@ export default function DanCuPage() {
           {/* Lưu ý */}
           <div className="bg-amber-50 border border-amber-100 rounded-xl p-3 mt-2">
             <p className="text-xs text-amber-700 leading-relaxed">
-              <span className="font-semibold">Lưu ý:</span> Mọi thủ tục hành chính cần đến trực tiếp UBND Phường Long Trường – 1341 Nguyễn Duy Trinh.
+              <span className="font-semibold">Lưu ý:</span> Mọi thủ tục hành chính cần đến trực tiếp UBND {KHU_PHO.phuong}{tt.diaChiUbnd ? ` – ${tt.diaChiUbnd}` : ''}.
             </p>
           </div>
         </div>
@@ -197,11 +199,13 @@ export default function DanCuPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
           <div>
             <p className="text-blue-200 text-xs uppercase font-semibold tracking-wide mb-2">Địa điểm nộp hồ sơ</p>
-            <p className="font-semibold">UBND Phường Long Trường</p>
-            <p className="text-blue-200 mt-1">1341 Nguyễn Duy Trinh, Phường Long Trường, TP.HCM</p>
-            <a href="tel:02837461111" className="inline-block mt-2 text-[#FCD34D] font-bold hover:underline">
-              028 3746 1111
-            </a>
+            <p className="font-semibold">UBND {KHU_PHO.phuong}</p>
+            {tt.diaChiUbnd && <p className="text-blue-200 mt-1">{tt.diaChiUbnd}</p>}
+            {tt.hotlineUbnd && (
+              <a href={`tel:${tt.hotlineUbnd}`} className="inline-block mt-2 text-[#FCD34D] font-bold hover:underline">
+                {dinhDangSdt(tt.hotlineUbnd)}
+              </a>
+            )}
           </div>
           <div>
             <p className="text-blue-200 text-xs uppercase font-semibold tracking-wide mb-2">Giờ tiếp nhận</p>

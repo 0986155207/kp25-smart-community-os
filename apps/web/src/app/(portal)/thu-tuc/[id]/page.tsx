@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { layThongTinKhuPho, dinhDangSdt } from '@/lib/khu-pho-data'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import {
@@ -112,6 +113,11 @@ export default async function ChiTietThuTucPage(
   if (!found) notFound()
   // notFound() throws — found is defined from here
   const tt = found as ThuTuc
+
+  // Thủ tục không khai hotline riêng → dùng SĐT Trưởng khu phố (theo khu phố
+  // của bản triển khai này, lấy từ CSDL) thay vì số cứng của một khu phố cụ thể.
+  const ttKp = await layThongTinKhuPho()
+  const hotline = tt.hotline ?? (ttKp.truongKpSdt ? dinhDangSdt(ttKp.truongKpSdt) : null)
 
   const lv  = LINH_VUC_CONFIG[tt.linhVuc]
   const md  = MUC_DO_CONFIG[tt.mucDoTrucTuyen]
@@ -394,7 +400,7 @@ export default async function ChiTietThuTucPage(
               </div>
             </div>
 
-            {tt.hotline && (
+            {hotline && (
               <div className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center shrink-0">
                   <Phone size={14} className="text-green-600" />
@@ -402,10 +408,10 @@ export default async function ChiTietThuTucPage(
                 <div>
                   <p className="text-xs text-slate-500 mb-0.5">Hotline hỗ trợ</p>
                   <a
-                    href={`tel:${tt.hotline.replace(/\s/g, '')}`}
+                    href={`tel:${hotline.replace(/\s/g, '')}`}
                     className="text-sm font-semibold text-green-700 hover:text-green-900 transition-colors"
                   >
-                    {tt.hotline}
+                    {hotline}
                   </a>
                 </div>
               </div>

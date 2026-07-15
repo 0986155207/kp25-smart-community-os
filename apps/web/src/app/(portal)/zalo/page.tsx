@@ -1,4 +1,5 @@
 import { KHU_PHO } from '@/lib/khu-pho'
+import { layThongTinKhuPho, dinhDangSdt } from '@/lib/khu-pho-data'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import {
@@ -68,7 +69,9 @@ export default async function ZaloPage() {
   const groupUrl     = process.env.NEXT_PUBLIC_ZALO_GROUP_URL
   const oaUrl        = process.env.NEXT_PUBLIC_ZALO_OA_URL
   const groupQRUrl   = process.env.NEXT_PUBLIC_ZALO_GROUP_QR
-  const hotline      = process.env.NEXT_PUBLIC_HOTLINE ?? '0773 735 317'
+  // Hotline: ưu tiên biến môi trường, không có thì lấy SĐT Trưởng KP từ CSDL
+  const tt           = await layThongTinKhuPho()
+  const hotline      = process.env.NEXT_PUBLIC_HOTLINE ?? dinhDangSdt(tt.truongKpSdt)
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8 space-y-8">

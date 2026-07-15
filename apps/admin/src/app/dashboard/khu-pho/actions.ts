@@ -21,6 +21,11 @@ export interface DonViItem {
   truong_kp_sdt: string | null
   bi_thu_ten: string | null
   bi_thu_sdt: string | null
+  cong_an_ten: string | null
+  cong_an_sdt: string | null
+  an_ninh_ten: string | null
+  an_ninh_sdt: string | null
+  email: string | null
   mau_chu_dao: string | null
   logo_url: string | null
   thu_tu: number
@@ -45,6 +50,11 @@ export interface DuLieuDonVi {
   truong_kp_sdt?: string
   bi_thu_ten?: string
   bi_thu_sdt?: string
+  cong_an_ten?: string
+  cong_an_sdt?: string
+  an_ninh_ten?: string
+  an_ninh_sdt?: string
+  email?: string
   mau_chu_dao?: string
   logo_url?: string
   thu_tu?: number
@@ -127,6 +137,11 @@ export async function layDanhSachDonVi(): Promise<DonViItem[]> {
         truong_kp_sdt: dv.truong_kp_sdt,
         bi_thu_ten: dv.bi_thu_ten,
         bi_thu_sdt: dv.bi_thu_sdt,
+        cong_an_ten: dv.cong_an_ten,
+        cong_an_sdt: dv.cong_an_sdt,
+        an_ninh_ten: dv.an_ninh_ten,
+        an_ninh_sdt: dv.an_ninh_sdt,
+        email: dv.email,
         mau_chu_dao: dv.mau_chu_dao,
         logo_url: dv.logo_url,
         thu_tu: dv.thu_tu,
@@ -181,6 +196,11 @@ export async function taoDonVi(duLieu: DuLieuDonVi): Promise<KetQua> {
       truong_kp_sdt: duLieu.truong_kp_sdt?.trim() || null,
       bi_thu_ten:    duLieu.bi_thu_ten?.trim() || null,
       bi_thu_sdt:    duLieu.bi_thu_sdt?.trim() || null,
+      cong_an_ten:   duLieu.cong_an_ten?.trim() || null,
+      cong_an_sdt:   duLieu.cong_an_sdt?.trim() || null,
+      an_ninh_ten:   duLieu.an_ninh_ten?.trim() || null,
+      an_ninh_sdt:   duLieu.an_ninh_sdt?.trim() || null,
+      email:         duLieu.email?.trim() || null,
       mau_chu_dao:   chuanHoaMau(duLieu.mau_chu_dao),
       logo_url:      duLieu.logo_url?.trim() || null,
       thu_tu:        duLieu.thu_tu ?? 0,
@@ -230,6 +250,11 @@ export async function capNhatDonVi(id: string, duLieu: DuLieuDonVi): Promise<Ket
       truong_kp_sdt: duLieu.truong_kp_sdt?.trim() || null,
       bi_thu_ten:    duLieu.bi_thu_ten?.trim() || null,
       bi_thu_sdt:    duLieu.bi_thu_sdt?.trim() || null,
+      cong_an_ten:   duLieu.cong_an_ten?.trim() || null,
+      cong_an_sdt:   duLieu.cong_an_sdt?.trim() || null,
+      an_ninh_ten:   duLieu.an_ninh_ten?.trim() || null,
+      an_ninh_sdt:   duLieu.an_ninh_sdt?.trim() || null,
+      email:         duLieu.email?.trim() || null,
       mau_chu_dao:   chuanHoaMau(duLieu.mau_chu_dao),
       logo_url:      duLieu.logo_url?.trim() || null,
       thu_tu:        duLieu.thu_tu ?? 0,

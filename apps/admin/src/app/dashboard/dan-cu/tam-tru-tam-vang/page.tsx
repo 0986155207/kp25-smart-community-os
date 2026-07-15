@@ -1,4 +1,5 @@
 import { KHU_PHO } from '@/lib/khu-pho'
+import { layThongTinKhuPho, dinhDangSdt } from '@/lib/khu-pho-data'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import {
@@ -37,10 +38,11 @@ interface Props {
 export default async function TamTruTamVangPage({ searchParams }: Props) {
   const { tab = 'tam-tru', filter, q } = await searchParams
 
-  const [thongKe, dsTamTru, dsTamVang] = await Promise.all([
+  const [thongKe, dsTamTru, dsTamVang, tt] = await Promise.all([
     layThongKeTamTruVang(),
     layDanhSachTamTru(filter, q),
     layDanhSachTamVang(filter, q),
+    layThongTinKhuPho(),
   ])
 
   const isTamTru = tab !== 'tam-vang'
@@ -162,8 +164,10 @@ export default async function TamTruTamVangPage({ searchParams }: Props) {
           },
           {
             title: 'CA khu vực xét duyệt',
-            value: 'Trần Hữu Hùng',
-            sub: `📞 0988 897 709 · CA ${KHU_PHO.ma} Long Trường`,
+            value: tt.congAnTen ?? 'Chưa khai báo',
+            sub: tt.congAnSdt
+              ? `📞 ${dinhDangSdt(tt.congAnSdt)} · CA ${KHU_PHO.ma}`
+              : `Khai báo tại mục Quản lý Khu phố`,
             color: 'border-violet-200 bg-violet-50',
           },
         ].map(r => (

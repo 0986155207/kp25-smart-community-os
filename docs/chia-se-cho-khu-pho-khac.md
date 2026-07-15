@@ -55,6 +55,8 @@ Nâng cấp code: đẩy lên repo → mỗi Vercel project tự build lại (ho
 | Logo khu phố (logo chữ tự đổi; logo ảnh riêng tùy chọn) | ✅ Đã triển khai |
 | Favicon + icon PWA + manifest sinh động theo khu phố | ✅ Đã triển khai |
 | Ranh giới khu phố — vẽ trên bản đồ, lưu vào CSDL | ✅ Đã triển khai (migration 048) |
+| Toàn bộ chữ "KP25"/"Khu phố 25" trên giao diện → đọc từ cấu hình | ✅ Đã triển khai (342 chỗ) |
+| Danh bạ cán bộ (Trưởng KP, Bí thư, Công an KV, An ninh), email, UBND → CSDL | ✅ Đã triển khai (migration 049) |
 | Portal lọc dữ liệu theo khu phố của deployment | ✅ Đã triển khai |
 | Gán `don_vi_id` khi tạo hộ/nhân khẩu trong admin | ✅ Đã triển khai |
 | Lọc số liệu TỔNG ở admin Dashboard/Báo cáo/Tìm kiếm theo khu phố | ⏳ Làm khi onboard KP thật |
@@ -120,6 +122,12 @@ Nâng cấp code: đẩy lên repo → mỗi Vercel project tự build lại (ho
   đồng thời dùng để **rải vị trí ước tính** cho hộ chưa có toạ độ GPS.
 - Chưa vẽ ranh giới → bản đồ không hiển thị ranh giới và không rải vị trí ước tính
   (tránh chấm sai chỗ), tâm bản đồ lấy theo dữ liệu thật.
+
+### Bước 1c — Khai báo danh bạ cán bộ
+Trong form **Quản lý Khu phố**, điền: Trưởng khu phố, Bí thư chi bộ, **Công an khu vực**,
+**An ninh khu phố** (tên + SĐT), **Email liên hệ**. Các thông tin này hiển thị trên
+trang Liên hệ, Đăng ký tạm trú, Dân cư, Hướng dẫn và Footer của portal khu phố đó.
+Vai trò nào bỏ trống thì **tự ẩn** khỏi giao diện (không hiện thông tin của khu phố khác).
 
 ### Bước 2 — Tạo tài khoản cán bộ khu phố đó
 - Tạo user Supabase Auth (email + mật khẩu) cho từng cán bộ khu phố.

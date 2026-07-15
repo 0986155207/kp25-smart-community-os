@@ -1,4 +1,5 @@
 import { KHU_PHO } from '@/lib/khu-pho'
+import { layThongTinKhuPho, dinhDangSdt } from '@/lib/khu-pho-data'
 import type { Metadata } from 'next'
 import { Phone, MapPin, Clock, Mail, AlertCircle, Shield, User } from 'lucide-react'
 import Link from 'next/link'
@@ -8,54 +9,58 @@ export const metadata: Metadata = {
   description: `Thông tin liên hệ Ban quản lý ${KHU_PHO.ten}, Phường Long Trường, TP.HCM`,
 }
 
-const contacts = [
-  {
-    title:     'Trưởng khu phố',
-    name:      'Nguyễn Thị Hồng Thủy',
-    phone:     '0773 735 317',
-    phoneRaw:  '0773735317',
-    role:      'Phụ trách chung',
-    color:     'bg-red-50',
-    iconColor: 'text-[#8B1A1A]',
-    iconBg:    'bg-[#8B1A1A]/10',
-    icon:      User,
-  },
-  {
-    title:     'Bí thư Chi bộ',
-    name:      'Phan Tấn Tài',
-    phone:     '0986 155 207',
-    phoneRaw:  '0986155207',
-    role:      'Công tác Đảng',
-    color:     'bg-blue-50',
-    iconColor: 'text-[#1E3A5F]',
-    iconBg:    'bg-[#1E3A5F]/10',
-    icon:      User,
-  },
-  {
-    title:     'Công an khu vực',
-    name:      'Trần Hữu Hùng',
-    phone:     '0988 897 709',
-    phoneRaw:  '0988897709',
-    role:      'An ninh trật tự',
-    color:     'bg-emerald-50',
-    iconColor: 'text-emerald-700',
-    iconBg:    'bg-emerald-100',
-    icon:      Shield,
-  },
-  {
-    title:     'An ninh khu phố',
-    name:      'Mai Ngọc Nhân',
-    phone:     '0907 235 682',
-    phoneRaw:  '0907235682',
-    role:      'Tuần tra – Bảo vệ',
-    color:     'bg-amber-50',
-    iconColor: 'text-amber-700',
-    iconBg:    'bg-amber-100',
-    icon:      Shield,
-  },
-]
+// Danh bạ cán bộ — đọc từ CSDL theo khu phố của bản triển khai này.
+// Vai trò nào chưa khai báo thông tin thì tự ẩn khỏi danh sách.
+async function layDanhBa() {
+  const tt = await layThongTinKhuPho()
+  return [
+    {
+      title:     'Trưởng khu phố',
+      name:      tt.truongKpTen,
+      phoneRaw:  tt.truongKpSdt,
+      role:      'Phụ trách chung',
+      color:     'bg-red-50',
+      iconColor: 'text-[#8B1A1A]',
+      iconBg:    'bg-[#8B1A1A]/10',
+      icon:      User,
+    },
+    {
+      title:     'Bí thư Chi bộ',
+      name:      tt.biThuTen,
+      phoneRaw:  tt.biThuSdt,
+      role:      'Công tác Đảng',
+      color:     'bg-blue-50',
+      iconColor: 'text-[#1E3A5F]',
+      iconBg:    'bg-[#1E3A5F]/10',
+      icon:      User,
+    },
+    {
+      title:     'Công an khu vực',
+      name:      tt.congAnTen,
+      phoneRaw:  tt.congAnSdt,
+      role:      'An ninh trật tự',
+      color:     'bg-emerald-50',
+      iconColor: 'text-emerald-700',
+      iconBg:    'bg-emerald-100',
+      icon:      Shield,
+    },
+    {
+      title:     'An ninh khu phố',
+      name:      tt.anNinhTen,
+      phoneRaw:  tt.anNinhSdt,
+      role:      'Tuần tra – Bảo vệ',
+      color:     'bg-amber-50',
+      iconColor: 'text-amber-700',
+      iconBg:    'bg-amber-100',
+      icon:      Shield,
+    },
+  ]
+    .filter(c => c.name)
+    .map(c => ({ ...c, name: c.name as string, phone: dinhDangSdt(c.phoneRaw) }))
+}
 
-export default function LienHePage() {
+export default async function LienHePage() {
+  const [contacts, tt] = await Promise.all([layDanhBa(), layThongTinKhuPho()])
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
 
@@ -134,31 +139,35 @@ export default function LienHePage() {
           <h2 className="font-bold text-slate-900">UBND Phường Long Trường</h2>
         </div>
         <div className="space-y-3 text-sm">
-          <div className="flex items-start gap-3">
-            <MapPin size={16} className="text-[#8B1A1A] mt-0.5 shrink-0" />
-            <span className="text-slate-700">
-              1341 Nguyễn Duy Trinh – Phường Long Trường – TP.HCM
-            </span>
-          </div>
-          <div className="flex items-center gap-3">
-            <Phone size={16} className="text-emerald-600 shrink-0" />
-            <a
-              href="tel:02837461111"
-              className="text-emerald-700 font-semibold hover:underline"
-            >
-              028 3746 1111
-            </a>
-            <span className="text-slate-400 text-xs">(Hotline UBND)</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <Mail size={16} className="text-blue-500 shrink-0" />
-            <a
-              href="mailto:taip2704@gmail.com"
-              className="text-[#1E3A5F] font-semibold hover:underline"
-            >
-              taip2704@gmail.com
-            </a>
-          </div>
+          {tt.diaChiUbnd && (
+            <div className="flex items-start gap-3">
+              <MapPin size={16} className="text-[#8B1A1A] mt-0.5 shrink-0" />
+              <span className="text-slate-700">{tt.diaChiUbnd}</span>
+            </div>
+          )}
+          {tt.hotlineUbnd && (
+            <div className="flex items-center gap-3">
+              <Phone size={16} className="text-emerald-600 shrink-0" />
+              <a
+                href={`tel:${tt.hotlineUbnd}`}
+                className="text-emerald-700 font-semibold hover:underline"
+              >
+                {dinhDangSdt(tt.hotlineUbnd)}
+              </a>
+              <span className="text-slate-400 text-xs">(Hotline UBND)</span>
+            </div>
+          )}
+          {tt.email && (
+            <div className="flex items-center gap-3">
+              <Mail size={16} className="text-blue-500 shrink-0" />
+              <a
+                href={`mailto:${tt.email}`}
+                className="text-[#1E3A5F] font-semibold hover:underline"
+              >
+                {tt.email}
+              </a>
+            </div>
+          )}
           <div className="flex items-start gap-3">
             <Clock size={16} className="text-amber-500 mt-0.5 shrink-0" />
             <div className="text-slate-600">
@@ -176,8 +185,8 @@ export default function LienHePage() {
           <h2 className="font-bold text-slate-700">{KHU_PHO.ten}</h2>
         </div>
         <p className="text-sm text-slate-600">
-          Thuộc Phường Long Trường – TP.HCM (hành chính 2 cấp, không còn cấp Thủ Đức).
-          Ranh giới: Hẻm 43 đến Đường Số 4, từ Nguyễn Duy Trinh đến Hẻm 1106.
+          Thuộc {KHU_PHO.phuong} – TP.HCM (hành chính 2 cấp, không còn cấp Thủ Đức).
+          {tt.diaChi && <> Trụ sở / nhà văn hóa: {tt.diaChi}.</>}
         </p>
       </div>
 

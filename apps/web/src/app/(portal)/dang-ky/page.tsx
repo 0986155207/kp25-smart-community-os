@@ -1,4 +1,5 @@
 import { KHU_PHO } from '@/lib/khu-pho'
+import { layThongTinKhuPho, dinhDangSdt } from '@/lib/khu-pho-data'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import {
@@ -59,7 +60,8 @@ const STEPS = [
 ]
 
 // ─── Page ────────────────────────────────────────────────────────
-export default function DangKyPage() {
+export default async function DangKyPage() {
+  const tt = await layThongTinKhuPho()
   return (
     <div className="max-w-4xl mx-auto px-4 py-10 space-y-10">
 
@@ -173,30 +175,34 @@ export default function DangKyPage() {
       </div>
 
       {/* ── Công an khu vực phụ trách ────────────────────────── */}
-      <div className="bg-blue-50 border border-blue-200 rounded-2xl p-5 flex items-center gap-4">
-        <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center shrink-0">
-          <span className="text-white text-xl">👮</span>
+      {tt.congAnTen && (
+        <div className="bg-blue-50 border border-blue-200 rounded-2xl p-5 flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center shrink-0">
+            <span className="text-white text-xl">👮</span>
+          </div>
+          <div className="flex-1">
+            <p className="text-xs font-bold text-blue-500 uppercase tracking-wide mb-0.5">
+              Công an khu vực xét duyệt đơn
+            </p>
+            <p className="font-bold text-blue-900 text-lg">{tt.congAnTen}</p>
+            <p className="text-sm text-blue-700">
+              Công an khu vực — {KHU_PHO.ten}, {KHU_PHO.phuong}, TP.HCM
+            </p>
+            {tt.congAnSdt && (
+              <a
+                href={`tel:${tt.congAnSdt}`}
+                className="inline-flex items-center gap-1.5 mt-1.5 text-sm font-semibold text-blue-700 hover:text-blue-900 transition-colors"
+              >
+                📞 {dinhDangSdt(tt.congAnSdt)}
+              </a>
+            )}
+          </div>
+          <div className="hidden sm:block text-right shrink-0">
+            <p className="text-xs text-blue-500">Thời hạn xét duyệt</p>
+            <p className="font-bold text-blue-800">1–5 ngày làm việc</p>
+          </div>
         </div>
-        <div className="flex-1">
-          <p className="text-xs font-bold text-blue-500 uppercase tracking-wide mb-0.5">
-            Công an khu vực xét duyệt đơn
-          </p>
-          <p className="font-bold text-blue-900 text-lg">Trần Hữu Hùng</p>
-          <p className="text-sm text-blue-700">
-            Công an khu vực — {KHU_PHO.ten}, Phường Long Trường, TP.HCM
-          </p>
-          <a
-            href="tel:0988897709"
-            className="inline-flex items-center gap-1.5 mt-1.5 text-sm font-semibold text-blue-700 hover:text-blue-900 transition-colors"
-          >
-            📞 0988 897 709
-          </a>
-        </div>
-        <div className="hidden sm:block text-right shrink-0">
-          <p className="text-xs text-blue-500">Thời hạn xét duyệt</p>
-          <p className="font-bold text-blue-800">1–5 ngày làm việc</p>
-        </div>
-      </div>
+      )}
 
       {/* ── Quy trình ────────────────────────────────────────── */}
       <div>
@@ -242,7 +248,14 @@ export default function DangKyPage() {
         <Link href="/lien-he" className="text-[#8B1A1A] font-semibold hover:underline">
           Liên hệ Ban quản lý {KHU_PHO.ten}
         </Link>
-        {' '}hoặc gọi <a href="tel:0773735317" className="text-[#8B1A1A] font-semibold hover:underline">0773 735 317</a>
+        {tt.truongKpSdt && (
+          <>
+            {' '}hoặc gọi{' '}
+            <a href={`tel:${tt.truongKpSdt}`} className="text-[#8B1A1A] font-semibold hover:underline">
+              {dinhDangSdt(tt.truongKpSdt)}
+            </a>
+          </>
+        )}
       </div>
     </div>
   )

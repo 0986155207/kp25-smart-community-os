@@ -23,7 +23,7 @@ export const GUIDE_SECTIONS: GuideSection[] = [
       { title: 'Cài như ứng dụng (tùy chọn)', detail: 'Trên điện thoại, chọn "Thêm vào màn hình chính" để mở nhanh như một app riêng, dùng được cả khi mạng yếu.' },
       { title: 'Hoàn toàn miễn phí', detail: 'Tất cả dịch vụ trên cổng đều miễn phí. Thông tin được bảo mật theo Nghị định 13/2023/NĐ-CP.' },
     ],
-    tips: ['Nếu cần hỗ trợ, gọi Trưởng khu phố 0773 735 317 hoặc dùng "Hỏi AI" ngay trên cổng.'],
+    tips: ['Nếu cần hỗ trợ, gọi Trưởng khu phố (xem mục Liên hệ) hoặc dùng "Hỏi AI" ngay trên cổng.'],
   },
   {
     id: 'phan-anh',

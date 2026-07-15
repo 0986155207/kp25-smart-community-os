@@ -7,6 +7,7 @@ import {
   AlertCircle, ChevronRight, Calendar, Hash, Shield, ArrowLeft, UserCog,
 } from 'lucide-react'
 import { createServiceClient } from '@/lib/supabase/server'
+import { layThongTinKhuPho, dinhDangSdt } from '@/lib/khu-pho-data'
 
 export const revalidate = 60  // trang này ít thay đổi, cache 1 phút
 
@@ -53,6 +54,8 @@ export default async function QRScanPage({ params }: Props) {
   if (error || !ho) notFound()
 
   // Đếm nhân khẩu thực tế
+  const tt = await layThongTinKhuPho()
+
   const { count: soNkThucTe } = await supabase
     .from('nhan_khau')
     .select('id', { count: 'exact', head: true })
@@ -230,7 +233,7 @@ export default async function QRScanPage({ params }: Props) {
               href:    '/lien-he',
               icon:    Phone,
               label:   'Liên hệ cán bộ',
-              desc:    'Trưởng KP: 0773 735 317',
+              desc:    tt.truongKpSdt ? `Trưởng KP: ${dinhDangSdt(tt.truongKpSdt)}` : 'Danh bạ cán bộ khu phố',
               color:   'text-indigo-700',
               bg:      'bg-indigo-50',
             },

@@ -1,4 +1,5 @@
 import { KHU_PHO } from '@/lib/khu-pho'
+import { layThongTinKhuPho, dinhDangSdt } from '@/lib/khu-pho-data'
 import type { Metadata } from 'next'
 import { BookOpen, Phone, MessageSquare } from 'lucide-react'
 import Link from 'next/link'
@@ -9,7 +10,8 @@ export const metadata: Metadata = {
   description: `Hướng dẫn chi tiết sử dụng cổng dịch vụ số ${KHU_PHO.ten}, Phường Long Trường, TP.HCM`,
 }
 
-export default function HuongDanPage() {
+export default async function HuongDanPage() {
+  const tt = await layThongTinKhuPho()
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
       {/* Header */}
@@ -28,18 +30,20 @@ export default function HuongDanPage() {
 
       {/* Hỗ trợ */}
       <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <a
-          href="tel:0773735317"
-          className="flex items-center gap-3 p-4 bg-white border border-slate-200 rounded-2xl hover:border-slate-300 hover:shadow-sm transition-all"
-        >
-          <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0">
-            <Phone size={18} className="text-emerald-600" />
-          </div>
-          <div>
-            <p className="font-semibold text-slate-800 text-sm">Gọi Trưởng khu phố</p>
-            <p className="text-xs text-slate-500">0773 735 317</p>
-          </div>
-        </a>
+        {tt.truongKpSdt && (
+          <a
+            href={`tel:${tt.truongKpSdt}`}
+            className="flex items-center gap-3 p-4 bg-white border border-slate-200 rounded-2xl hover:border-slate-300 hover:shadow-sm transition-all"
+          >
+            <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0">
+              <Phone size={18} className="text-emerald-600" />
+            </div>
+            <div>
+              <p className="font-semibold text-slate-800 text-sm">Gọi Trưởng khu phố</p>
+              <p className="text-xs text-slate-500">{dinhDangSdt(tt.truongKpSdt)}</p>
+            </div>
+          </a>
+        )}
         <Link
           href="/chat"
           className="flex items-center gap-3 p-4 bg-gradient-to-r from-[#8B1A1A] to-[#a52a2a] text-white rounded-2xl hover:opacity-95 transition-all"

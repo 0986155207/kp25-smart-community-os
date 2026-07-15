@@ -39,7 +39,9 @@ function formMacDinh(): DuLieuDonVi {
   return {
     ma: '', ten: '', loai: 'KHU_PHO', phuong: 'Phường Long Trường',
     slug: '', dia_chi: '', truong_kp_ten: '', truong_kp_sdt: '',
-    bi_thu_ten: '', bi_thu_sdt: '', mau_chu_dao: '#8B1A1A', logo_url: '',
+    bi_thu_ten: '', bi_thu_sdt: '',
+    cong_an_ten: '', cong_an_sdt: '', an_ninh_ten: '', an_ninh_sdt: '', email: '',
+    mau_chu_dao: '#8B1A1A', logo_url: '',
     thu_tu: 0, is_active: true, ghi_chu: '',
   }
 }
@@ -66,6 +68,9 @@ export default function KhuPhoClient({ danhSach }: { danhSach: DonViItem[] }) {
       phuong: dv.phuong, slug: dv.slug ?? '', dia_chi: dv.dia_chi ?? '',
       truong_kp_ten: dv.truong_kp_ten ?? '', truong_kp_sdt: dv.truong_kp_sdt ?? '',
       bi_thu_ten: dv.bi_thu_ten ?? '', bi_thu_sdt: dv.bi_thu_sdt ?? '',
+      cong_an_ten: dv.cong_an_ten ?? '', cong_an_sdt: dv.cong_an_sdt ?? '',
+      an_ninh_ten: dv.an_ninh_ten ?? '', an_ninh_sdt: dv.an_ninh_sdt ?? '',
+      email: dv.email ?? '',
       mau_chu_dao: dv.mau_chu_dao ?? '#8B1A1A', logo_url: dv.logo_url ?? '',
       thu_tu: dv.thu_tu, is_active: dv.is_active, ghi_chu: dv.ghi_chu ?? '',
     })
@@ -361,6 +366,50 @@ export default function KhuPhoClient({ danhSach }: { danhSach: DonViItem[] }) {
                   />
                 </Field>
               </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <Field label="Công an khu vực" hint="Hiện trên trang Đăng ký">
+                  <input
+                    value={form.cong_an_ten ?? ''}
+                    onChange={(e) => set('cong_an_ten', e.target.value)}
+                    className="input"
+                  />
+                </Field>
+                <Field label="SĐT công an KV">
+                  <input
+                    value={form.cong_an_sdt ?? ''}
+                    onChange={(e) => set('cong_an_sdt', e.target.value)}
+                    className="input"
+                  />
+                </Field>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <Field label="An ninh khu phố">
+                  <input
+                    value={form.an_ninh_ten ?? ''}
+                    onChange={(e) => set('an_ninh_ten', e.target.value)}
+                    className="input"
+                  />
+                </Field>
+                <Field label="SĐT an ninh KP">
+                  <input
+                    value={form.an_ninh_sdt ?? ''}
+                    onChange={(e) => set('an_ninh_sdt', e.target.value)}
+                    className="input"
+                  />
+                </Field>
+              </div>
+
+              <Field label="Email liên hệ" hint="Hiện ở Footer + trang Liên hệ">
+                <input
+                  type="email"
+                  value={form.email ?? ''}
+                  onChange={(e) => set('email', e.target.value)}
+                  placeholder="lienhe@khupho.vn"
+                  className="input"
+                />
+              </Field>
 
               <Field label="Màu chủ đạo" hint="Dùng cho logo, favicon và giao diện khu phố">
                 <div className="space-y-2">
