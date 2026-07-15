@@ -22,6 +22,7 @@ export interface DonViItem {
   bi_thu_ten: string | null
   bi_thu_sdt: string | null
   mau_chu_dao: string | null
+  logo_url: string | null
   thu_tu: number
   is_active: boolean
   ghi_chu: string | null
@@ -45,6 +46,7 @@ export interface DuLieuDonVi {
   bi_thu_ten?: string
   bi_thu_sdt?: string
   mau_chu_dao?: string
+  logo_url?: string
   thu_tu?: number
   is_active?: boolean
   ghi_chu?: string
@@ -120,6 +122,7 @@ export async function layDanhSachDonVi(): Promise<DonViItem[]> {
         bi_thu_ten: dv.bi_thu_ten,
         bi_thu_sdt: dv.bi_thu_sdt,
         mau_chu_dao: dv.mau_chu_dao,
+        logo_url: dv.logo_url,
         thu_tu: dv.thu_tu,
         is_active: dv.is_active,
         ghi_chu: dv.ghi_chu,
@@ -173,6 +176,7 @@ export async function taoDonVi(duLieu: DuLieuDonVi): Promise<KetQua> {
       bi_thu_ten:    duLieu.bi_thu_ten?.trim() || null,
       bi_thu_sdt:    duLieu.bi_thu_sdt?.trim() || null,
       mau_chu_dao:   duLieu.mau_chu_dao?.trim() || '#8B1A1A',
+      logo_url:      duLieu.logo_url?.trim() || null,
       thu_tu:        duLieu.thu_tu ?? 0,
       is_active:     duLieu.is_active ?? true,
       ghi_chu:       duLieu.ghi_chu?.trim() || null,
@@ -221,6 +225,7 @@ export async function capNhatDonVi(id: string, duLieu: DuLieuDonVi): Promise<Ket
       bi_thu_ten:    duLieu.bi_thu_ten?.trim() || null,
       bi_thu_sdt:    duLieu.bi_thu_sdt?.trim() || null,
       mau_chu_dao:   duLieu.mau_chu_dao?.trim() || '#8B1A1A',
+      logo_url:      duLieu.logo_url?.trim() || null,
       thu_tu:        duLieu.thu_tu ?? 0,
       is_active:     duLieu.is_active ?? true,
       ghi_chu:       duLieu.ghi_chu?.trim() || null,

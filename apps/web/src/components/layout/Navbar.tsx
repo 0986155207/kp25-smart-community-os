@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { Bell, MessageSquare, Home, AlertCircle, Map, Phone, Users, FileText, CalendarDays, ClipboardList, MessageSquareMore, Search } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { KHU_PHO, TEN_THUONG_HIEU } from '@/lib/khu-pho'
+import LogoKhuPho from './LogoKhuPho'
 
 const menu = [
   { href: '/',          label: 'Trang chủ', icon: Home              },
@@ -29,10 +30,11 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-primary-gradient flex items-center justify-center shadow-primary">
-              <span className="text-white font-bold text-sm">{KHU_PHO.logoChu}</span>
-              <span className="text-[#FCD34D] font-bold text-sm">{KHU_PHO.logoSo}</span>
-            </div>
+            <LogoKhuPho
+              boxClass="w-10 h-10 rounded-xl flex items-center justify-center shadow-primary shrink-0"
+              bgClass="bg-primary-gradient"
+              textClass="text-sm"
+            />
             <div className="hidden sm:block">
               <div className="font-bold text-[#8B1A1A] leading-tight text-sm">{TEN_THUONG_HIEU}</div>
               <div className="text-xs text-slate-500">{KHU_PHO.ten} · {KHU_PHO.phuong.replace(/^Phường\s+/, '')} · TP.HCM</div>

@@ -1,12 +1,15 @@
 import type { MetadataRoute } from 'next'
+import { KHU_PHO } from '@/lib/khu-pho'
 
 // Next.js tự serve file này tại /manifest.webmanifest
-// với Content-Type: application/manifest+json (đúng chuẩn)
+// với Content-Type: application/manifest+json (đúng chuẩn).
+// Nội dung SINH ĐỘNG theo khu phố của deployment (biến NEXT_PUBLIC_KP_*),
+// icon dùng route sinh động /icon và /apple-icon → mỗi khu phố có icon riêng.
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name:             'KP25 Admin — Hệ thống điều hành',
-    short_name:       'KP25 Admin',
-    description:      'Hệ thống quản trị thông minh dành cho cán bộ Khu phố 25, Phường Long Trường, TP.HCM',
+    name:             `${KHU_PHO.ma} Admin — Hệ thống điều hành`,
+    short_name:       `${KHU_PHO.ma} Admin`,
+    description:      `Hệ thống quản trị thông minh dành cho cán bộ ${KHU_PHO.ten}, ${KHU_PHO.phuong}, TP.HCM`,
     start_url:        '/dashboard',
     scope:            '/',
     display:          'standalone',
@@ -16,14 +19,8 @@ export default function manifest(): MetadataRoute.Manifest {
     lang:             'vi',
     categories:       ['government', 'productivity', 'utilities'],
     icons: [
-      { src: '/icons/icon-72x72.png',   sizes: '72x72',   type: 'image/png', purpose: 'any'          },
-      { src: '/icons/icon-96x96.png',   sizes: '96x96',   type: 'image/png', purpose: 'any'          },
-      { src: '/icons/icon-128x128.png', sizes: '128x128', type: 'image/png', purpose: 'any'          },
-      { src: '/icons/icon-144x144.png', sizes: '144x144', type: 'image/png', purpose: 'any'          },
-      { src: '/icons/icon-152x152.png', sizes: '152x152', type: 'image/png', purpose: 'any'          },
-      { src: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png', purpose: 'maskable'     },
-      { src: '/icons/icon-384x384.png', sizes: '384x384', type: 'image/png', purpose: 'any'          },
-      { src: '/icons/icon-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable'     },
+      { src: '/icon',       sizes: '64x64',   type: 'image/png', purpose: 'any' },
+      { src: '/apple-icon', sizes: '180x180', type: 'image/png', purpose: 'any' },
     ],
     shortcuts: [
       {

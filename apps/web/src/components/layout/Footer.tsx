@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Phone, Mail, MapPin, Facebook, MessageCircle } from 'lucide-react'
 import { KHU_PHO } from '@/lib/khu-pho'
+import LogoKhuPho from './LogoKhuPho'
 
 export default function Footer() {
   return (
@@ -10,10 +11,11 @@ export default function Footer() {
           {/* Thông tin */}
           <div>
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-[#8B1A1A] flex items-center justify-center">
-                <span className="text-white font-bold text-xs">{KHU_PHO.logoChu}</span>
-                <span className="text-[#FCD34D] font-bold text-xs">{KHU_PHO.logoSo}</span>
-              </div>
+              <LogoKhuPho
+                boxClass="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                bgClass="bg-[#8B1A1A]"
+                textClass="text-xs"
+              />
               <div>
                 <div className="font-bold text-white text-sm">{KHU_PHO.ma} Smart Community OS</div>
                 <div className="text-blue-200 text-xs">Hệ điều hành số cộng đồng</div>

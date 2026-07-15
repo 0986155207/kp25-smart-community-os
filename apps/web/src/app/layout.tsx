@@ -45,8 +45,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={beVietnamPro.variable}
     >
       <head>
-        <link rel="manifest" href="/manifest.json" />
-        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+        {/* manifest + icon được Next sinh động theo khu phố
+            (src/app/manifest.ts, src/app/icon.tsx, src/app/apple-icon.tsx)
+            → không khai báo tĩnh ở đây để tránh trùng/đè. */}
         {/* PWA meta — cả hai variant để tránh cảnh báo Chrome */}
         <meta name="mobile-web-app-capable"       content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />

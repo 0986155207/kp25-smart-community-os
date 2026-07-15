@@ -33,21 +33,9 @@ export const metadata: Metadata = {
     capable:         true,
     statusBarStyle:  'black-translucent',
     title:           `${KHU_PHO.ma} Admin`,
-    startupImage:    '/icons/icon-512x512.png',
   },
-  icons: {
-    icon: [
-      { url: '/icons/icon-32x32.png',   sizes: '32x32',   type: 'image/png' },
-      { url: '/icons/icon-96x96.png',   sizes: '96x96',   type: 'image/png' },
-      { url: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' },
-    ],
-    apple: [
-      { url: '/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
-    ],
-    other: [
-      { rel: 'mask-icon', url: '/icons/safari-pinned-tab.svg', color: '#1E3A5F' },
-    ],
-  },
+  // Icon được Next sinh động theo khu phố (src/app/icon.tsx, src/app/apple-icon.tsx)
+  // → không khai báo icon tĩnh ở đây để mỗi khu phố có icon riêng.
 }
 
 export default function AdminRootLayout({ children }: { children: React.ReactNode }) {

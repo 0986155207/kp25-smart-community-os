@@ -3,7 +3,7 @@
 import { useState, useTransition } from 'react'
 import {
   Building2, Plus, Pencil, Trash2, X, Users, Home as HomeIcon,
-  UserCog, Phone, Check, Loader2, MapPin, Palette, Award,
+  UserCog, Phone, Check, Loader2, MapPin, Palette, Award, Image as ImageIcon,
 } from 'lucide-react'
 import {
   type DonViItem, type DuLieuDonVi,
@@ -22,8 +22,8 @@ function formMacDinh(): DuLieuDonVi {
   return {
     ma: '', ten: '', loai: 'KHU_PHO', phuong: 'Phường Long Trường',
     slug: '', dia_chi: '', truong_kp_ten: '', truong_kp_sdt: '',
-    bi_thu_ten: '', bi_thu_sdt: '', mau_chu_dao: '#8B1A1A', thu_tu: 0,
-    is_active: true, ghi_chu: '',
+    bi_thu_ten: '', bi_thu_sdt: '', mau_chu_dao: '#8B1A1A', logo_url: '',
+    thu_tu: 0, is_active: true, ghi_chu: '',
   }
 }
 
@@ -49,8 +49,8 @@ export default function KhuPhoClient({ danhSach }: { danhSach: DonViItem[] }) {
       phuong: dv.phuong, slug: dv.slug ?? '', dia_chi: dv.dia_chi ?? '',
       truong_kp_ten: dv.truong_kp_ten ?? '', truong_kp_sdt: dv.truong_kp_sdt ?? '',
       bi_thu_ten: dv.bi_thu_ten ?? '', bi_thu_sdt: dv.bi_thu_sdt ?? '',
-      mau_chu_dao: dv.mau_chu_dao ?? '#8B1A1A', thu_tu: dv.thu_tu,
-      is_active: dv.is_active, ghi_chu: dv.ghi_chu ?? '',
+      mau_chu_dao: dv.mau_chu_dao ?? '#8B1A1A', logo_url: dv.logo_url ?? '',
+      thu_tu: dv.thu_tu, is_active: dv.is_active, ghi_chu: dv.ghi_chu ?? '',
     })
     setMoForm(true)
   }
@@ -119,12 +119,19 @@ export default function KhuPhoClient({ danhSach }: { danhSach: DonViItem[] }) {
             className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 flex flex-col gap-3"
           >
             <div className="flex items-start gap-3">
-              <div
-                className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 text-white font-bold text-xs"
-                style={{ background: dv.mau_chu_dao ?? '#8B1A1A' }}
-              >
-                {dv.ma}
-              </div>
+              {dv.logo_url ? (
+                <div className="w-11 h-11 rounded-xl shrink-0 bg-white border border-slate-200 overflow-hidden flex items-center justify-center">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={dv.logo_url} alt={`Logo ${dv.ten}`} className="w-full h-full object-contain" />
+                </div>
+              ) : (
+                <div
+                  className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 text-white font-bold text-xs"
+                  style={{ background: dv.mau_chu_dao ?? '#8B1A1A' }}
+                >
+                  {dv.ma}
+                </div>
+              )}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <h3 className="font-bold text-slate-900 truncate">{dv.ten}</h3>
@@ -354,6 +361,29 @@ export default function KhuPhoClient({ danhSach }: { danhSach: DonViItem[] }) {
                   />
                 </Field>
               </div>
+
+              <Field label="Logo khu phố (URL ảnh)" hint="Bỏ trống sẽ dùng logo chữ">
+                <div className="flex items-center gap-2">
+                  <div className="relative flex-1">
+                    <ImageIcon size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                    <input
+                      value={form.logo_url ?? ''}
+                      onChange={(e) => set('logo_url', e.target.value)}
+                      placeholder="https://.../logo-kp01.png"
+                      className="input pl-9"
+                    />
+                  </div>
+                  {/* Xem trước */}
+                  <div className="w-10 h-10 rounded-lg border border-slate-200 bg-white flex items-center justify-center overflow-hidden shrink-0">
+                    {form.logo_url?.trim() ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={form.logo_url} alt="Xem trước logo" className="w-full h-full object-contain" />
+                    ) : (
+                      <span className="text-[9px] text-slate-300">Chữ</span>
+                    )}
+                  </div>
+                </div>
+              </Field>
 
               <label className="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
                 <input

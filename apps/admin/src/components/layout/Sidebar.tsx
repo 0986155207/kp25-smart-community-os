@@ -14,6 +14,7 @@ import { cn } from '@/lib/utils'
 import { dangXuat } from '@/lib/auth'
 import { useSidebar } from '@/lib/sidebar-store'
 import { KHU_PHO } from '@/lib/khu-pho'
+import LogoKhuPho from './LogoKhuPho'
 import { type CanBo, type VaiTro, VAI_TRO_LABEL, VAI_TRO_COLOR } from '@/lib/auth-config'
 
 // ─── Cấu hình menu ────────────────────────────────────────────
@@ -243,10 +244,11 @@ export default function Sidebar({ canBo }: { canBo: CanBo | null }) {
       {/* ── Logo ─────────────────────────────────────────────── */}
       <div className="p-5 border-b border-white/10">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-[#8B1A1A] flex items-center justify-center shrink-0">
-            <span className="text-white font-bold text-xs">{KHU_PHO.logoChu}</span>
-            <span className="text-[#FCD34D] font-bold text-xs">{KHU_PHO.logoSo}</span>
-          </div>
+          <LogoKhuPho
+            boxClass="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+            bgClass="bg-[#8B1A1A]"
+            textClass="text-xs"
+          />
           <div className="flex-1">
             <div className="font-bold text-sm text-white leading-tight">{KHU_PHO.ma} Admin</div>
             <div className="text-[10px] text-white/50">Hệ thống điều hành</div>

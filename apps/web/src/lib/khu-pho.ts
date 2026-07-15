@@ -24,6 +24,8 @@ export const KHU_PHO = {
   /** Nhãn viết tắt trên logo, vd "KP" + "25" */
   logoChu:   process.env.NEXT_PUBLIC_KP_LOGO_CHU   ?? 'KP',
   logoSo:    process.env.NEXT_PUBLIC_KP_LOGO_SO    ?? '25',
+  /** URL ảnh logo riêng (tùy chọn). Bỏ trống → dùng logo chữ ở trên. */
+  logoUrl:   process.env.NEXT_PUBLIC_KP_LOGO_URL   ?? '',
 } as const
 
 /** "KP25 Smart Community" — tên thương hiệu portal */

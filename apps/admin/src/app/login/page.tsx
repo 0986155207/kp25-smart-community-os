@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import LoginForm from './LoginForm'
 import { Shield } from 'lucide-react'
 import { KHU_PHO } from '@/lib/khu-pho'
+import LogoKhuPho from '@/components/layout/LogoKhuPho'
 
 export const metadata: Metadata = { title: `Đăng nhập — ${KHU_PHO.ma} Admin` }
 
@@ -26,10 +27,12 @@ export default async function LoginPage({ searchParams }: Props) {
         {/* Logo + Title */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-3 mb-5">
-            <div className="w-14 h-14 rounded-2xl bg-[#8B1A1A] shadow-lg shadow-red-900/30 flex items-center justify-center">
-              <span className="text-white font-black text-xl">{KHU_PHO.logoChu}</span>
-              <span className="text-[#FCD34D] font-black text-xl">{KHU_PHO.logoSo}</span>
-            </div>
+            <LogoKhuPho
+              boxClass="w-14 h-14 rounded-2xl shadow-lg shadow-red-900/30 flex items-center justify-center"
+              bgClass="bg-[#8B1A1A]"
+              textClass="text-xl"
+              weightClass="font-black"
+            />
           </div>
           <h1 className="text-2xl font-bold text-white leading-tight">
             {KHU_PHO.ma} Smart Community OS

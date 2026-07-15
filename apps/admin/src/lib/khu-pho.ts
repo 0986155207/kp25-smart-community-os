@@ -16,4 +16,6 @@ export const KHU_PHO = {
   mau:       process.env.NEXT_PUBLIC_KP_MAU        ?? '#8B1A1A',
   logoChu:   process.env.NEXT_PUBLIC_KP_LOGO_CHU   ?? 'KP',
   logoSo:    process.env.NEXT_PUBLIC_KP_LOGO_SO    ?? '25',
+  /** URL ảnh logo riêng (tùy chọn). Bỏ trống → dùng logo chữ ở trên. */
+  logoUrl:   process.env.NEXT_PUBLIC_KP_LOGO_URL   ?? '',
 } as const

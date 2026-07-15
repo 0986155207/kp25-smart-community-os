@@ -27,8 +27,9 @@ phố dùng KHÓA GEMINI API RIÊNG**.
 - **Khóa Gemini riêng:** app đọc `process.env.GEMINI_API_KEY` → mỗi Vercel project đặt
   khóa riêng của khu phố đó. Đây là lý do chính chọn mô hình triển khai riêng
   (biến môi trường thuộc về từng deployment).
-- **Giao diện tên khu phố riêng:** mỗi deployment đặt `NEXT_PUBLIC_KP_SLUG` → app tải
-  thông tin khu phố (tên, màu, logo) từ bảng `don_vi` để hiển thị.
+- **Giao diện + logo riêng:** mỗi deployment đặt các biến `NEXT_PUBLIC_KP_*` (tên, mã, màu,
+  logo) → app hiển thị đúng thương hiệu khu phố; favicon và icon PWA cũng **sinh động** theo
+  khu phố, không cần upload file ảnh.
 - **Dữ liệu đúng khu phố:** portal lọc theo khu phố của deployment; admin cách ly bằng
   RLS (cán bộ chỉ thấy khu phố mình). Dùng chung DB nên **Phường quản lý tập trung**,
   migrations chạy 1 lần, nâng cấp đồng loạt.
@@ -51,6 +52,8 @@ Nâng cấp code: đẩy lên repo → mỗi Vercel project tự build lại (ho
 | Cách ly RLS theo khu phố (admin) | ✅ Sẵn sàng (migration 047 + sync profiles) |
 | Khóa Gemini theo env (mỗi deployment 1 khóa) | ✅ Sẵn sàng (đọc `GEMINI_API_KEY`) |
 | Giao diện đọc tên/màu khu phố theo env | ✅ Đã triển khai |
+| Logo khu phố (logo chữ tự đổi; logo ảnh riêng tùy chọn) | ✅ Đã triển khai |
+| Favicon + icon PWA + manifest sinh động theo khu phố | ✅ Đã triển khai |
 | Portal lọc dữ liệu theo khu phố của deployment | ✅ Đã triển khai |
 | Gán `don_vi_id` khi tạo hộ/nhân khẩu trong admin | ✅ Đã triển khai |
 | Lọc số liệu TỔNG ở admin Dashboard/Báo cáo/Tìm kiếm theo khu phố | ⏳ Làm khi onboard KP thật |
@@ -79,11 +82,24 @@ Nâng cấp code: đẩy lên repo → mỗi Vercel project tự build lại (ho
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Khóa anon | Chung |
 | `SUPABASE_SERVICE_ROLE_KEY` | Khóa service role | Chung |
 | `GEMINI_API_KEY` | **Khóa Gemini của khu phố** | **RIÊNG từng khu phố** |
+| `NEXT_PUBLIC_KP_ID` | UUID đơn vị trong bảng `don_vi` (dùng LỌC dữ liệu) | RIÊNG |
 | `NEXT_PUBLIC_KP_SLUG` | Định danh khu phố (vd `kp01`) | RIÊNG |
+| `NEXT_PUBLIC_KP_MA` | Mã ngắn (logo, mã hộ — vd `KP01`) | RIÊNG |
+| `NEXT_PUBLIC_KP_TEN` | Tên hiển thị (vd `Khu phố 1`) | RIÊNG |
+| `NEXT_PUBLIC_KP_TEN_DAY_DU` | Tên đầy đủ | RIÊNG |
+| `NEXT_PUBLIC_KP_PHUONG` | Tên phường | RIÊNG |
+| `NEXT_PUBLIC_KP_MAU` | Màu chủ đạo (hex) — dùng cả cho favicon động | RIÊNG |
+| `NEXT_PUBLIC_KP_LOGO_CHU` / `_SO` | Chữ + số trên logo (vd `KP` / `01`) | RIÊNG |
+| `NEXT_PUBLIC_KP_LOGO_URL` | (Tùy chọn) URL ảnh logo riêng; bỏ trống = logo chữ | RIÊNG |
 | `JWT_SECRET` / khác | (nếu có) | Chung |
 
-> Chỉ cần `NEXT_PUBLIC_KP_SLUG` — app tự tải tên/màu/logo từ bảng `don_vi` theo slug.
-> Nếu muốn cố định không phụ thuộc DB, có thể thêm `NEXT_PUBLIC_KP_TEN`, `NEXT_PUBLIC_KP_MAU`.
+> App đọc cấu hình khu phố **trực tiếp từ các biến này** (`lib/khu-pho.ts`), không truy vấn DB
+> → nhanh, dùng được ở cả Server lẫn Client. Bỏ trống = mặc định Khu phố 25.
+>
+> **Logo & icon:** favicon, icon PWA và manifest được **sinh động** từ `KP_MA` + `KP_MAU`
+> (`src/app/icon.tsx`, `apple-icon.tsx`, `manifest.ts`) → **không cần upload file ảnh nào**.
+> Nếu khu phố có logo ảnh riêng, chỉ cần điền `NEXT_PUBLIC_KP_LOGO_URL` (hoặc trường Logo
+> trong mục Quản lý Khu phố) — app tự thay logo chữ bằng ảnh đó.
 
 ---
 
@@ -130,8 +146,10 @@ Nâng cấp code: đẩy lên repo → mỗi Vercel project tự build lại (ho
 
 ## 5. Cách hoạt động (tóm tắt kỹ thuật)
 
-- **Tên khu phố trên giao diện:** deployment đặt `NEXT_PUBLIC_KP_SLUG` → app tra bảng
-  `don_vi` (ten, mau_chu_dao, logo_url) → render header/tiêu đề/sidebar theo khu phố.
+- **Tên khu phố trên giao diện:** deployment đặt `NEXT_PUBLIC_KP_*` → `lib/khu-pho.ts`
+  đọc trực tiếp → render header/footer/hero/sidebar/login/tiêu đề tab theo khu phố.
+- **Logo:** component `LogoKhuPho` — có `KP_LOGO_URL` thì hiện ảnh, không thì hiện badge
+  chữ (`KP_LOGO_CHU` + `KP_LOGO_SO`). Favicon/icon PWA sinh động từ `KP_MA` + `KP_MAU`.
 - **Dữ liệu đúng khu phố:**
   - *Admin:* cán bộ đăng nhập → `profiles.don_vi_id` được đồng bộ từ `can_bo` → RLS
     (`co_quyen_don_vi`) chỉ trả dữ liệu khu phố đó.
