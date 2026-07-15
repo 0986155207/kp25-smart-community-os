@@ -58,6 +58,12 @@ export interface KetQua {
   id?: string
 }
 
+// Chuẩn hóa mã màu hex — sai định dạng thì dùng màu mặc định
+function chuanHoaMau(v?: string): string {
+  const m = (v ?? '').trim().toUpperCase()
+  return /^#[0-9A-F]{6}$/.test(m) ? m : '#8B1A1A'
+}
+
 // ════════════════════════════════════════════════════════════
 //  DANH SÁCH ĐƠN VỊ (kèm thống kê)
 // ════════════════════════════════════════════════════════════
@@ -175,7 +181,7 @@ export async function taoDonVi(duLieu: DuLieuDonVi): Promise<KetQua> {
       truong_kp_sdt: duLieu.truong_kp_sdt?.trim() || null,
       bi_thu_ten:    duLieu.bi_thu_ten?.trim() || null,
       bi_thu_sdt:    duLieu.bi_thu_sdt?.trim() || null,
-      mau_chu_dao:   duLieu.mau_chu_dao?.trim() || '#8B1A1A',
+      mau_chu_dao:   chuanHoaMau(duLieu.mau_chu_dao),
       logo_url:      duLieu.logo_url?.trim() || null,
       thu_tu:        duLieu.thu_tu ?? 0,
       is_active:     duLieu.is_active ?? true,
@@ -224,7 +230,7 @@ export async function capNhatDonVi(id: string, duLieu: DuLieuDonVi): Promise<Ket
       truong_kp_sdt: duLieu.truong_kp_sdt?.trim() || null,
       bi_thu_ten:    duLieu.bi_thu_ten?.trim() || null,
       bi_thu_sdt:    duLieu.bi_thu_sdt?.trim() || null,
-      mau_chu_dao:   duLieu.mau_chu_dao?.trim() || '#8B1A1A',
+      mau_chu_dao:   chuanHoaMau(duLieu.mau_chu_dao),
       logo_url:      duLieu.logo_url?.trim() || null,
       thu_tu:        duLieu.thu_tu ?? 0,
       is_active:     duLieu.is_active ?? true,

@@ -18,6 +18,22 @@ const LOAI_OPTIONS = [
   { value: 'PHUONG', label: 'Phường' },
 ]
 
+// Bảng màu gợi ý — tông hành chính, dễ đọc trên nền trắng
+const MAU_GOI_Y = [
+  { hex: '#8B1A1A', ten: 'Đỏ đô (mặc định)' },
+  { hex: '#C41E3A', ten: 'Đỏ cờ' },
+  { hex: '#1E3A5F', ten: 'Xanh navy' },
+  { hex: '#1D4ED8', ten: 'Xanh dương' },
+  { hex: '#0F766E', ten: 'Xanh ngọc' },
+  { hex: '#15803D', ten: 'Xanh lá' },
+  { hex: '#6D28D9', ten: 'Tím' },
+  { hex: '#C2410C', ten: 'Cam' },
+  { hex: '#78350F', ten: 'Nâu' },
+  { hex: '#334155', ten: 'Xám đen' },
+]
+
+const laMauHopLe = (v?: string) => /^#[0-9A-Fa-f]{6}$/.test((v ?? '').trim())
+
 function formMacDinh(): DuLieuDonVi {
   return {
     ma: '', ten: '', loai: 'KHU_PHO', phuong: 'Phường Long Trường',
@@ -339,28 +355,71 @@ export default function KhuPhoClient({ danhSach }: { danhSach: DonViItem[] }) {
                 </Field>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <Field label="Màu chủ đạo">
-                  <div className="relative flex items-center gap-2">
-                    <Palette size={14} className="text-slate-400" />
+              <Field label="Màu chủ đạo" hint="Dùng cho logo, favicon và giao diện khu phố">
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Palette size={14} className="text-slate-400 shrink-0" />
+                    {/* Ô chọn màu hệ thống (nếu môi trường hỗ trợ) */}
                     <input
                       type="color"
-                      value={form.mau_chu_dao ?? '#8B1A1A'}
-                      onChange={(e) => set('mau_chu_dao', e.target.value)}
-                      className="h-9 w-14 rounded border border-slate-200 cursor-pointer"
+                      value={laMauHopLe(form.mau_chu_dao) ? form.mau_chu_dao! : '#8B1A1A'}
+                      onChange={(e) => set('mau_chu_dao', e.target.value.toUpperCase())}
+                      className="h-9 w-11 rounded border border-slate-200 cursor-pointer shrink-0"
+                      title="Chọn màu"
                     />
-                    <span className="text-xs text-slate-500">{form.mau_chu_dao}</span>
+                    {/* Nhập mã hex trực tiếp — luôn dùng được */}
+                    <input
+                      value={form.mau_chu_dao ?? ''}
+                      onChange={(e) => set('mau_chu_dao', e.target.value.toUpperCase())}
+                      placeholder="#8B1A1A"
+                      maxLength={7}
+                      className="input font-mono uppercase w-28 shrink-0"
+                    />
+                    {/* Xem trước */}
+                    <div
+                      className="h-9 flex-1 rounded-lg flex items-center justify-center text-[11px] font-bold text-white"
+                      style={{ background: laMauHopLe(form.mau_chu_dao) ? form.mau_chu_dao : '#CBD5E1' }}
+                    >
+                      {laMauHopLe(form.mau_chu_dao) ? 'Xem trước màu' : 'Mã màu chưa hợp lệ'}
+                    </div>
                   </div>
-                </Field>
-                <Field label="Thứ tự hiển thị">
-                  <input
-                    type="number"
-                    value={form.thu_tu ?? 0}
-                    onChange={(e) => set('thu_tu', Number(e.target.value))}
-                    className="input"
-                  />
-                </Field>
-              </div>
+
+                  {/* Bảng màu gợi ý */}
+                  <div className="flex flex-wrap gap-1.5">
+                    {MAU_GOI_Y.map((m) => {
+                      const dangChon = (form.mau_chu_dao ?? '').toUpperCase() === m.hex
+                      return (
+                        <button
+                          key={m.hex}
+                          type="button"
+                          title={`${m.ten} — ${m.hex}`}
+                          onClick={() => set('mau_chu_dao', m.hex)}
+                          className={`w-7 h-7 rounded-md transition-transform hover:scale-110 ${
+                            dangChon ? 'ring-2 ring-offset-2 ring-slate-800' : 'ring-1 ring-slate-200'
+                          }`}
+                          style={{ background: m.hex }}
+                        />
+                      )
+                    })}
+                  </div>
+
+                  <p className="text-[11px] text-slate-400 leading-relaxed">
+                    Khi triển khai khu phố này, đặt biến{' '}
+                    <span className="font-mono text-slate-500">NEXT_PUBLIC_KP_MAU</span> ={' '}
+                    <span className="font-mono text-slate-600">{form.mau_chu_dao || '#8B1A1A'}</span>{' '}
+                    để portal/admin và favicon của khu phố dùng đúng màu này.
+                  </p>
+                </div>
+              </Field>
+
+              <Field label="Thứ tự hiển thị">
+                <input
+                  type="number"
+                  value={form.thu_tu ?? 0}
+                  onChange={(e) => set('thu_tu', Number(e.target.value))}
+                  className="input w-32"
+                />
+              </Field>
 
               <Field label="Logo khu phố (URL ảnh)" hint="Bỏ trống sẽ dùng logo chữ">
                 <div className="flex items-center gap-2">
