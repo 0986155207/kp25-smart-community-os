@@ -59,19 +59,22 @@ Nâng cấp code: đẩy lên repo → mỗi Vercel project tự build lại (ho
 | Danh bạ cán bộ (Trưởng KP, Bí thư, Công an KV, An ninh), email, UBND → CSDL | ✅ Đã triển khai (migration 049) |
 | Portal lọc dữ liệu theo khu phố của deployment | ✅ Đã triển khai |
 | Gán `don_vi_id` khi tạo hộ/nhân khẩu trong admin | ✅ Đã triển khai |
-| Lọc số liệu TỔNG ở admin Dashboard/Báo cáo/Tìm kiếm theo khu phố | ⏳ Làm khi onboard KP thật |
-| Nội dung chi tiết (hướng dẫn/thủ tục/liên hệ) còn ghi "Khu phố 25" | ⏳ Migrate dần / sửa nội dung |
+| Lọc số liệu TỔNG ở admin Dashboard/Báo cáo/Tìm kiếm theo khu phố | ✅ Đã triển khai (migration 050) |
 
 **Đã có (làm 1 lần, cho toàn hệ thống):**
 1. Module `lib/khu-pho.ts` (cả web + admin) đọc `NEXT_PUBLIC_KP_*` từ env, mặc định KP25.
 2. Branding động: header/footer/hero/tiêu đề portal, sidebar/login/tiêu đề admin, logo, mã hộ.
 3. Portal lọc truy vấn công khai (trang chủ, thông báo, sự kiện, phản ánh, bản đồ) theo `KP_ID`.
 4. Admin tạo hộ/nhân khẩu (thêm mới, import, duyệt hộ mới) tự gán `don_vi_id = KP_ID`.
+5. **Mọi chữ hiển thị** đọc từ `KHU_PHO` — không còn "KP25" cứng trong giao diện.
+6. **Danh bạ cán bộ + liên hệ** đọc từ `don_vi` (migration 049); vai trò bỏ trống thì tự ẩn.
+7. **Ranh giới bản đồ** vẽ trên giao diện, lưu vào `don_vi` (migration 048).
+8. **Số liệu tổng** ở Dashboard/Báo cáo/Tìm kiếm lọc theo `don_vi_id` — migration 050 bổ sung
+   khóa khu phố cho 3 bảng an sinh (`bhyt`, `ho_ngheo`, `nguoi_cao_tuoi`) mà migration 044 bỏ sót.
 
-**Còn lại (làm khi onboard khu phố thật — không chặn việc triển khai):**
-- Lọc các số liệu TỔNG ở Dashboard/Báo cáo/Tìm kiếm admin theo `don_vi_id` (hiện đọc toàn hệ thống
-  qua service role; module Dân cư đã cách ly đúng nhờ RLS). Không phải PII.
-- Rà nội dung tĩnh còn nhắc "Khu phố 25" (trang hướng dẫn, thủ tục, liên hệ) → nên đọc từ `don_vi`.
+**Còn lại (chỉ phát sinh khi mở rộng sang PHƯỜNG khác, không phải khu phố khác):**
+- Nội dung nghiệp vụ trong `thu-tuc/data.ts` mô tả quy trình theo Phường Long Trường
+  (UBND phường, hotline phường) — đúng cho mọi khu phố **trong phường này**.
 
 ---
 

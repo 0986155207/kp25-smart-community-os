@@ -1,3 +1,4 @@
+import { KHU_PHO } from '@/lib/khu-pho'
 import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/server'
 import type { SupabaseClient } from '@supabase/supabase-js'
@@ -57,7 +58,7 @@ export async function GET(req: NextRequest) {
     // ── Hộ dân ──────────────────────────────────────────────
     applyWordSearch(
       svc.from('ho_dan')
-        .select('id, ma_ho, chu_ho, dia_chi_day, so_dien_thoai')
+        .select('id, ma_ho, chu_ho, dia_chi_day, so_dien_thoai').eq('don_vi_id', KHU_PHO.id)
         .is('deleted_at', null)
         .limit(5),
       words,
@@ -67,7 +68,7 @@ export async function GET(req: NextRequest) {
     // ── Nhân khẩu ───────────────────────────────────────────
     applyWordSearch(
       svc.from('nhan_khau')
-        .select('id, ho_ten, cccd, quan_he, ho_id')
+        .select('id, ho_ten, cccd, quan_he, ho_id').eq('don_vi_id', KHU_PHO.id)
         .is('deleted_at', null)
         .limit(6),
       words,
@@ -77,7 +78,7 @@ export async function GET(req: NextRequest) {
     // ── Phản ánh ────────────────────────────────────────────
     applyWordSearch(
       svc.from('phan_anh')
-        .select('id, tieu_de, mo_ta, trang_thai, loai, dia_chi_phan_anh')
+        .select('id, tieu_de, mo_ta, trang_thai, loai, dia_chi_phan_anh').eq('don_vi_id', KHU_PHO.id)
         .is('deleted_at', null)
         .limit(5),
       words,
@@ -87,7 +88,7 @@ export async function GET(req: NextRequest) {
     // ── Thông báo ───────────────────────────────────────────
     applyWordSearch(
       svc.from('thong_bao')
-        .select('id, tieu_de, noi_dung, loai')
+        .select('id, tieu_de, noi_dung, loai').eq('don_vi_id', KHU_PHO.id)
         .is('deleted_at', null)
         .limit(4),
       words,
@@ -97,7 +98,7 @@ export async function GET(req: NextRequest) {
     // ── Sự kiện ─────────────────────────────────────────────
     applyWordSearch(
       svc.from('su_kien')
-        .select('id, tieu_de, mo_ta, dia_diem, ngay_bat_dau')
+        .select('id, tieu_de, mo_ta, dia_diem, ngay_bat_dau').eq('don_vi_id', KHU_PHO.id)
         .is('deleted_at', null)
         .limit(3),
       words,
@@ -107,7 +108,7 @@ export async function GET(req: NextRequest) {
     // ── Tài liệu ────────────────────────────────────────────
     applyWordSearch(
       svc.from('tai_lieu')
-        .select('id, tieu_de, mo_ta, loai')
+        .select('id, tieu_de, mo_ta, loai').eq('don_vi_id', KHU_PHO.id)
         .is('deleted_at', null)
         .limit(3),
       words,
@@ -197,7 +198,7 @@ export async function GET(req: NextRequest) {
     const [fbHoDan, fbNhanKhau] = await Promise.all([
       applyWordSearch(
         svc.from('ho_dan')
-          .select('id, ma_ho, chu_ho, dia_chi_day')
+          .select('id, ma_ho, chu_ho, dia_chi_day').eq('don_vi_id', KHU_PHO.id)
           .is('deleted_at', null)
           .limit(5),
         wordsDau,
@@ -205,7 +206,7 @@ export async function GET(req: NextRequest) {
       ),
       applyWordSearch(
         svc.from('nhan_khau')
-          .select('id, ho_ten, cccd, quan_he, ho_id')
+          .select('id, ho_ten, cccd, quan_he, ho_id').eq('don_vi_id', KHU_PHO.id)
           .is('deleted_at', null)
           .limit(6),
         wordsDau,

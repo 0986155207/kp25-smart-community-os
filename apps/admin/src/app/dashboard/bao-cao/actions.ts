@@ -1,5 +1,6 @@
 'use server'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { createServiceClient } from '@/lib/supabase/server'
 const createClient = () => createServiceClient()
 
@@ -81,15 +82,15 @@ export async function layDuLieuBaoCao(): Promise<BaoCaoData> {
     hoRes, nkRes, paRes, tbRes,
     bhytRes, hnRes, nctRes,
   ] = await Promise.all([
-    supabase.from('ho_dan').select('id, to_truong, so_nhan_khau, trang_thai').is('deleted_at', null),
+    supabase.from('ho_dan').select('id, to_truong, so_nhan_khau, trang_thai').eq('don_vi_id', KHU_PHO.id).is('deleted_at', null),
     // nhan_khau: lấy tất cả (kể cả da_mat) để dùng cho biểu đồ nhân khẩu học
-    supabase.from('nhan_khau').select('gioi_tinh, ngay_sinh, trang_thai, da_mat').is('deleted_at', null),
-    supabase.from('phan_anh').select('trang_thai, loai, created_at').is('deleted_at', null),
-    supabase.from('thong_bao').select('id').is('deleted_at', null),
-    supabase.from('bhyt').select('trang_thai').is('deleted_at', null),
-    supabase.from('ho_ngheo').select('loai, trang_thai').is('deleted_at', null),
+    supabase.from('nhan_khau').select('gioi_tinh, ngay_sinh, trang_thai, da_mat').eq('don_vi_id', KHU_PHO.id).is('deleted_at', null),
+    supabase.from('phan_anh').select('trang_thai, loai, created_at').eq('don_vi_id', KHU_PHO.id).is('deleted_at', null),
+    supabase.from('thong_bao').select('id').eq('don_vi_id', KHU_PHO.id).is('deleted_at', null),
+    supabase.from('bhyt').select('trang_thai').eq('don_vi_id', KHU_PHO.id).is('deleted_at', null),
+    supabase.from('ho_ngheo').select('loai, trang_thai').eq('don_vi_id', KHU_PHO.id).is('deleted_at', null),
     // nguoi_cao_tuoi: lấy tất cả (kể cả da_mat) để đếm tổng khớp với trang Dân cư
-    supabase.from('nguoi_cao_tuoi').select('tinh_trang_sk, da_mat').is('deleted_at', null),
+    supabase.from('nguoi_cao_tuoi').select('tinh_trang_sk, da_mat').eq('don_vi_id', KHU_PHO.id).is('deleted_at', null),
   ])
 
   const hoDan   = hoRes.data  ?? []

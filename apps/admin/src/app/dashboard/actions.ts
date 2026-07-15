@@ -1,5 +1,6 @@
 'use server'
 
+import { KHU_PHO } from '@/lib/khu-pho'
 import { createServiceClient } from '@/lib/supabase/server'
 
 // ─── Types ────────────────────────────────────────────────────
@@ -71,25 +72,25 @@ export async function layDashboardStats(): Promise<DashboardStats> {
       tamTru, suKien,
       paMoiThangTruoc,
     ] = await Promise.all([
-      svc.from('ho_dan').select('id, so_nhan_khau').is('deleted_at', null),
+      svc.from('ho_dan').select('id, so_nhan_khau').eq('don_vi_id', KHU_PHO.id).is('deleted_at', null),
 
-      svc.from('phan_anh').select('id', { count: 'exact', head: true })
+      svc.from('phan_anh').select('id', { count: 'exact', head: true }).eq('don_vi_id', KHU_PHO.id)
          .eq('trang_thai', 'MOI').is('deleted_at', null),
-      svc.from('phan_anh').select('id', { count: 'exact', head: true })
+      svc.from('phan_anh').select('id', { count: 'exact', head: true }).eq('don_vi_id', KHU_PHO.id)
          .eq('trang_thai', 'DANG_XU_LY').is('deleted_at', null),
-      svc.from('phan_anh').select('id', { count: 'exact', head: true })
+      svc.from('phan_anh').select('id', { count: 'exact', head: true }).eq('don_vi_id', KHU_PHO.id)
          .eq('trang_thai', 'DA_XU_LY').is('deleted_at', null),
 
-      svc.from('dang_ky_tam_tru').select('id', { count: 'exact', head: true })
+      svc.from('dang_ky_tam_tru').select('id', { count: 'exact', head: true }).eq('don_vi_id', KHU_PHO.id)
          .eq('trang_thai', 'DANG_TRU').is('deleted_at', null),
 
-      svc.from('su_kien').select('id', { count: 'exact', head: true })
+      svc.from('su_kien').select('id', { count: 'exact', head: true }).eq('don_vi_id', KHU_PHO.id)
          .in('trang_thai', ['SAP_DIEN_RA', 'DANG_DIEN_RA'])
          .gte('ngay_bat_dau', thang1).lte('ngay_bat_dau', thang2)
          .is('deleted_at', null),
 
       // PA mới tháng trước để tính delta
-      svc.from('phan_anh').select('id', { count: 'exact', head: true })
+      svc.from('phan_anh').select('id', { count: 'exact', head: true }).eq('don_vi_id', KHU_PHO.id)
          .eq('trang_thai', 'MOI')
          .gte('created_at', prev1).lte('created_at', prev2)
          .is('deleted_at', null),
@@ -143,7 +144,7 @@ export async function layXuHuong6Thang(): Promise<DiemTrendThang[]> {
 
     const { data } = await svc
       .from('phan_anh')
-      .select('trang_thai, created_at')
+      .select('trang_thai, created_at').eq('don_vi_id', KHU_PHO.id)
       .is('deleted_at', null)
       .gte('created_at', sixMonthsAgo.toISOString())
 
@@ -180,7 +181,7 @@ export async function layPhanAnhTheoTrangThai(): Promise<PhanAnhTrangThai[]> {
     const svc = createServiceClient()
     const { data } = await svc
       .from('phan_anh')
-      .select('trang_thai')
+      .select('trang_thai').eq('don_vi_id', KHU_PHO.id)
       .is('deleted_at', null)
 
     if (!data) return []
@@ -214,7 +215,7 @@ export async function laySuKienSapToi(): Promise<SuKienSapToi[]> {
     const svc = createServiceClient()
     const { data } = await svc
       .from('su_kien')
-      .select('id, tieu_de, loai, trang_thai, ngay_bat_dau, dia_diem, noi_bat')
+      .select('id, tieu_de, loai, trang_thai, ngay_bat_dau, dia_diem, noi_bat').eq('don_vi_id', KHU_PHO.id)
       .in('trang_thai', ['SAP_DIEN_RA', 'DANG_DIEN_RA'])
       .gte('ngay_bat_dau', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
       .is('deleted_at', null)
@@ -234,7 +235,7 @@ export async function layPhanAnhGanDay(): Promise<PhanAnhGanDay[]> {
     const svc = createServiceClient()
     const { data } = await svc
       .from('phan_anh')
-      .select('id, tieu_de, loai, trang_thai, muc_do, created_at, dia_chi_phan_anh')
+      .select('id, tieu_de, loai, trang_thai, muc_do, created_at, dia_chi_phan_anh').eq('don_vi_id', KHU_PHO.id)
       .is('deleted_at', null)
       .order('created_at', { ascending: false })
       .limit(8)
@@ -262,17 +263,17 @@ export async function layThongKeHomNay(): Promise<ThongKeHomNay> {
     const thangStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString()
 
     const [moiHomNay, dongHomNay, thongBao, khanCap] = await Promise.all([
-      svc.from('phan_anh').select('id', { count: 'exact', head: true })
+      svc.from('phan_anh').select('id', { count: 'exact', head: true }).eq('don_vi_id', KHU_PHO.id)
          .gte('created_at', todayStart).is('deleted_at', null),
 
-      svc.from('phan_anh').select('id', { count: 'exact', head: true })
+      svc.from('phan_anh').select('id', { count: 'exact', head: true }).eq('don_vi_id', KHU_PHO.id)
          .in('trang_thai', ['DA_XU_LY', 'DONG'])
          .gte('updated_at', todayStart).is('deleted_at', null),
 
-      svc.from('thong_bao').select('id', { count: 'exact', head: true })
+      svc.from('thong_bao').select('id', { count: 'exact', head: true }).eq('don_vi_id', KHU_PHO.id)
          .gte('created_at', thangStart).is('deleted_at', null),
 
-      svc.from('phan_anh').select('id', { count: 'exact', head: true })
+      svc.from('phan_anh').select('id', { count: 'exact', head: true }).eq('don_vi_id', KHU_PHO.id)
          .eq('muc_do', 'KHAN_CAP')
          .in('trang_thai', ['MOI', 'DANG_XU_LY'])
          .is('deleted_at', null),
@@ -303,16 +304,16 @@ export async function layThongKeAnSinh(): Promise<ThongKeAnSinh> {
     const svc = createServiceClient()
 
     const [hoNgheoRes, hoCanNgheoRes, nctRes, bhytRes] = await Promise.all([
-      svc.from('ho_ngheo').select('id', { count: 'exact', head: true })
+      svc.from('ho_ngheo').select('id', { count: 'exact', head: true }).eq('don_vi_id', KHU_PHO.id)
          .eq('loai', 'NGHEO').eq('trang_thai', 'DANG_HUONG').is('deleted_at', null),
 
-      svc.from('ho_ngheo').select('id', { count: 'exact', head: true })
+      svc.from('ho_ngheo').select('id', { count: 'exact', head: true }).eq('don_vi_id', KHU_PHO.id)
          .eq('loai', 'CAN_NGHEO').eq('trang_thai', 'DANG_HUONG').is('deleted_at', null),
 
-      svc.from('nguoi_cao_tuoi').select('id', { count: 'exact', head: true })
+      svc.from('nguoi_cao_tuoi').select('id', { count: 'exact', head: true }).eq('don_vi_id', KHU_PHO.id)
          .is('deleted_at', null).not('da_mat', 'eq', true),
 
-      svc.from('bhyt').select('id', { count: 'exact', head: true })
+      svc.from('bhyt').select('id', { count: 'exact', head: true }).eq('don_vi_id', KHU_PHO.id)
          .eq('trang_thai', 'CON_HAN').is('deleted_at', null),
     ])
 
@@ -350,7 +351,7 @@ export async function layPhanAnhTheoLoai(): Promise<PhanAnhTheoLoai[]> {
     const svc = createServiceClient()
     const { data } = await svc
       .from('phan_anh')
-      .select('loai')
+      .select('loai').eq('don_vi_id', KHU_PHO.id)
       .is('deleted_at', null)
 
     if (!data) return []
@@ -390,7 +391,7 @@ export async function layHoatDong30Ngay(): Promise<DiemHoatDong[]> {
 
     const { data } = await svc
       .from('phan_anh')
-      .select('created_at')
+      .select('created_at').eq('don_vi_id', KHU_PHO.id)
       .gte('created_at', from.toISOString())
       .is('deleted_at', null)
 
