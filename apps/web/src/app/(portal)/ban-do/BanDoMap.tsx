@@ -5,6 +5,7 @@ import 'leaflet/dist/leaflet.css'
 import { MapContainer, TileLayer, Marker, Popup, ZoomControl, Polygon } from 'react-leaflet'
 import { useState, useEffect, useMemo } from 'react'
 import type { PhanAnhMap } from './actions'
+import { KHU_PHO } from '@/lib/khu-pho'
 
 // ─── Fix Leaflet default icon ─────────────────────────────────
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -69,26 +70,20 @@ function getIcon(mucDo: string) {
   return _icons[mucDo]!
 }
 
-// ─── Ranh giới KP25 từ Google Maps ───────────────────────────
-const KP25_POLYGON: [number, number][] = [
-  [10.79869, 106.81107],  // SW — Hẻm 43 / Đường Số 1
-  [10.79870, 106.81261],  // SE — Đường Số 1 / Đường Số 4
-  [10.80231, 106.81261],  // NE — Đường Số 4 / NDT
-  [10.80082, 106.81084],  // NW — NDT / Hẻm 1106
-]
-
-const MAP_CENTER: [number, number] = [
-  KP25_POLYGON.reduce((s, p) => s + p[0], 0) / KP25_POLYGON.length,
-  KP25_POLYGON.reduce((s, p) => s + p[1], 0) / KP25_POLYGON.length,
-]
+// Tâm dự phòng khi khu phố chưa vẽ ranh giới và chưa có phản ánh nào có GPS
+const TAM_MAC_DINH: [number, number] = [10.8005, 106.8118]   // Long Trường
 
 // ─── Props ────────────────────────────────────────────────────
 interface Props {
   phanAnh: PhanAnhMap[]
+  /** Ranh giới khu phố lấy từ CSDL — rỗng nếu chưa vẽ */
+  ranhGioi: [number, number][]
+  tam:      [number, number] | null
+  zoom:     number
 }
 
 // ─── Component ────────────────────────────────────────────────
-export default function BanDoMap({ phanAnh }: Props) {
+export default function BanDoMap({ phanAnh, ranhGioi, tam, zoom }: Props) {
   const [ready, setReady] = useState(false)
   useEffect(() => { setReady(true) }, [])
 
@@ -96,6 +91,24 @@ export default function BanDoMap({ phanAnh }: Props) {
     () => phanAnh.filter(p => p.toaDoLat && p.toaDoLng),
     [phanAnh],
   )
+
+  // Tâm: khu phố đặt tay → tâm ranh giới → trung bình phản ánh có GPS → mặc định
+  const mapCenter = useMemo<[number, number]>(() => {
+    if (tam) return tam
+    if (ranhGioi.length) {
+      return [
+        ranhGioi.reduce((s, p) => s + p[0], 0) / ranhGioi.length,
+        ranhGioi.reduce((s, p) => s + p[1], 0) / ranhGioi.length,
+      ]
+    }
+    if (markers.length) {
+      return [
+        markers.reduce((s, p) => s + p.toaDoLat, 0) / markers.length,
+        markers.reduce((s, p) => s + p.toaDoLng, 0) / markers.length,
+      ]
+    }
+    return TAM_MAC_DINH
+  }, [tam, ranhGioi, markers])
 
   if (!ready) return (
     <div className="h-full flex items-center justify-center bg-slate-50 rounded-2xl">
@@ -105,8 +118,8 @@ export default function BanDoMap({ phanAnh }: Props) {
 
   return (
     <MapContainer
-      center={MAP_CENTER}
-      zoom={16}
+      center={mapCenter}
+      zoom={zoom}
       style={{ height: '100%', width: '100%' }}
       zoomControl={false}
       preferCanvas={false}
@@ -119,17 +132,20 @@ export default function BanDoMap({ phanAnh }: Props) {
       <ZoomControl position="bottomright" />
 
       {/* Ranh giới KP25 */}
-      <Polygon
-        positions={KP25_POLYGON}
-        pathOptions={{
-          color:       '#8B1A1A',
-          weight:      2.5,
-          opacity:     0.9,
-          fillColor:   '#8B1A1A',
-          fillOpacity: 0.05,
-          dashArray:   '8 5',
-        }}
-      />
+      {/* Ranh giới khu phố — chỉ vẽ khi khu phố đã có ranh giới */}
+      {ranhGioi.length >= 3 && (
+        <Polygon
+          positions={ranhGioi}
+          pathOptions={{
+            color:       KHU_PHO.mau,
+            weight:      2.5,
+            opacity:     0.9,
+            fillColor:   KHU_PHO.mau,
+            fillOpacity: 0.05,
+            dashArray:   '8 5',
+          }}
+        />
+      )}
 
       {/* Phản ánh có GPS */}
       {markers.map(p => (

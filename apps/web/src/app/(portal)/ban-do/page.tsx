@@ -1,11 +1,12 @@
 import type { Metadata } from 'next'
 import { MapPin, Home, Users, AlertCircle, Clock } from 'lucide-react'
-import { layDuLieuBanDoPublic } from './actions'
+import { layDuLieuBanDoPublic, layRanhGioiKhuPho } from './actions'
 import BanDoMapClient from './BanDoMapClient'
+import { KHU_PHO, TEN_THUONG_HIEU } from '@/lib/khu-pho'
 
 export const metadata: Metadata = {
-  title: 'Bản đồ Khu phố 25 — KP25 Smart Community',
-  description: 'Bản đồ GIS Khu phố 25 – Phường Long Trường – TP.HCM. Xem vị trí phản ánh hiện trường, ranh giới khu phố.',
+  title: `Bản đồ ${KHU_PHO.ten} — ${TEN_THUONG_HIEU}`,
+  description: `Bản đồ GIS ${KHU_PHO.ten} – ${KHU_PHO.phuong} – TP.HCM. Xem vị trí phản ánh hiện trường, ranh giới khu phố.`,
 }
 
 export const revalidate = 60
@@ -25,7 +26,10 @@ const MUC_DO_LABEL: Record<string, string> = {
 }
 
 export default async function BanDoPage() {
-  const { phanAnh, stats } = await layDuLieuBanDoPublic()
+  const [{ phanAnh, stats }, { ranhGioi, tam, zoom }] = await Promise.all([
+    layDuLieuBanDoPublic(),
+    layRanhGioiKhuPho(),
+  ])
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -101,7 +105,7 @@ export default async function BanDoPage() {
               className="w-full rounded-2xl overflow-hidden shadow-md border border-slate-200"
               style={{ height: '560px' }}
             >
-              <BanDoMapClient phanAnh={phanAnh} />
+              <BanDoMapClient phanAnh={phanAnh} ranhGioi={ranhGioi} tam={tam} zoom={zoom} />
             </div>
             <p className="mt-2 text-xs text-slate-400 text-center">
               © OpenStreetMap · © CARTO · Ranh giới KP25 từ Google Maps

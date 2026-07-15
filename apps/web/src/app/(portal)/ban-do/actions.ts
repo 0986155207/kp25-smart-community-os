@@ -21,6 +21,40 @@ export interface BanDoStats {
   phanAnhDangXuLy: number
 }
 
+// ─── Ranh giới khu phố của bản triển khai này ────────────────
+export interface RanhGioiKhuPho {
+  ranhGioi: [number, number][]
+  tam:      [number, number] | null
+  zoom:     number
+}
+
+const diemHopLe = (d: unknown): d is [number, number] =>
+  Array.isArray(d) && d.length === 2 && typeof d[0] === 'number' && typeof d[1] === 'number'
+
+/** Lấy ranh giới khu phố từ bảng don_vi (không hardcode) */
+export async function layRanhGioiKhuPho(): Promise<RanhGioiKhuPho> {
+  try {
+    const svc = createServiceClient()
+    const { data } = await svc
+      .from('don_vi')
+      .select('ranh_gioi, tam_lat, tam_lng, zoom')
+      .eq('id', KHU_PHO.id)
+      .maybeSingle()
+
+    const raw = Array.isArray(data?.ranh_gioi) ? data!.ranh_gioi : []
+    return {
+      ranhGioi: raw.filter(diemHopLe),
+      tam: data?.tam_lat != null && data?.tam_lng != null
+        ? [Number(data.tam_lat), Number(data.tam_lng)]
+        : null,
+      zoom: data?.zoom ?? 16,
+    }
+  } catch (err) {
+    console.error('[BanDo] Lỗi đọc ranh giới:', err)
+    return { ranhGioi: [], tam: null, zoom: 16 }
+  }
+}
+
 export async function layDuLieuBanDoPublic(): Promise<{
   phanAnh: PhanAnhMap[]
   stats: BanDoStats

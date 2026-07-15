@@ -305,8 +305,10 @@ interface Props {
   showHoDan:    boolean
   showPhanAnh:  boolean
   showHeatmap:  boolean
+  /** Ranh giới khu phố — rỗng nếu khu phố chưa vẽ */
   boundary:     [number, number][]
   mapCenter:    [number, number]
+  mapZoom:      number
   tileKey:      TileKey
   flyTarget:    FlyTarget | null
   searchHighlight: GeoMarker | null
@@ -323,7 +325,7 @@ interface Props {
 export default function GisMap({
   markers, phanAnh,
   showHoDan, showPhanAnh, showHeatmap,
-  boundary, mapCenter,
+  boundary, mapCenter, mapZoom,
   tileKey, flyTarget, searchHighlight, locatePos,
   droppingPinFor, onMapClick, onStartPinDrop,
 }: Props) {
@@ -346,7 +348,7 @@ export default function GisMap({
   return (
     <MapContainer
       center={mapCenter}
-      zoom={16}
+      zoom={mapZoom}
       style={{ height: '100%', width: '100%' }}
       zoomControl={false}
       preferCanvas={false}
@@ -380,18 +382,20 @@ export default function GisMap({
       <LocateMeMarker  position={locatePos} />
       <MapClickHandler active={!!droppingPinFor} onMapClick={onMapClick} />
 
-      {/* ── Ranh giới KP25 ─────────────────────────────────── */}
-      <Polygon
-        positions={boundary}
-        pathOptions={{
-          color:       boundaryColor,
-          weight:      2.5,
-          opacity:     0.85,
-          fillColor:   boundaryColor,
-          fillOpacity: 0.05,
-          dashArray:   '8 5',
-        }}
-      />
+      {/* ── Ranh giới khu phố (chỉ vẽ khi đã có) ───────────── */}
+      {boundary.length >= 3 && (
+        <Polygon
+          positions={boundary}
+          pathOptions={{
+            color:       boundaryColor,
+            weight:      2.5,
+            opacity:     0.85,
+            fillColor:   boundaryColor,
+            fillOpacity: 0.05,
+            dashArray:   '8 5',
+          }}
+        />
+      )}
 
       {/* ── Hộ dân — clustered ─────────────────────────────── */}
       {showHoDan && (

@@ -54,6 +54,7 @@ Nâng cấp code: đẩy lên repo → mỗi Vercel project tự build lại (ho
 | Giao diện đọc tên/màu khu phố theo env | ✅ Đã triển khai |
 | Logo khu phố (logo chữ tự đổi; logo ảnh riêng tùy chọn) | ✅ Đã triển khai |
 | Favicon + icon PWA + manifest sinh động theo khu phố | ✅ Đã triển khai |
+| Ranh giới khu phố — vẽ trên bản đồ, lưu vào CSDL | ✅ Đã triển khai (migration 048) |
 | Portal lọc dữ liệu theo khu phố của deployment | ✅ Đã triển khai |
 | Gán `don_vi_id` khi tạo hộ/nhân khẩu trong admin | ✅ Đã triển khai |
 | Lọc số liệu TỔNG ở admin Dashboard/Báo cáo/Tìm kiếm theo khu phố | ⏳ Làm khi onboard KP thật |
@@ -109,6 +110,16 @@ Nâng cấp code: đẩy lên repo → mỗi Vercel project tự build lại (ho
 - Admin → **Quản lý Khu phố** → **Thêm khu phố**: nhập mã (VD `KP01`), tên
   (`Khu phố 1`), slug (`kp01`), trưởng KP, bí thư, màu chủ đạo, logo.
 - Ghi lại `don_vi_id` (UUID) và `slug` của khu phố.
+
+### Bước 1b — Vẽ ranh giới khu phố
+- Tại thẻ khu phố vừa tạo → nhấn **Ranh giới**.
+- **Bấm lên bản đồ** để thêm từng đỉnh · **kéo đỉnh** để chỉnh · **bấm vào đỉnh** để xoá.
+  Cần ít nhất **3 đỉnh** → nhấn **Lưu ranh giới**.
+- Nếu đã có file ranh giới hành chính: dùng **Nhập GeoJSON** (tự đảo [lng,lat] → [lat,lng]).
+- Ranh giới dùng chung cho **bản đồ GIS của cán bộ** và **bản đồ công khai trên portal**;
+  đồng thời dùng để **rải vị trí ước tính** cho hộ chưa có toạ độ GPS.
+- Chưa vẽ ranh giới → bản đồ không hiển thị ranh giới và không rải vị trí ước tính
+  (tránh chấm sai chỗ), tâm bản đồ lấy theo dữ liệu thật.
 
 ### Bước 2 — Tạo tài khoản cán bộ khu phố đó
 - Tạo user Supabase Auth (email + mật khẩu) cho từng cán bộ khu phố.

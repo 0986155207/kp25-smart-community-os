@@ -255,6 +255,104 @@ export async function capNhatDonVi(id: string, duLieu: DuLieuDonVi): Promise<Ket
 }
 
 // ════════════════════════════════════════════════════════════
+//  RANH GIỚI KHU PHỐ
+// ════════════════════════════════════════════════════════════
+
+export type Diem = [number, number]   // [lat, lng]
+
+export interface RanhGioiDonVi {
+  id: string
+  ma: string
+  ten: string
+  mau_chu_dao: string | null
+  ranh_gioi: Diem[]
+  tam: Diem | null
+  zoom: number
+}
+
+const laDiemHopLe = (d: unknown): d is Diem =>
+  Array.isArray(d) && d.length === 2 &&
+  typeof d[0] === 'number' && typeof d[1] === 'number' &&
+  d[0] >= -90 && d[0] <= 90 && d[1] >= -180 && d[1] <= 180
+
+/** Lấy ranh giới của một đơn vị (dùng cho trang vẽ) */
+export async function layRanhGioi(donViId: string): Promise<RanhGioiDonVi | null> {
+  try {
+    const svc = createServiceClient()
+    const { data, error } = await svc
+      .from('don_vi')
+      .select('id, ma, ten, mau_chu_dao, ranh_gioi, tam_lat, tam_lng, zoom')
+      .eq('id', donViId)
+      .is('deleted_at', null)
+      .maybeSingle()
+
+    if (error || !data) return null
+
+    const raw = Array.isArray(data.ranh_gioi) ? data.ranh_gioi : []
+    return {
+      id: data.id,
+      ma: data.ma,
+      ten: data.ten,
+      mau_chu_dao: data.mau_chu_dao,
+      ranh_gioi: raw.filter(laDiemHopLe),
+      tam: data.tam_lat != null && data.tam_lng != null
+        ? [Number(data.tam_lat), Number(data.tam_lng)]
+        : null,
+      zoom: data.zoom ?? 16,
+    }
+  } catch (err) {
+    console.error('[RanhGioi] Lỗi đọc:', err)
+    return null
+  }
+}
+
+/** Lưu ranh giới đã vẽ */
+export async function luuRanhGioi(
+  donViId: string,
+  ranhGioi: Diem[],
+  tam?: Diem | null,
+  zoom?: number,
+): Promise<KetQua> {
+  const diem = (ranhGioi ?? []).filter(laDiemHopLe)
+
+  if (diem.length > 0 && diem.length < 3) {
+    return { thanhCong: false, thongBao: 'Ranh giới cần ít nhất 3 đỉnh (hoặc xoá hết để bỏ ranh giới).' }
+  }
+
+  const svc = createServiceClient()
+  const { error } = await svc
+    .from('don_vi')
+    .update({
+      ranh_gioi: diem.length ? diem : null,
+      tam_lat:   tam?.[0] ?? null,
+      tam_lng:   tam?.[1] ?? null,
+      zoom:      zoom && zoom >= 10 && zoom <= 20 ? zoom : 16,
+    })
+    .eq('id', donViId)
+
+  if (error) {
+    console.error('[RanhGioi] Lỗi lưu:', error.message)
+    return { thanhCong: false, thongBao: 'Không thể lưu ranh giới. ' + error.message }
+  }
+
+  await ghiAuditLog({
+    hanh_dong: 'CAP_NHAT',
+    bang: 'he_thong',
+    ban_ghi_id: donViId,
+    mo_ta: diem.length
+      ? `Cập nhật ranh giới khu phố (${diem.length} đỉnh)`
+      : 'Xoá ranh giới khu phố',
+  })
+
+  revalidatePath('/dashboard/khu-pho')
+  revalidatePath('/dashboard/ban-do')
+  return {
+    thanhCong: true,
+    thongBao: diem.length ? `Đã lưu ranh giới (${diem.length} đỉnh).` : 'Đã xoá ranh giới.',
+  }
+}
+
+// ════════════════════════════════════════════════════════════
 //  XÓA (mềm) ĐƠN VỊ — chặn nếu còn dữ liệu
 // ════════════════════════════════════════════════════════════
 export async function xoaDonVi(id: string): Promise<KetQua> {

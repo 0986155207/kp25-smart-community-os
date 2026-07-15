@@ -28,18 +28,42 @@ const GisMap = dynamic(() => import('./GisMap'), {
   ),
 })
 
-// ─── Ranh giới KP25 ───────────────────────────────────────────
-export const KP25_POLYGON: [number, number][] = [
-  [10.79869, 106.81107],  // SW
-  [10.79870, 106.81261],  // SE
-  [10.80231, 106.81261],  // NE
-  [10.80082, 106.81084],  // NW
-]
+// ─── Ranh giới khu phố ────────────────────────────────────────
+// Lấy từ CSDL (bảng don_vi) theo khu phố của bản triển khai này —
+// KHÔNG hardcode nữa, để mỗi khu phố tự vẽ ranh giới riêng.
+const TAM_MAC_DINH: [number, number] = [10.8005, 106.8118]   // Long Trường
 
-const MAP_CENTER: [number, number] = [
-  KP25_POLYGON.reduce((s, p) => s + p[0], 0) / KP25_POLYGON.length,
-  KP25_POLYGON.reduce((s, p) => s + p[1], 0) / KP25_POLYGON.length,
-]
+/** Tâm hình học (centroid) của một tập điểm */
+function tinhTam(diem: [number, number][]): [number, number] | null {
+  if (!diem.length) return null
+  return [
+    diem.reduce((s, p) => s + p[0], 0) / diem.length,
+    diem.reduce((s, p) => s + p[1], 0) / diem.length,
+  ]
+}
+
+/** Khung bao (bounding box) của đa giác */
+function khungBao(diem: [number, number][]) {
+  const lats = diem.map(d => d[0])
+  const lngs = diem.map(d => d[1])
+  return {
+    minLat: Math.min(...lats), maxLat: Math.max(...lats),
+    minLng: Math.min(...lngs), maxLng: Math.max(...lngs),
+  }
+}
+
+/** Điểm có nằm trong đa giác không (thuật toán ray casting) */
+function trongDaGiac(lat: number, lng: number, dg: [number, number][]): boolean {
+  let inside = false
+  for (let i = 0, j = dg.length - 1; i < dg.length; j = i++) {
+    const [yi, xi] = dg[i]!
+    const [yj, xj] = dg[j]!
+    if ((yi > lat) !== (yj > lat) && lng < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) {
+      inside = !inside
+    }
+  }
+  return inside
+}
 
 // ─── Types ────────────────────────────────────────────────────
 export interface GeoMarker extends HoDanBanDo {
@@ -55,17 +79,23 @@ export interface FlyTarget {
   ts:   number   // timestamp để phân biệt cùng tọa độ
 }
 
-// ─── Bilinear interpolation fallback ─────────────────────────
-function bilinearPos(u: number, v: number): [number, number] {
-  const [sw, se, ne, nw] = KP25_POLYGON as [
-    [number, number], [number, number], [number, number], [number, number]
-  ]
-  const lat =
-    (1 - u) * (1 - v) * sw[0] + u * (1 - v) * se[0] +
-    (1 - u) * v        * nw[0] + u * v        * ne[0]
-  const lng =
-    (1 - u) * (1 - v) * sw[1] + u * (1 - v) * se[1] +
-    (1 - u) * v        * nw[1] + u * v        * ne[1]
+// ─── Vị trí ước tính trong ranh giới ─────────────────────────
+// Rải theo lưới trong khung bao của ranh giới; điểm nào rơi ra ngoài
+// đa giác thì kéo dần về tâm cho tới khi nằm trong.
+// Hoạt động với ranh giới BẤT KỲ hình dạng nào (không chỉ tứ giác).
+function viTriTrongVung(
+  u: number, v: number,
+  dg: [number, number][],
+  tam: [number, number],
+): [number, number] {
+  const bb = khungBao(dg)
+  let lat = bb.minLat + v * (bb.maxLat - bb.minLat)
+  let lng = bb.minLng + u * (bb.maxLng - bb.minLng)
+
+  for (let i = 0; i < 6 && !trongDaGiac(lat, lng, dg); i++) {
+    lat = lat + (tam[0] - lat) * 0.35
+    lng = lng + (tam[1] - lng) * 0.35
+  }
   return [lat, lng]
 }
 
@@ -75,9 +105,11 @@ function hashId(id: string): number {
   return Math.abs(h)
 }
 
-function buildApproxMarkers(hoDan: HoDanBanDo[]): GeoMarker[] {
+function buildApproxMarkers(hoDan: HoDanBanDo[], ranhGioi: [number, number][]): GeoMarker[] {
   const n = hoDan.length
-  if (n === 0) return []
+  // Chưa vẽ ranh giới → KHÔNG rải vị trí ước tính (tránh chấm sai vị trí)
+  if (n === 0 || ranhGioi.length < 3) return []
+  const tam = tinhTam(ranhGioi)!
   const cols   = Math.ceil(Math.sqrt(n * 1.25))
   const rows   = Math.ceil(n / cols)
   const margin = 0.10
@@ -95,12 +127,12 @@ function buildApproxMarkers(hoDan: HoDanBanDo[]): GeoMarker[] {
     const jv  = (((hsh >> 12) % 1000) / 1000 - 0.5) * cellV * 0.5
     const u   = Math.max(margin * 0.5, Math.min(1 - margin * 0.5, u0 + ju))
     const v   = Math.max(margin * 0.5, Math.min(1 - margin * 0.5, v0 + jv))
-    const [lat, lng] = bilinearPos(u, v)
+    const [lat, lng] = viTriTrongVung(u, v, ranhGioi, tam)
     return { ...h, lat, lng, approximate: true }
   })
 }
 
-function buildMarkers(hoDan: HoDanBanDo[]): GeoMarker[] {
+function buildMarkers(hoDan: HoDanBanDo[], ranhGioi: [number, number][]): GeoMarker[] {
   const withGPS    = hoDan.filter(h => h.toaDoLat !== null && h.toaDoLng !== null)
   const withoutGPS = hoDan.filter(h => h.toaDoLat === null || h.toaDoLng === null)
   const realMarkers: GeoMarker[] = withGPS.map(h => ({
@@ -109,7 +141,7 @@ function buildMarkers(hoDan: HoDanBanDo[]): GeoMarker[] {
     lng:         h.toaDoLng as number,
     approximate: false,
   }))
-  return [...realMarkers, ...buildApproxMarkers(withoutGPS)]
+  return [...realMarkers, ...buildApproxMarkers(withoutGPS, ranhGioi)]
 }
 
 // ─── Vietnamese diacritic normalization (search) ──────────────
@@ -127,8 +159,13 @@ function boVietDau(s: string): string {
 
 // ─── Props ────────────────────────────────────────────────────
 interface Props {
-  hoDan:   HoDanBanDo[]
-  phanAnh: PhanAnhBanDo[]
+  hoDan:    HoDanBanDo[]
+  phanAnh:  PhanAnhBanDo[]
+  /** Ranh giới khu phố lấy từ CSDL — rỗng nếu khu phố chưa vẽ */
+  ranhGioi: [number, number][]
+  /** Tâm bản đồ tuỳ chỉnh (nếu khu phố có đặt) */
+  tam:      [number, number] | null
+  zoom:     number
 }
 
 // ─── GeocodeResult ────────────────────────────────────────────
@@ -141,8 +178,19 @@ interface GeocodeResult {
 // ═══════════════════════════════════════════════════════════════
 //  COMPONENT CHÍNH
 // ═══════════════════════════════════════════════════════════════
-export default function BanDoPage({ hoDan, phanAnh }: Props) {
+export default function BanDoPage({ hoDan, phanAnh, ranhGioi, tam, zoom }: Props) {
   const router = useRouter()
+
+  // Tâm bản đồ: ưu tiên tâm khu phố đặt tay → tâm ranh giới
+  // → trung bình toạ độ GPS thật → mặc định Long Trường.
+  const mapCenter = useMemo<[number, number]>(() => {
+    if (tam) return tam
+    const tamRG = tinhTam(ranhGioi)
+    if (tamRG) return tamRG
+    const coGps = hoDan.filter(h => h.toaDoLat !== null && h.toaDoLng !== null)
+    const tamGps = tinhTam(coGps.map(h => [h.toaDoLat as number, h.toaDoLng as number]))
+    return tamGps ?? TAM_MAC_DINH
+  }, [tam, ranhGioi, hoDan])
 
   // ── Layer toggles ────────────────────────────────────────────
   const [showHoDan,   setShowHoDan]   = useState(true)
@@ -187,7 +235,7 @@ export default function BanDoPage({ hoDan, phanAnh }: Props) {
   const [locateError, setLocateError] = useState('')
 
   // ── Markers ─────────────────────────────────────────────────
-  const geoMarkers = useMemo(() => buildMarkers(hoDan), [hoDan])
+  const geoMarkers = useMemo(() => buildMarkers(hoDan, ranhGioi), [hoDan, ranhGioi])
 
   const visibleMarkers = useMemo(
     () => showApprox ? geoMarkers : geoMarkers.filter(m => !m.approximate),
@@ -533,8 +581,9 @@ export default function BanDoPage({ hoDan, phanAnh }: Props) {
           showHoDan={showHoDan}
           showPhanAnh={showPhanAnh}
           showHeatmap={showHeatmap}
-          boundary={KP25_POLYGON}
-          mapCenter={MAP_CENTER}
+          boundary={ranhGioi}
+          mapCenter={mapCenter}
+          mapZoom={zoom}
           tileKey={tileKey}
           flyTarget={flyTarget}
           searchHighlight={searchHighlight}

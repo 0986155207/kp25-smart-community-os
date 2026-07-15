@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useTransition } from 'react'
+import Link from 'next/link'
 import {
   Building2, Plus, Pencil, Trash2, X, Users, Home as HomeIcon,
-  UserCog, Phone, Check, Loader2, MapPin, Palette, Award, Image as ImageIcon,
+  UserCog, Phone, Check, Loader2, MapPin, Palette, Award, Image as ImageIcon, Shapes,
 } from 'lucide-react'
 import {
   type DonViItem, type DuLieuDonVi,
@@ -210,6 +211,12 @@ export default function KhuPhoClient({ danhSach }: { danhSach: DonViItem[] }) {
               >
                 <Pencil size={13} /> Sửa
               </button>
+              <Link
+                href={`/dashboard/khu-pho/${dv.id}/ranh-gioi`}
+                className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
+              >
+                <Shapes size={13} /> Ranh giới
+              </Link>
               {dv.id !== KP25_ID && (
                 <button
                   onClick={() => xoa(dv.id)}

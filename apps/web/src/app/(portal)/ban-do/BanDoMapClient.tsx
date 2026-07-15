@@ -16,6 +16,13 @@ const BanDoMap = dynamic(() => import('./BanDoMap'), {
   ),
 })
 
-export default function BanDoMapClient({ phanAnh }: { phanAnh: PhanAnhMap[] }) {
-  return <BanDoMap phanAnh={phanAnh} />
+interface Props {
+  phanAnh:  PhanAnhMap[]
+  ranhGioi: [number, number][]
+  tam:      [number, number] | null
+  zoom:     number
+}
+
+export default function BanDoMapClient({ phanAnh, ranhGioi, tam, zoom }: Props) {
+  return <BanDoMap phanAnh={phanAnh} ranhGioi={ranhGioi} tam={tam} zoom={zoom} />
 }
